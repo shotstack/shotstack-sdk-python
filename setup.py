@@ -31,7 +31,7 @@ setup(
     author="Shotstack",
     author_email="pypi@shotstack.io",
     url="",
-    keywords=["OpenAPI", "OpenAPI-Generator", "Shotstack"],
+    keywords=["Shotstack"],
     python_requires=">=3.6",
     install_requires=REQUIRES,
     packages=find_packages(exclude=["test", "tests"]),
