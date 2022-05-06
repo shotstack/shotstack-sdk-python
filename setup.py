@@ -11,7 +11,7 @@
 from setuptools import setup, find_packages  # noqa: H301
 
 NAME = "shotstack-sdk"
-VERSION = "1.0.0"
+VERSION = "0.0.1"
 # To install the library, run the following
 #
 # python setup.py install
@@ -28,10 +28,10 @@ setup(
     name=NAME,
     version=VERSION,
     description="Shotstack",
-    author="OpenAPI Generator community",
-    author_email="team@openapitools.org",
-    url="",
-    keywords=["OpenAPI", "OpenAPI-Generator", "Shotstack"],
+    author="Shotstack",
+    author_email="pypi@shotstack.io",
+    url="https://shotstack.io",
+    keywords=["Shotstack"],
     python_requires=">=3.6",
     install_requires=REQUIRES,
     packages=find_packages(exclude=["test", "tests"]),
