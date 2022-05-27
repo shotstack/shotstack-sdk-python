@@ -79,47 +79,56 @@ provided schema classes and `POST` to the API for rendering.
 The example below trims the start of a video clip and plays it for 8 seconds. The edit is prepared using the SDK models
 and then sent to the API for rendering.
 
-```javascript
-const Shotstack = require('shotstack-sdk');
+```python
+import shotstack_sdk as shotstack
+from shotstack_sdk.api import edit_api
+from shotstack_sdk.model.clip        import Clip
+from shotstack_sdk.model.track       import Track
+from shotstack_sdk.model.timeline    import Timeline
+from shotstack_sdk.model.output      import Output
+from shotstack_sdk.model.edit        import Edit
+from shotstack_sdk.model.video_asset import VideoAsset
 
-const defaultClient = Shotstack.ApiClient.instance;
-defaultClient.basePath = 'https://api.shotstack.io/stage';
+host = "https://api.shotstack.io/stage"
+configuration = shotstack.Configuration(host = host)
 
-const DeveloperKey = defaultClient.authentications['DeveloperKey'];
-DeveloperKey.apiKey = 'H7jKyj90kd09lbLOF7J900jNbSWS67X87xs9j0cD'; // use the correct API key
+configuration.api_key['DeveloperKey'] = "H7jKyj90kd09lbLOF7J900jNbSWS67X87xs9j0cD"
 
-const api = new Shotstack.EditApi();
+with shotstack.ApiClient(configuration) as api_client:
+    api_instance = edit_api.EditApi(api_client)
 
-let videoAsset = new Shotstack.VideoAsset;
-videoAsset
-    .setSrc('https://s3-ap-southeast-2.amazonaws.com/shotstack-assets/footage/skater.hd.mp4')
-    .setTrim(3)
+    video_asset = VideoAsset(
+        src = "https://s3-ap-southeast-2.amazonaws.com/shotstack-assets/footage/skater.hd.mp4",
+        trim = 3.0
+    )
 
-let videoClip = new Shotstack.Clip;
-videoClip
-    .setAsset(videoAsset)
-    .setStart(0)
-    .setLength(8);
+    video_clip = Clip(
+        asset = video_asset,
+        start = 0.0,
+        length= 8.0
+    )
 
-let track = new Shotstack.Track;
-track.setClips([videoClip]);
+    track = Track(clips=[video_clip])
 
-let timeline = new Shotstack.Timeline;
-timeline.setTracks([track]);
+    timeline = Timeline(tracks=[track])
 
-let output = new Shotstack.Output;
-output
-    .setFormat('mp4')
-    .setResolution('sd');
+    timeline['tracks'] = [another_track]
 
-let edit = new Shotstack.Edit;
-edit
-    .setTimeline(timeline)
-    .setOutput(output);
+    output = Output(
+        format      = "mp4",
+        resolution  = "sd"
+    )
 
-api.postRender(edit).then((data) => {
-    console.log(data.response.id);
-});
+    edit = Edit(
+        timeline = timeline,
+        output   = output
+    )
+
+    try:
+        api_response = api_instance.post_render(edit)
+        print(f"{api_response['response']['id']}\n")
+    except Exception as e:
+         print(f"Unable to resolve API call: {e}")
 ```
 
 ### Status Check Example
@@ -127,24 +136,32 @@ api.postRender(edit).then((data) => {
 The example request below can be called a few seconds after the render above is posted. It will return the status of 
 the render, which can take several seconds to process.
 
-```javascript
-const Shotstack = require('shotstack-sdk');
+```python
+import shotstack_sdk as shotstack
+from shotstack_sdk.api import edit_api
 
-const defaultClient = Shotstack.ApiClient.instance;
-defaultClient.basePath = 'https://api.shotstack.io/stage';
+host = "https://api.shotstack.io/stage"
+configuration = shotstack.Configuration(host = host)
 
-const DeveloperKey = defaultClient.authentications['DeveloperKey'];
-DeveloperKey.apiKey = 'H7jKyj90kd09lbLOF7J900jNbSWS67X87xs9j0cD'; // use the correct API key
+configuration.api_key['DeveloperKey'] = "H7jKyj90kd09lbLOF7J900jNbSWS67X87xs9j0cD"
 
-const api = new Shotstack.EditApi();
+with shotstack.ApiClient(configuration) as api_client:
+  api_instance = edit_api.EditApi(api_client)
 
-const id = "75143ec6-4b72-46f8-a67a-fd7284546935"; // use the render id from previous example
+  id = '75143ec6-4b72-46f8-a67a-fd7284546935'
 
-api.getRender(id, { data: false, merged: true }).then((data) => {
-    if (data.response.status === 'done') {
-        console.log(data.response.url);
-    }
-});
+  try:
+    api_response = api_instance.get_render(id, data=False, merged=True)
+
+    status = api_response['response']['status']
+
+    print('Status: ' + status.upper() + '\n')
+
+    if status == "done":
+      url = api_response['response']['url']
+      print(f">> Asset URL: {url}")
+  except Exception as e:
+    print(f"Unable to resolve API call: {e}")
 ```
 
 ## Video Editing Schemas
@@ -157,29 +174,30 @@ An **Edit** defines the arrangement of a video on a timeline, an audio edit or a
 
 #### Example:
 
-```javascript
-const Shotstack = require('shotstack-sdk');
+```python
+from shotstack_sdk.model.edit import Edit
 
-const edit = new Shotstack.Edit;
-edit
-  .setTimeline(timeline)
-  .setOutput(output)
-  .setMerge(merge)
-  .setCallback("https://my-server.com/callback.php")
-  .setDisk("local");
+edit = Edit(
+  timeline  = timeline,
+  output    = output,
+  merge     = merge,
+  callback  = "https://my-server.com/callback.php",
+  disk      = "local"
+)
 ```
 
 #### Methods:
 
-Method | Description | Required
+Arguments:
+Argument | Description | Required
 :--- | :--- | :---: 
-setTimeline([Shotstack.Timeline](#timeline)) | A timeline represents the contents of a video edit over time, an audio edit over time, in seconds, or an image layout. A timeline consists of layers called tracks. Tracks are composed of titles, 
+timeline([Shotstack.Timeline](#timeline)) | A timeline represents the contents of a video edit over time, an audio edit over time, in seconds, or an image layout. A timeline consists of layers called tracks. Tracks are composed of titles, 
 images, audio, html or video segments referred to as clips which are placed along the track at specific starting point and lasting for a specific amount of time. | -
-setOutput([Shotstack.Output](#output)) | The output format, render range and type of media to generate. | Y
-setMerge([Shotstack.MergeField[]](#mergefield) mergeField) | An array of key/value pairs that provides an easy way to create templates with placeholders. The placeholders can be used to find and replace keys with values. For example you can search 
+output([Shotstack.Output](#output)) | The output format, render range and type of media to generate. | Y
+merge([Shotstack.MergeField[]](#mergefield) mergeField) | An array of key/value pairs that provides an easy way to create templates with placeholders. The placeholders can be used to find and replace keys with values. For example you can search 
 for the placeholder `{{NAME}}` and replace it with the value `Jane`. | -
-setCallback(string callback) | An optional webhook callback URL used to receive status notifications when a render completes or fails. See [webhooks](https://shotstack.io/docs/guide/architecting-an-application/webhooks/) for  more details. | -
-setDisk(string disk) | The disk type to use for storing footage and assets for each render. See [disk types](https://shotstack.io/docs/guide/architecting-an-application/disk-types/) for more details. [default to `local`] <ul><li>`local` - optimized 
+callback(string callback) | An optional webhook callback URL used to receive status notifications when a render completes or fails. See [webhooks](https://shotstack.io/docs/guide/architecting-an-application/webhooks/) for  more details. | -
+disk(string disk) | The disk type to use for storing footage and assets for each render. See [disk types](https://shotstack.io/docs/guide/architecting-an-application/disk-types/) for more details. [default to `local`] <ul><li>`local` - optimized 
 for high speed rendering with up to 512MB storage</li><li>`mount` - optimized for larger file sizes and longer videos with 5GB for source footage and 512MB for output render</li></ul> | -
 
 -----
@@ -191,16 +209,16 @@ as clips which are placed along the track at specific starting point and lasting
 
 #### Example:
 
-```javascript
-const Shotstack = require('shotstack-sdk');
+```python
+from shotstack_sdk.model.timeline import Timeline
 
-const timeline = new Shotstack.Timeline;
-timeline
-  .setSoundtrack(soundtrack)
-  .setBackground('#000000')
-  .setFonts(fonts)
-  .setTracks(tracks)
-  .setCache(true);
+timeline = Timeline(
+  soundtrack  = soundtrack,
+  background  = '#000000',
+  fonts       = fonts,
+  tracks      = tracks,
+  cache       = True,
+)
 ```
 
 #### Methods:
@@ -222,14 +240,14 @@ A music or audio file in mp3 format that plays for the duration of the rendered 
 
 #### Example:
 
-```javascript
-const Shotstack = require('shotstack-sdk');
+```python
+from shotstack_sdk.model.soundtrack import Soundtrack
 
-const soundtrack = new Shotstack.Soundtrack;
-soundtrack
-  .setSrc('https://s3-ap-southeast-2.amazonaws.com/shotstack-assets/music/disco.mp3')
-  .setEffect('fadeIn')
-  .setVolume(1);
+soundtrack = Soundtrack(
+  src    = 'https://s3-ap-southeast-2.amazonaws.com/shotstack-assets/music/disco.mp3',
+  effect = 'fadeIn',
+  volume = 1.0
+)
 ```
 
 #### Methods:
@@ -248,12 +266,10 @@ Download a custom font to use with the HTML asset type, using the font name in t
 
 #### Example:
 
-```javascript
-const Shotstack = require('shotstack-sdk');
+```python
+from shotstack_sdk.model.font import Font
 
-const font = new Shotstack.Font;
-font
-  .setSrc('https://shotstack-assets.s3-ap-southeast-2.amazonaws.com/fonts/OpenSans-Regular.ttf');
+font = Font(src='https://shotstack-assets.s3-ap-southeast-2.amazonaws.com/fonts/OpenSans-Regular.ttf')
 ```
 
 #### Methods:
@@ -270,12 +286,10 @@ A track contains an array of clips. Tracks are layered on top of each other in t
 
 #### Example:
 
-```javascript
-const Shotstack = require('shotstack-sdk');
+```python
+from shotstack_sdk.model.track import Track
 
-const track = new Shotstack.Track;
-track
-  .setClips(clips);
+track = Track(clips=clips)
 ```
 
 #### Methods:
@@ -292,23 +306,23 @@ A **Clip** is a container for a specific type of asset, i.e. a title, image, vid
 
 #### Example:
 
-```javascript
-const Shotstack = require('shotstack-sdk');
+```python
+from shotstack_sdk.model.clip import Clip
 
-clip = new Shotstack.Clip;
-clip
-  .setAsset(asset)
-  .setStart(2)
-  .setLength(5)
-  .setFit('crop')
-  .setScale(0)
-  .setPosition('center')
-  .setOffset(offset)
-  .setTransition(transition)
-  .setEffect('zoomIn')
-  .setFilter('greyscale')
-  .setOpacity(1)
-  .setTransform(transform);
+clip = Clip(
+  asset     = asset,
+  start     = 2.0,
+  length    = 5.0,
+  fit       = 'crop',
+  scale     = 0.0,
+  position  = 'center',
+  offset    = offset,
+  transition= transition,
+  effect    = 'zoomIn',
+  filter    = 'greyscale',
+  opacity   = 1.0,
+  transform = transform,
+)
 ```
 
 #### Methods:
@@ -348,15 +362,15 @@ resource such as an mp4 file.
 
 #### Example:
 
-```javascript
-const Shotstack = require('shotstack-sdk');
+```python
+from shotstack_sdk.model.video_asset import VideoAsset
 
-const videoAsset = new Shotstack.VideoAsset;
-videoAsset
-  .setSrc('https://shotstack-assets.s3.aws.com/mountain.mp4')
-  .setTrim(5)
-  .setVolume(0.5)
-  .setCrop(crop);
+videoAsset = VideoAsset(
+  src   = 'https://shotstack-assets.s3.aws.com/mountain.mp4',
+  trim  = 5.0,
+  volume= 0.5,
+  crop  = crop
+)
 ```
 
 #### Methods:
@@ -377,13 +391,13 @@ The **ImageAsset** is used to create video from images to compose an image. The 
 
 #### Example:
 
-```javascript
-const Shotstack = require('shotstack-sdk');
+```python
+from shotstack_sdk.model.image_asset import ImageAsset
 
-const imageAsset = new Shotstack.ImageAsset;
-imageAsset
-  .setSrc('https://shotstack-assets.s3-ap-southeast-2.amazonaws.com/images/earth.jpg')
-  .setCrop(crop);
+imageAsset = ImageAsset(
+  src  = 'https://shotstack-assets.s3-ap-southeast-2.amazonaws.com/images/earth.jpg',
+  crop = crop
+)
 ```
 
 #### Methods:
@@ -402,18 +416,18 @@ The **TitleAsset** clip type lets you create video titles from a text string and
 
 #### Example:
 
-```javascript
-const Shotstack = require('shotstack-sdk');
+```python
+from shotstack_sdk.model.title_asset import TitleAsset
 
-const titleAsset = new Shotstack.TitleAsset;
-titleAsset
-  .setText('My Title')
-  .setStyle('minimal')
-  .setColor('#ffffff')
-  .setSize('medium')
-  .setBackground('#000000')
-  .setPosition('center')
-  .setOffset(offset);
+titleAsset = TitleAsset(
+  text       = 'My Title',
+  style      = 'minimal',
+  color      = '#ffffff',
+  size       = 'medium',
+  background = '#000000',
+  position   = 'center',
+  offset     = offset
+)
 ```
 
 #### Methods:
@@ -441,17 +455,17 @@ The **HtmlAsset** clip type lets you create text based layout and formatting usi
 
 #### Example:
 
-```javascript
-const Shotstack = require('shotstack-sdk');
+```python
+from shotstack_sdk.model.html_asset import HtmlAsset
 
-const htmlAsset = new Shotstack.HtmlAsset;
-htmlAsset
-  .setHtml('<p>Hello <b>World</b></p>')
-  .setCss('p { color: #ffffff; } b { color: #ffff00; }')
-  .setWidth(400)
-  .setHeight(200)
-  .setBackground('transparent')
-  .setPosition('center);
+htmlAsset = HtmlAsset(
+  html      = '<p>Hello <b>World</b></p>',
+  css       = 'p { color: #ffffff; } b { color: #ffff00; }',
+  width     = 400,
+  height    = 200,
+  background= 'transparent',
+  position  = 'center'
+)
 ```
 
 #### Methods:
@@ -476,15 +490,15 @@ publicly accessible URL to an audio resource such as an mp3 file.
 
 #### Example:
 
-```javascript
-const Shotstack = require('shotstack-sdk');
+```python
+from shotstack_sdk.model.audio_asset import AudioAsset
 
-const audioAsset = new Shotstack.AudioAsset;
-audioAsset
-  .setSrc('https://shotstack-assets.s3-ap-southeast-2.amazonaws.com/music/unminus/lit.mp3')
-  .setTrim(2)
-  .setVolume(0.5)
-  .setEffect('fadeInFadeOut');
+audioAsset = AudioAsset(
+  src    = 'https://shotstack-assets.s3-ap-southeast-2.amazonaws.com/music/unminus/lit.mp3',
+  trim   = 2.0,
+  volume = 0.5,
+  effect = 'fadeInFadeOut'
+)
 ```
 
 #### Methods:
@@ -505,13 +519,13 @@ should be provided as an mp4 video file. The src must be a publicly accessible U
 
 #### Example:
 
-```javascript
-const Shotstack = require('shotstack-sdk');
+```python
+from shotstack_sdk.model.luma_asset import LumaAsset
 
-const lumaAsset = new Shotstack.LumaAsset;
-lumaAsset
-  .setSrc('https://shotstack-assets.s3-ap-southeast-2.amazonaws.com/examples/luma-mattes/paint-left.mp4')
-  .setTrim(5);
+lumaAsset = LumaAsset(
+  src  = 'https://shotstack-assets.s3-ap-southeast-2.amazonaws.com/examples/luma-mattes/paint-left.mp4',
+  trim = 5.0
+)
 ```
 
 #### Methods:
@@ -529,13 +543,13 @@ The **Transition** clip type lets you define in and out transitions for a clip -
 
 #### Example:
 
-```javascript
-const Shotstack = require('shotstack-sdk');
+```python
+from shotstack_sdk.model.transition import Transition
 
-const transition = new Shotstack.Transition;
-transition
-  .setIn('fade')
-  .setOut('fade');
+transition = Transition(
+  _in = 'fade',
+  out = 'fade'
+)
 ```
 
 #### Methods:
@@ -563,13 +577,13 @@ Offsets the position of an asset horizontally or vertically by a relative distan
 
 #### Example:
 
-```javascript
-const Shotstack = require('shotstack-sdk');
+```python
+from shotstack_sdk.model.offset import Offset
 
-const offset = new Shotstack.Offset;
-offset
-  .setX(0.1)
-  .setY(-0.2);
+offset = Offset(
+  x = 0.1,
+  y = -0.2
+)
 ```
 
 #### Methods:
@@ -590,15 +604,15 @@ by quarter of the asset.
 
 #### Example:
 
-```javascript
-const Shotstack = require('shotstack-sdk');
+```python
+from shotstack_sdk.model.crop import Crop
 
-const crop = new Shotstack.Crop;
-crop
-  .setTop(0.15)
-  .setBottom(0.15)
-  .setLeft(0)
-  .setRight(0);
+crop = Crop(
+  top   = 0.15,
+  bottom= 0.15,
+  left  = 0.0,
+  right = 0.0
+)
 ```
 
 #### Methods:
@@ -618,14 +632,14 @@ Apply one or more transformations to a clip. **Transformations** alter the visua
 
 #### Example:
 
-```javascript
-const Shotstack = require('shotstack-sdk');
+```python
+from shotstack_sdk.model.transformation import Transformation
 
-const transformation = new Shotstack.Transformation;
-transformation
-  .setRotate(rotate)
-  .setSkew(skew)
-  .setFlip(flip);
+transformation = Transformation(
+  rotate= rotate,
+  skew  = skew,
+  flip  = flip 
+)
 ```
 
 #### Methods:
@@ -644,12 +658,12 @@ Rotate a clip by the specified angle in degrees. Rotation origin is set based on
 
 #### Example:
 
-```javascript
-const Shotstack = require('shotstack-sdk');
+```python
+from shotstack_sdk.model.rotate_transformation import RotateTransformation
 
-const rotateTransformation = new Shotstack.RotateTransformation;
-rotateTransformation
-  .setAngle(45);
+rotateTransformation = RotateTransformation(
+  angle = 45.0
+)
 ```
 
 #### Methods:
@@ -666,13 +680,13 @@ Skew a clip so its edges are sheared at an angle. Use values between 0 and 3. Ov
 
 #### Example:
 
-```javascript
-const Shotstack = require('shotstack-sdk');
+```python
+from shotstack_sdk.model.skew_transformation import SkewTransformation
 
-const skewTransformation = new Shotstack.SkewTransformation;
-skewTransformation
-  .setX(0.5)
-  .setY(0.5);
+skewTransformation = SkewTransformation(
+  .x = 0.5,
+  .y = 0.5
+)
 ```
 
 #### Methods:
@@ -690,13 +704,13 @@ Flip a clip vertically or horizontally. Acts as a mirror effect of the clip alon
 
 #### Example:
 
-```javascript
-const Shotstack = require('shotstack-sdk');
+```python
+from shotstack_sdk.model.flip_transformation import FlipTransformation
 
-const flipTransformation = new Shotstack.FlipTransformation;
-flipTransformation
-  .setHorizontal(true)
-  .setVertical(true);
+flipTransformation = FlipTransformation(
+  horizontal = True,
+  vertical   = True
+)
 ```
 
 #### Methods:
@@ -715,13 +729,13 @@ placeholder can be used for any value within the JSON edit.
 
 #### Example:
 
-```javascript
-const Shotstack = require('shotstack-sdk');
+```python
+from shotstack_sdk.model.merge_field import MergeField
 
-const mergeField = new Shotstack.MergeField;
-mergeField
-  .setFind('NAME')
-  .setReplace('Jane');
+mergeField = MergeField(
+  find    ='NAME',
+  replace   ='Jane'
+)
 ```
 
 #### Methods:
@@ -742,23 +756,23 @@ The output format, render range and type of media to generate.
 
 #### Example:
 
-```javascript
-const Shotstack = require('shotstack-sdk');
+```python
+from shotstack_sdk.model.output import Output
 
-const output = new Shotstack.Output;
-output
-  .setFormat('mp4')
-  .setResolution('sd')
-  .setAspectRatio('16:9')
-  .setSize(size)
-  .setFps(25)
-  .setScaleTo('preview')
-  .setQuality('mediue')
-  .setRepeat(true)
-  .setRange(range)
-  .setPoster(poster)
-  .setThumbnail(thumbnail)
-  .setDestination(destination);
+output = Output(
+  format      = 'mp4',
+  resolution  = 'sd',
+  aspectRatio = '16:9',
+  size        = size,
+  fps         = 25.0,
+  scaleTo     = 'preview',
+  quality     = 'mediue',
+  repeat      = True,
+  _range      = _range,
+  poster      = poster,
+  thumbnail   = thumbnail,
+  destination = destination
+)
 ```
 
 #### Methods:
@@ -796,13 +810,13 @@ Set a custom size for a video or image. When using a custom size omit the `resol
 
 #### Example:
 
-```javascript
-const Shotstack = require('shotstack-sdk');
+```python
+from shotstack_sdk.model.size import Size
 
-const size = new Shotstack.Size;
-size
-  .setWidth(1200)
-  .setHeight(800);
+size = Size(
+  width  = 1200,
+  height = 800
+)
 ```
 
 #### Methods:
@@ -821,13 +835,13 @@ will output a single frame image at the range `start` point.
 
 #### Example:
 
-```javascript
-const Shotstack = require('shotstack-sdk');
+```python
+from shotstack_sdk.model.range import Range
 
-const range = new Shotstack.Range;
-range
-  .setStart(3)
-  .setLength(6);
+_range = Range(
+  start  = 3.0,
+  length = 6.0
+)
 ```
 
 #### Methods:
@@ -845,12 +859,12 @@ Generate a **Poster** image for the video at a specific point from the timeline.
 
 #### Example:
 
-```javascript
-const Shotstack = require('shotstack-sdk');
+```python
+from shotstack_sdk.model.poster import Poster
 
-const poster = new Shotstack.Poster;
-poster
-  .setCapture(1);
+poster = Poster(
+  capture = 1.0
+)
 ```
 
 #### Methods:
@@ -867,13 +881,13 @@ Generate a thumbnail image for the video or image at a specific point from the t
 
 #### Example:
 
-```javascript
-const Shotstack = require('shotstack-sdk');
+```python
+from shotstack_sdk.model.thumbnail import Thumbnail
 
-const thumbnail = new Shotstack.Thumbnail;
-thumbnail
-  .setCapture(1)
-  .setScale(0.3);
+thumbnail = Thumbnail(
+  capture = 1.0,
+  scale  = 0.3
+)
 ```
 
 #### Methods:
@@ -891,13 +905,13 @@ Send rendered assets to the Shotstack hosting and CDN service. This destination 
 
 #### Example:
 
-```javascript
-const Shotstack = require('shotstack-sdk');
+```python
+from shotstack_sdk.model.shotstack_destination import ShotstackDestination
 
-const shotstackDestination = new Shotstack.ShotstackDestination;
-shotstackDestination
-  .setProvider('shotstack')
-  .setExclude(false);
+shotstackDestination = ShotstackDestination(
+  provider = 'shotstack',
+  exclude  = False
+)
 ```
 
 #### Methods:
@@ -985,30 +999,32 @@ The SDK `probe` endpoint can be used to inspect media hosted online. Simply pass
 
 The example below inspects (probes) a video hosted on GitHub and returns metadata about the file.
 
-```javascript
-const Shotstack = require('shotstack-sdk');
+```python
+import shotstack_sdk as shotstack
+from shotstack_sdk.api import edit_api
 
-const defaultClient = Shotstack.ApiClient.instance;
-defaultClient.basePath = 'https://api.shotstack.io/stage';
+host = "https://api.shotstack.io/stage"
+configuration = shotstack.Configuration(host = host)
 
-const DeveloperKey = defaultClient.authentications['DeveloperKey'];
-DeveloperKey.apiKey = 'H7jKyj90kd09lbLOF7J900jNbSWS67X87xs9j0cD'; // use the correct API key
+configuration.api_key['DeveloperKey'] = "H7jKyj90kd09lbLOF7J900jNbSWS67X87xs9j0cD"
 
-const api = new Shotstack.EditApi();
+with shotstack.ApiClient(configuration) as api_client:
+    api_instance = edit_api.EditApi(api_client)
 
-const url = 'https://github.com/shotstack/test-media/raw/main/captioning/scott-ko.mp4';
+    url = 'https://github.com/shotstack/test-media/raw/main/captioning/scott-ko.mp4'
+    try:
+        api_response = api_instance.probe(url)
 
-api.probe(url).then((data) => {
-    data.response.metadata.streams.forEach(stream => {
-        if (stream.codec_type === 'video') {
-            console.log('Example settings for: ' + data.response.metadata.format.filename);
-            console.log('Width: ' + stream.width + 'px');
-            console.log('Height: ' + stream.height + 'px');
-            console.log('Framerate: ' + stream.r_frame_rate + ' fps');
-            console.log('Duration: ' + stream.duration + ' secs');
-        }
-    });
-});
+        streams = api_response['response']['metadata']['streams']
+        for stream in streams:
+            if stream['codec_type'] == 'video':
+                print(f"Example settings for: {api_response['response']['metadata']['format']['filename']}")
+                print(f"Width: {stream['width']}px")
+                print(f"Height: {stream['height']}px")
+                print(f"Framerate: {stream['r_frame_rate']} fps")
+                print(f"Duration: {stream['duration']} secs")
+    except Exception as e:
+         print(f"Unable to resolve API call: {e}")
 ```
 ## Probe Schemas
 
@@ -1037,54 +1053,64 @@ access to the Serve API to retrieve information about hosted files. Files can al
 The example below uses a render ID to look up hosted assets associated with the render. Note that multiple assets can be
 created for a render, i.e. video, thumb and poster. Each asset has a unique asset ID different to the render ID.
 
-```javascript
-const Shotstack = require('shotstack-sdk');
+```python
+import shotstack_sdk as shotstack
+from shotstack_sdk.api import serve_api
 
-const defaultClient = Shotstack.ApiClient.instance;
-defaultClient.basePath = 'https://api.shotstack.io/stage';
+host = "https://api.shotstack.io/stage"
+configuration = shotstack.Configuration(host = host)
 
-const DeveloperKey = defaultClient.authentications['DeveloperKey'];
-DeveloperKey.apiKey = 'H7jKyj90kd09lbLOF7J900jNbSWS67X87xs9j0cD'; // use the correct API key
+configuration.api_key['DeveloperKey'] = "H7jKyj90kd09lbLOF7J900jNbSWS67X87xs9j0cD"
 
-const api = new Shotstack.ServeApi();
+with shotstack.ApiClient(configuration) as api_client:
+    api_instance = serve_api.ServeApi(api_client)
 
-const id = '140924c6-077d-4334-a89f-94befcfc0155'; // Use a valid render ID
+    id = "140924c6-077d-4334-a89f-94befcfc0155"
 
-api.getAssetByRenderId(id).then((assets) => {
-    assets.data.forEach((asset) => {
-        if (asset.attributes.status === 'ready') {
-            console.log('>> Asset CDN URL: ' + asset.attributes.url);
-            console.log('>> Asset ID: ' + asset.attributes.id);
-            console.log('>> Render ID: ' + asset.attributes.renderId);
-        }
-    });
-});
+    try:
+        api_response = api_instance.get_asset_by_render_id(id)
+
+        data = api_response['data']
+
+        if data['attributes']['status'] == "ready":
+            print(f">> Asset CDN URL: {data['attributes']['url']}")
+            print(f">> Asset ID:  {data['attributes']['id']}")
+            print(f">> Render ID:  {data['attributes']['render_id']}")
+    except Exception as e:
+        print(f"Unable to resolve API call: {e}")
 ```
 
 ### Assets by Asset ID Example
 
 Every asset has a unique asset ID, the example below looks up an asset by its asset ID.
 
-```javascript
-const Shotstack = require('shotstack-sdk');
+```python
+import shotstack_sdk as shotstack
+from shotstack_sdk.api import serve_api
 
-const defaultClient = Shotstack.ApiClient.instance;
-defaultClient.basePath = 'https://api.shotstack.io/stage';
+host = "https://api.shotstack.io/stage"
+configuration = shotstack.Configuration(host = host)
 
-const DeveloperKey = defaultClient.authentications['DeveloperKey'];
-DeveloperKey.apiKey = 'H7jKyj90kd09lbLOF7J900jNbSWS67X87xs9j0cD'; // use the correct API key
+configuration.api_key['DeveloperKey'] = "H7jKyj90kd09lbLOF7J900jNbSWS67X87xs9j0cD"
 
-const api = new Shotstack.ServeApi();
+with shotstack.ApiClient(configuration) as api_client:
+    api_instance = serve_api.ServeApi(api_client)
 
-const id = 'ed43eae3-4825-4c03-979d-f7dc47b9997c'; // use a valid asset ID
+    id = "ed43eae3-4825-4c03-979d-f7dc47b9997c"
 
-api.getAsset(id).then((asset) => {
-    if (asset.data.attributes.status === 'ready') {
-        console.log('>> Asset CDN URL: ' + asset.data.attributes.url);
-        console.log('>> Asset ID: ' + asset.data.attributes.id);
-        console.log('>> Render ID: ' + asset.data.attributes.renderId);
-    }
-});
+    try:
+        api_response = api_instance.get_asset(id)
+
+        data = api_response['data']
+
+        if data['attributes']['status'] == "ready":
+            print(">> Something went wrong, asset could not be copied.")
+        else:
+            print(f">> Asset CDN URL: {data['attributes']['url']}")
+            print(f">> Asset ID:  {data['attributes']['id']}")
+            print(f">> Render ID:  {data['attributes']['render_id']}")
+    except Exception as e:
+        print(f"Unable to resolve API call: {e}")
 ```
 
 ## Asset Schemas
