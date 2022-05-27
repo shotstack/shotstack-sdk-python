@@ -186,9 +186,8 @@ edit = Edit(
 )
 ```
 
-#### Methods:
+#### Arguments:
 
-Arguments:
 Argument | Description | Required
 :--- | :--- | :---: 
 timeline([Shotstack.Timeline](#timeline)) | A timeline represents the contents of a video edit over time, an audio edit over time, in seconds, or an image layout. A timeline consists of layers called tracks. Tracks are composed of titles, 
