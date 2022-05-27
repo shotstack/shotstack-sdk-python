@@ -186,7 +186,8 @@ edit = Edit(
 )
 ```
 
-Arguments:
+### Arguments:
+
 Argument | Type | Description | Required
 :--- | :--- | :--- | :---: 
 timeline | [Timeline](#timeline) | A timeline represents the contents of a video edit over time, an audio edit over time, in seconds, or an image layout. A timeline consists of layers called tracks. Tracks are composed of titles, images, audio, html or video segments referred to as clips which are placed along the track at specific starting point and lasting for a specific amount of time. | -
@@ -216,17 +217,15 @@ timeline = Timeline(
 )
 ```
 
-#### Methods:
+#### Arguments:
 
-Method | Description | Required
-:--- | :--- | :---: 
-setSoundtrack([Shotstack.Soundtrack](#soundtrack) soundtrack) | A music or audio soundtrack file in mp3 format. | -
-setBackground(string background) | A hexadecimal value for the timeline background colour. Defaults to `#000000` (black). | -
-setFonts([Shotstack.Font[]](#font) fonts) | An array of custom fonts to be downloaded for use by the HTML assets. | -
-setTracks([Shotstack.Track[]](#track) tracks) | A timeline consists of an array of tracks, each track containing clips. Tracks are layered on top of each other in the same order they are added to the array with the top most track layered over the 
-top of those below it. Ensure that a track containing titles is the top most track so that it is displayed above videos and images. | Y
-setCache(bool cache) | Disable the caching of ingested source footage and assets. See  [caching](https://shotstack.io/docs/guide/architecting-an-application/caching) for more details. [default to `true`] | -
-
+Argument | Type | Description | Required
+:--- | :--- | :--- | :---: 
+soundtrack | [Soundtrack](#soundtrack) | A music or audio soundtrack file in mp3 format. | -
+background | string | A hexadecimal value for the timeline background colour. Defaults to `#000000` (black). | -
+fonts | [Font[]](#font) | An array of custom fonts to be downloaded for use by the HTML assets. | -
+tracks | [Track[]](#track) | A timeline consists of an array of tracks, each track containing clips. Tracks are layered on top of each other in the same order they are added to the array with the top most track layered over the top of those below it. Ensure that a track containing titles is the top most track so that it is displayed above videos and images. | Y
+cache | bool | Disable the caching of ingested source footage and assets. See  [caching](https://shotstack.io/docs/guide/architecting-an-application/caching) for more details. [default to `true`] | -
 ---
 
 ### Soundtrack
@@ -245,13 +244,13 @@ soundtrack = Soundtrack(
 )
 ```
 
-#### Methods:
+#### Arguments:
 
-Method | Description | Required
-:--- | :--- | :---: 
-setSrc(string src) | The URL of the mp3 audio file. The URL must be publicly accessible or include credentials. | Y
-setEffect(string effect) | The effect to apply to the audio file <ul><li>`fadeIn` - fade volume in only</li><li>`fadeOut` - fade volume out only</li><li>`fadeInFadeOut` - fade volume in and out</li></ul> | -
-setVolume(float volume) | Set the volume for the soundtrack between 0 and 1 where 0 is muted and 1 is full volume (defaults to `1`). | -
+Argument | Type | Description | Required
+:--- | :--- | :--- | :---: 
+src | string | The URL of the mp3 audio file. The URL must be publicly accessible or include credentials. | Y
+effect | string | The effect to apply to the audio file <ul><li>`fadeIn` - fade volume in only</li><li>`fadeOut` - fade volume out only</li><li>`fadeInFadeOut` - fade volume in and out</li></ul> | -
+volume | float | Set the volume for the soundtrack between 0 and 1 where 0 is muted and 1 is full volume (defaults to `1`). | -
 
 ---
 
@@ -267,11 +266,11 @@ from shotstack_sdk.model.font import Font
 font = Font(src='https://shotstack-assets.s3-ap-southeast-2.amazonaws.com/fonts/OpenSans-Regular.ttf')
 ```
 
-#### Methods:
+#### Arguments:
 
-Method | Description | Required
-:--- | :--- | :---: 
-setSrc(string src) | The URL of the font file. The URL must be publicly accessible or include credentials. | Y
+Argument | Type | Description | Required
+:--- | :--- | :--- | :---: 
+src | string | The URL of the font file. The URL must be publicly accessible or include credentials. | Y
 
 ---
 
@@ -287,11 +286,11 @@ from shotstack_sdk.model.track import Track
 track = Track(clips=clips)
 ```
 
-#### Methods:
+#### Arguments:
 
-Method | Description | Required
-:--- | :--- | :---: 
-setClips([Shotstack.Clip[]](#clip) clips) | An array of Clips comprising of TitleClip, ImageClip or VideoClip. | Y
+Argument | Type | Description | Required
+:--- | :--- | :--- | :---: 
+clips | [Clip[]](#clip) | An array of Clips comprising of TitleClip, ImageClip or VideoClip. | Y
 
 ---
 
@@ -320,33 +319,22 @@ clip = Clip(
 )
 ```
 
-#### Methods:
+#### Arguments:
 
-Method | Description | Required
-:--- | :--- | :---: 
-setAsset(asset) | The type of asset to display for the duration of this Clip. Value must be one of: 
-<ul><li>[Shotstack.VideoAsset](#videoasset)</li><li>[Shotstack.ImageAsset](#imageasset)</li><li>[Shotstack.TitleAsset](#titleasset)</li><li>[Shotstack.HtmlAsset](#htmlasset)</li><li>[Shotstack.AudioAsset](#audioasset)</li><li>[Shotstack.LumaAsset](#lumaasset)</li></ul>  
-| Y
-setStart(float start) | The start position of the Clip on the timeline, in seconds. | Y
-setLength(float length) | The length, in seconds, the Clip should play for. | Y
-setFit(string fit) | Set how the asset should be scaled to fit the viewport using one of the following options [default to `crop`]: <ul><li>`cover` - stretch the asset to fill the viewport without maintaining the aspect ratio.</li><li>`contain` - 
-fit the entire asset within the viewport while maintaining the original aspect ratio.</li><li>`crop` - scale the asset to fill the viewport while maintaining the aspect ratio. The asset will be cropped if it exceeds the bounds of the 
-viewport.</li><li>`none` - preserves the original asset dimensions and does not apply any scaling.</li></ul>| -
-setScale(float scale) | Scale the asset to a fraction of the viewport size - i.e. setting the scale to 0.5 will scale asset to half the size of the viewport. This is useful for picture-in-picture video and  scaling images such as logos and 
-watermarks. | -
-setPosition(string position) | Place the asset in one of nine predefined positions of the viewport. This is most effective for when the asset is scaled and you want to position the element to a specific position [default to `center`].<ul><li>`top` 
-- top (center)</li><li>`topRight` - top right</li><li>`right` - right (center)</li><li>`bottomRight` - bottom right</li><li>`bottom` - bottom (center)</li><li>`bottomLeft` - bottom left</li><li>`left` - left (center)</li><li>`topLeft` - top 
-left</li><li>`center` - center</li></ul> | -
-setOffset([Shotstack.Offset](#offset) offset) | Offset the location of the asset relative to its position on the viewport. The offset distance is relative to the width of the viewport - for example an x offset of 0.5 will move the asset half the 
-viewport width to the right. | -
-setTransition([Shotstack.Transition](#transition) transition) | In and out transitions for a clip - i.e. fade in and fade out | -
-setEffect(string effect) | A motion effect to apply to the Clip. <ul><li>`zoomIn` - slow zoom in</li><li>`zoomOut` - slow zoom out</li><li>`slideLeft` - slow slide (pan) left</li><li>`slideRight` - slow slide (pan) right</li><li>`slideUp` - slow 
-slide (pan) up</li><li>`slideDown` - slow slide (pan) down</li></ul>| -
-setFilter(string filter) | A filter effect to apply to the Clip. <ul><li>`boost` - boost contrast and saturation</li><li>`contrast` - increase contrast</li><li>`darken` - darken the scene</li><li>`greyscale` - remove colour</li><li>`lighten` - 
-lighten the scene</li><li>`muted` - reduce saturation and contrast</li><li>`invert` - invert colors</li></ul> | -
-setOpacity(float opacity) | Sets the opacity of the Clip where 1 is opaque and 0 is transparent. [default to `1`] | -
-setTransform([Shotstack.Transformation](#transformation) transformation) | A transformation lets you modify the visual properties of a clip. Available transformations are [Shotstack.RotateTransformation](#rotatetransformation), 
-[Shotstack.SkewTransformation](#skewtransformation) and [Shotstack.FlipTransformation](#fliptransformation). Transformations can be combined to create interesting new shapes and effects. | -
+Argument | Type | Description | Required
+:--- | :--- | :--- | :---: 
+asset | asset | The type of asset to display for the duration of this Clip. Value must be one of: <ul><li>[VideoAsset](#videoasset)</li><li>[ImageAsset](#imageasset)</li><li>[TitleAsset](#titleasset)</li><li>[HtmlAsset](#htmlasset)</li><li>[AudioAsset](#audioasset)</li><li>[LumaAsset](#lumaasset)</li></ul>  | Y
+start | float | The start position of the Clip on the timeline, in seconds. | Y
+length | float | The length, in seconds, the Clip should play for. | Y
+fit | string fit | Set how the asset should be scaled to fit the viewport using one of the following options [default to `crop`]: <ul><li>`cover` - stretch the asset to fill the viewport without maintaining the aspect ratio.</li><li>`contain` - fit the entire asset within the viewport while maintaining the original aspect ratio.</li><li>`crop` - scale the asset to fill the viewport while maintaining the aspect ratio. The asset will be cropped if it exceeds the bounds of the viewport.</li><li>`none` - preserves the original asset dimensions and does not apply any scaling.</li></ul>| -
+scale | float | Scale the asset to a fraction of the viewport size - i.e. ting the scale to 0.5 will scale asset to half the size of the viewport. This is useful for picture-in-picture video and  scaling images such as logos and watermarks. | -
+position | string | Place the asset in one of nine predefined positions of the viewport. This is most effective for when the asset is scaled and you want to position the element to a specific position [default to `center`].<ul><li>`top` - top (center)</li><li>`topRight` - top right</li><li>`right` - right (center)</li><li>`bottomRight` - bottom right</li><li>`bottom` - bottom (center)</li><li>`bottomLeft` - bottom left</li><li>`left` - left (center)</li><li>`topLeft` - top left</li><li>`center` - center</li></ul> | -
+offset | [Offset](#offset) | Offset the location of the asset relative to its position on the viewport. The offset distance is relative to the width of the viewport - for example an x offset of 0.5 will move the asset half the viewport width to the right. | -
+transition | [Transition](#transition) | In and out transitions for a clip - i.e. fade in and fade out | -
+effect | string | A motion effect to apply to the Clip. <ul><li>`zoomIn` - slow zoom in</li><li>`zoomOut` - slow zoom out</li><li>`slideLeft` - slow slide (pan) left</li><li>`slideRight` - slow slide (pan) right</li><li>`slideUp` - slow slide (pan) up</li><li>`slideDown` - slow slide (pan) down</li></ul>| -
+filter | string | A filter effect to apply to the Clip. <ul><li>`boost` - boost contrast and saturation</li><li>`contrast` - increase contrast</li><li>`darken` - darken the scene</li><li>`greyscale` - remove colour</li><li>`lighten` - lighten the scene</li><li>`muted` - reduce saturation and contrast</li><li>`invert` - invert colors</li></ul> | -
+opacity | float | s the opacity of the Clip where 1 is opaque and 0 is transparent. [default to `1`] | -
+transform | [Transformation](#transformation) | A transformation lets you modify the visual properties of a clip. Available transformations are [RotateTransformation](#rotatetransformation), [SkewTransformation](#skewtransformation) and [FlipTransformation](#fliptransformation). Transformations can be combined to create interesting new shapes and effects. | -
 
 ---
 
@@ -368,15 +356,14 @@ videoAsset = VideoAsset(
 )
 ```
 
-#### Methods:
+#### Arguments:
 
-Method | Description | Required
-:--- | :--- | :---: 
-setSrc(string url) | The video source URL. The URL must be publicly accessible or include credentials. | Y
-setTrim(float seconds) | The start trim point of the video clip, in seconds (defaults to 0). Videos will start from the in trim point. The video will play until the file ends or the Clip length is reached. | -
-setVolume(float level) | Set the volume for the video clip between 0 and 1 where 0 is muted and 1 is full volume (defaults to 0). | -
-setCrop([Shotstack.Crop](#crop) crop) | Crop the sides of an asset by a relative amount. The size of the crop is specified using a scale between 0 and 1, relative to the screen width - i.e. a left crop of 0.5 will crop half of the asset from the 
-left, a top crop of 0.25 will crop the top by quarter of the asset. | -
+Argument | Type | Description | Required
+:--- | :--- | :--- | :---: 
+src | string | The video source URL. The URL must be publicly accessible or include credentials. | Y
+trim | float | The start trim point of the video clip, in seconds (defaults to 0). Videos will start from the in trim point. The video will play until the file ends or the Clip length is reached. | -
+volume | float | Set the volume for the video clip between 0 and 1 where 0 is muted and 1 is full volume (defaults to 0). | -
+crop | [Crop](#crop) | Crop the sides of an asset by a relative amount. The size of the crop is specified using a scale between 0 and 1, relative to the screen width - i.e. a left crop of 0.5 will crop half of the asset from the left, a top crop of 0.25 will crop the top by quarter of the asset. | -
 
 ---
 
@@ -395,13 +382,12 @@ imageAsset = ImageAsset(
 )
 ```
 
-#### Methods:
+#### Arguments:
 
-Method | Description | Required
-:--- | :--- | :---: 
-setSrc(string url) | The image source URL. The URL must be publicly accessible or include credentials. | Y
-setCrop([Shotstack.Crop](#crop) crop) | Crop the sides of an asset by a relative amount. The size of the crop is specified using a scale between 0 and 1, relative to the screen width - i.e. a left crop of 0.5 will crop half of the asset from the 
-left, a top crop of 0.25 will crop the top by quarter of the asset. | -
+Argument | Type | Description | Required
+:--- | :--- | :--- | :---: 
+src | string | The image source URL. The URL must be publicly accessible or include credentials. | Y
+crop | [Crop](#crop) | Crop the sides of an asset by a relative amount. The size of the crop is specified using a scale between 0 and 1, relative to the screen width - i.e. a left crop of 0.5 will crop half of the asset from the left, a top crop of 0.25 will crop the top by quarter of the asset. | -
 
 ---
 
@@ -425,22 +411,17 @@ titleAsset = TitleAsset(
 )
 ```
 
-#### Methods:
+#### Arguments:
 
-Method | Description | Required
-:--- | :--- | :---: 
-setText(string text) | The title text string. | Y
-setStyle(string style) | Uses a preset to apply font properties and styling to the title. 
-<ul><li>`minimal`</li><li>`blockbuster`</li><li>`vogue`</li><li>`sketchy`</li><li>`skinny`</li><li>`chunk`</li><li>`chunkLight`</li><li>`marker`</li><li>`future`</li><li>`subtitle`</li></ul> | -
-setColor(string color) | Set the text color using hexadecimal color notation. Transparency is supported by setting the first two characters of the hex string (opposite to HTML),  i.e. #80ffffff will be white with  50% transparency [default to 
-`#ffffff`]. | - 
-setSize(string zize) | Set the relative size of the text using predefined sizes from xx-small to xx-large [default to 'medium']. 
-<ul><li>`xx-small`</li><li>`x-small`</li><li>`small`</li><li>`medium`</li><li>`large`</li><li>`x-large`</li><li>`xx-large`</li></ul> | -
-setBackground(string background) | Apply a background color behind the text. Set the text color using hexadecimal color notation. Transparency is supported by setting the first two characters of the hex string (opposite to HTML),  i.e. #80ffffff 
-will be white with 50% transparency. Omit to use transparent background. | -
-setPosition(string position) | Place the title in one of nine predefined positions of the viewport [default to `center`. <ul><li>`top` - top (center)</li><li>`topRight` - top right</li><li>`right` - right (center)</li><li>`bottomRight` - bottom 
-right</li><li>`bottom` - bottom (center)</li><li>`bottomLeft` - bottom left</li><li>`left` - left (center)</li><li>`topLeft` - top left</li><li>`center` - center</li></ul> | -
-setOffset([Shotstack.Offset](#offset) offset) | Offset the location of the title relative to its position on the screen. | -
+Argument | Type | Description | Required
+:--- | :--- | :--- | :---: 
+text | string | The title text string. | Y
+style | string | Uses a preset to apply font properties and styling to the title. <ul><li>`minimal`</li><li>`blockbuster`</li><li>`vogue`</li><li>`sketchy`</li><li>`skinny`</li><li>`chunk`</li><li>`chunkLight`</li><li>`marker`</li><li>`future`</li><li>`subtitle`</li></ul> | -
+color | string | Set the text color using hexadecimal color notation. Transparency is supported by ting the first two characters of the hex string (opposite to HTML),  i.e. #80ffffff will be white with  50% transparency [default to `#ffffff`]. | - 
+size | string | Set the relative size of the text using predefined sizes from xx-small to xx-large [default to 'medium']. <ul><li>`xx-small`</li><li>`x-small`</li><li>`small`</li><li>`medium`</li><li>`large`</li><li>`x-large`</li><li>`xx-large`</li></ul> | -
+background | string | Apply a background color behind the text. Set the text color using hexadecimal color notation. Transparency is supported by ting the first two characters of the hex string (opposite to HTML),  i.e. #80ffffff will be white with 50% transparency. Omit to use transparent background. | -
+position | string | Place the title in one of nine predefined positions of the viewport [default to `center`. <ul><li>`top` - top (center)</li><li>`topRight` - top right</li><li>`right` - right (center)</li><li>`bottomRight` - bottom right</li><li>`bottom` - bottom (center)</li><li>`bottomLeft` - bottom left</li><li>`left` - left (center)</li><li>`topLeft` - top left</li><li>`center` - center</li></ul> | -
+offset | [Offset](#offset) | Offset the location of the title relative to its position on the screen. | -
 
 ---
 
@@ -463,18 +444,16 @@ htmlAsset = HtmlAsset(
 )
 ```
 
-#### Methods:
+#### Arguments:
 
-Method | Description | Required
+Argument | Type | Description | Required
 :--- | :--- | :---:
-setHtml(string html) | The HTML text string. See list of [supported HTML tags](https://shotstack.io/docs/guide/architecting-an-application/html-support/#supported-html-tags). | Y
-setCss(string css) | The CSS text string to apply styling to the HTML. See list of  [support CSS properties](https://shotstack.io/docs/guide/architecting-an-application/html-support/#supported-css-properties). | -
-setWidth(int width) | Set the width of the HTML asset bounding box in pixels. Text will wrap to fill the bounding box. | -
-setHeight(int height) | Set the height of the HTML asset bounding box in pixels. Text and elements will be masked if they exceed the  height of the bounding box. | -
-setBackground(string background) | Apply a background color behind the HTML bounding box using. Set the text color using hexadecimal  color notation. Transparency is supported by setting the first two characters of the hex string  (opposite to 
-HTML), i.e. #80ffffff will be white with 80% transparency [default to `transparent`]. | - 
-setPosition(string position) | Place the HTML in one of nine predefined positions within the HTML area [default to `center`]. <ul><li>`top` - top (center)</li><li>`topRight` - top right</li><li>`right` - right (center)</li><li>`bottomRight` - 
-bottom right</li><li>`bottom` - bottom (center)</li><li>`bottomLeft` - bottom left</li><li>`left` - left (center)</li><li>`topLeft` - top left</li><li>`center` - center</li></ul> | -
+html | string | The HTML text string. See list of [supported HTML tags](https://shotstack.io/docs/guide/architecting-an-application/html-support/#supported-html-tags). | Y
+css | string | The CSS text string to apply styling to the HTML. See list of  [support CSS properties](https://shotstack.io/docs/guide/architecting-an-application/html-support/#supported-css-properties). | -
+width | int | Set the width of the HTML asset bounding box in pixels. Text will wrap to fill the bounding box. | -
+height | int | Set the height of the HTML asset bounding box in pixels. Text and elements will be masked if they exceed the  height of the bounding box. | -
+background | string | Apply a background color behind the HTML bounding box using. Set the text color using hexadecimal  color notation. Transparency is supported by ting the first two characters of the hex string  (opposite to HTML), i.e. #80ffffff will be white with 80% transparency [default to `transparent`]. | - 
+position | string | Place the HTML in one of nine predefined positions within the HTML area [default to `center`]. <ul><li>`top` - top (center)</li><li>`topRight` - top right</li><li>`right` - right (center)</li><li>`bottomRight` - bottom right</li><li>`bottom` - bottom (center)</li><li>`bottomLeft` - bottom left</li><li>`left` - left (center)</li><li>`topLeft` - top left</li><li>`center` - center</li></ul> | -
 
 ---
 
@@ -496,14 +475,14 @@ audioAsset = AudioAsset(
 )
 ```
 
-#### Methods:
+#### Arguments:
 
-Method | Description | Required
-:--- | :--- | :---: 
-setSrc(string url) | The audio source URL. The URL must be publicly accessible or include credentials. | Y
-setTrim(float seconds) | The start trim point of the audio clip, in seconds (defaults to 0). Audio will start from the trim point. The audio will play until the file ends or the Clip length is reached. | -
-setVolume(float level) | Set the volume for the audio clip between 0 and 1 where 0 is muted and 1 is full volume (defaults to 1). | -
-setEffect(string crop) | The effect to apply to the audio asset: <ul><li>`fadeIn` - fade volume in only</li><li>`fadeOut` - fade volume out only</li><li>`fadeInFadeOut` - fade volume in and out</li></ul> | -
+Argument | Type | Description | Required
+:--- | :--- | :--- | :---: 
+src | string | The audio source URL. The URL must be publicly accessible or include credentials. | Y
+trim | float | The start trim point of the audio clip, in seconds (defaults to 0). Audio will start from the trim point. The audio will play until the file ends or the Clip length is reached. | -
+volume | float | Set the volume for the audio clip between 0 and 1 where 0 is muted and 1 is full volume (defaults to 1). | -
+effect | string | The effect to apply to the audio asset: <ul><li>`fadeIn` - fade volume in only</li><li>`fadeOut` - fade volume out only</li><li>`fadeInFadeOut` - fade volume in and out</li></ul> | -
 
 ---
 
@@ -523,12 +502,12 @@ lumaAsset = LumaAsset(
 )
 ```
 
-#### Methods:
+#### Arguments:
 
-Method | Description | Required
-:--- | :--- | :---: 
-setSrc(string src) | The luma matte source URL. The URL must be publicly accessible or include credentials. | Y
-setTrim(float trim) | The start trim point of the luma matte clip, in seconds (defaults to 0). Videos will start from the in trim point. A luma matte video will play until the file ends or the Clip length is reached. | -
+Argument | Type | Description | Required
+:--- | :--- | :--- | :---: 
+src | string | The luma matte source URL. The URL must be publicly accessible or include credentials. | Y
+trim | float | The start trim point of the luma matte clip, in seconds (defaults to 0). Videos will start from the in trim point. A luma matte video will play until the file ends or the Clip length is reached. | -
 
 ---
 
@@ -547,22 +526,12 @@ transition = Transition(
 )
 ```
 
-#### Methods:
+#### Arguments:
 
-Method | Description | Required
-:--- | :--- | :---: 
-setIn(string in) | The transition in. Available transitions are:   <ul><li>`fade` - fade in</li><li>`reveal` - reveal from left to right</li><li>`wipeLeft` - fade across screen to the left</li><li>`wipeRight` - fade across screen to the 
-right</li><li>`slideLeft` - move slightly left and fade in</li><li>`slideRight` - move slightly right and fade in</li><li>`slideUp` - move slightly up and fade in</li><li>`slideDown` - move slightly down and fade in</li><li>`carouselLeft` - slide 
-in from right to left</li><li>`carouselRight` - slide in from left to right</li><li>`carouselUp` - slide in from bottom to top</li><li>`carouselDown` - slide in from top to bottom</li><li>`shuffleTopRight` - rotate in from top 
-right</li><li>`shuffleRightTop` - rotate in from right top</li><li>`shuffleRightBottom` - rotate in from right bottom</li><li>`shuffleBottomRight` - rotate in from bottom right</li><li>`shuffleBottomLeft` - rotate in from bottom 
-left</li><li>`shuffleLeftBottom` - rotate in from left bottom</li><li>`shuffleLeftTop` - rotate in from left top</li><li>`shuffleTopLeft` - rotate in from top left</li><li>`zoom` - fast zoom in</li></ul> The transition speed can also be controlled 
-by appending `Fast` or `Slow` to the transition, e.g. `fadeFast` or `CarouselLeftSlow`. | -
-setOut(string out) | The transition out. Available transitions are:   <ul><li>`fade` - fade out</li><li>`reveal` - reveal from right to left</li><li>`wipeLeft` - fade across screen to the left</li><li>`wipeRight` - fade across screen to the 
-right</li><li>`slideLeft` - move slightly left and fade out</li><li>`slideRight` - move slightly right and fade out</li><li>`slideUp` - move slightly up and fade out</li><li>`slideDown` - move slightly down and fade out</li><li>`carouselLeft` - 
-slide out from right to left</li><li>`carouselRight` - slide out from left to right</li><li>`carouselUp` - slide out from bottom to top</li><li>`carouselDown` - slide out from top  to bottom</li><li>`shuffleTopRight` - rotate out from top 
-right</li><li>`shuffleRightTop` - rotate out from right top</li><li>`shuffleRightBottom` - rotate out from right bottom</li><li>`shuffleBottomRight` - rotate out from bottom right</li><li>`shuffleBottomLeft` - rotate out from bottom 
-left</li><li>`shuffleLeftBottom` - rotate out from left bottom</li><li>`shuffleLeftTop` - rotate out from left top</li><li>`shuffleTopLeft` - rotate out from top left</li><li>`zoom` - fast zoom out</li></ul> The transition speed can also be 
-controlled by appending `Fast` or `Slow` to the transition, e.g. `fadeFast` or `CarouselLeftSlow`. | -
+Argument | Type | Description | Required
+:--- | :--- | :--- | :---: 
+in | string | The transition in. Available transitions are:   <ul><li>`fade` - fade in</li><li>`reveal` - reveal from left to right</li><li>`wipeLeft` - fade across screen to the left</li><li>`wipeRight` - fade across screen to the right</li><li>`slideLeft` - move slightly left and fade in</li><li>`slideRight` - move slightly right and fade in</li><li>`slideUp` - move slightly up and fade in</li><li>`slideDown` - move slightly down and fade in</li><li>`carouselLeft` - slide in from right to left</li><li>`carouselRight` - slide in from left to right</li><li>`carouselUp` - slide in from bottom to top</li><li>`carouselDown` - slide in from top to bottom</li><li>`shuffleTopRight` - rotate in from top right</li><li>`shuffleRightTop` - rotate in from right top</li><li>`shuffleRightBottom` - rotate in from right bottom</li><li>`shuffleBottomRight` - rotate in from bottom right</li><li>`shuffleBottomLeft` - rotate in from bottom left</li><li>`shuffleLeftBottom` - rotate in from left bottom</li><li>`shuffleLeftTop` - rotate in from left top</li><li>`shuffleTopLeft` - rotate in from top left</li><li>`zoom` - fast zoom in</li></ul> The transition speed can also be controlled by appending `Fast` or `Slow` to the transition, e.g. `fadeFast` or `CarouselLeftSlow`. | -
+out | string | The transition out. Available transitions are:   <ul><li>`fade` - fade out</li><li>`reveal` - reveal from right to left</li><li>`wipeLeft` - fade across screen to the left</li><li>`wipeRight` - fade across screen to the right</li><li>`slideLeft` - move slightly left and fade out</li><li>`slideRight` - move slightly right and fade out</li><li>`slideUp` - move slightly up and fade out</li><li>`slideDown` - move slightly down and fade out</li><li>`carouselLeft` - slide out from right to left</li><li>`carouselRight` - slide out from left to right</li><li>`carouselUp` - slide out from bottom to top</li><li>`carouselDown` - slide out from top  to bottom</li><li>`shuffleTopRight` - rotate out from top right</li><li>`shuffleRightTop` - rotate out from right top</li><li>`shuffleRightBottom` - rotate out from right bottom</li><li>`shuffleBottomRight` - rotate out from bottom right</li><li>`shuffleBottomLeft` - rotate out from bottom left</li><li>`shuffleLeftBottom` - rotate out from left bottom</li><li>`shuffleLeftTop` - rotate out from left top</li><li>`shuffleTopLeft` - rotate out from top left</li><li>`zoom` - fast zoom out</li></ul> The transition speed can also be controlled by appending `Fast` or `Slow` to the transition, e.g. `fadeFast` or `CarouselLeftSlow`. | -
 
 ---
 
@@ -581,14 +550,12 @@ offset = Offset(
 )
 ```
 
-#### Methods:
+#### Arguments:
 
-Method | Description | Required
-:--- | :--- | :---: 
-setX(float x) | Offset an asset on the horizontal axis (left or right), range varies from -1 to 1. Positive numbers move the asset right, negative left. For all assets except titles the distance moved is relative to the width  of the viewport - 
-i.e. an X offset of 0.5 will move the asset half the  screen width to the right. [default to `0`] | -
-setY(float y) | Offset an asset on the vertical axis (up or down), range varies from -1 to 1. Positive numbers move the asset up, negative down. For all assets except titles the distance moved is relative to the height of the viewport - i.e. an Y 
-offset of 0.5 will move the asset up half the screen height. [default to `0`] | -
+Argument | Type | Description | Required
+:--- | :--- | :--- | :---: 
+x | float | Offset an asset on the horizontal axis (left or right), range varies from -1 to 1. Positive numbers move the asset right, negative left. For all asset except titles the distance moved is relative to the width  of the viewport - i.e. an X offset of 0.5 will move the asset half the  screen width to the right. [default to `0`] | -
+y | float | Offset an asset on the vertical axis (up or down), range varies from -1 to 1. Positive numbers move the asset up, negative down. For all asset except titles the distance moved is relative to the height of the viewport - i.e. an Y offset of 0.5 will move the asset up half the screen height. [default to `0`] | -
 
 ---
 
@@ -610,14 +577,14 @@ crop = Crop(
 )
 ```
 
-#### Methods:
+#### Arguments:
 
-Method | Description | Required
-:--- | :--- | :---: 
-setTop(float top) | Crop from the top of the asset | -
-setBottom(float bottom) | Crop from the bottom of the asset | -
-setLeft(float left) | Crop from the left of the asset | -
-setRight(float right) | Crop from the right of the asset | -
+Argument | Type | Description | Required
+:--- | :--- | :--- | :---: 
+top | float | Crop from the top of the asset | -
+bottom | float | Crop from the bottom of the asset | -
+left | float | Crop from the left of the asset | -
+right | float | Crop from the right of the asset | -
 
 ---
 
@@ -637,13 +604,13 @@ transformation = Transformation(
 )
 ```
 
-#### Methods:
+#### Arguments:
 
-Method | Description | Required
-:--- | :--- | :---: 
-setRotate([Shotstack.RotateTransformation](#rotatetransformation) rotate) | Rotate a clip by the specified angle in degrees. Rotation origin is set based on the clips `position`. | -
-setSkew([Shotstack.SkewTransformation](#skewtransformation) skew) | Skew a clip so its edges are sheared at an angle. Use values between 0 and 3. Over 3 the clip will be skewed almost flat. | -
-setFlip([Shotstack.FlipTransformation](#fliptransformation) flip) | Flip a clip vertically or horizontally. Acts as a mirror effect of the clip along the selected plane. | -
+Argument | Type | Description | Required
+:--- | :--- | :--- | :---: 
+rotate | [RotateTransformation](#rotatetransformation) | Rotate a clip by the specified angle in degrees. Rotation origin is set based on the clips `position`. | -
+skew | [SkewTransformation](#skewtransformation) | Skew a clip so its edges are sheared at an angle. Use values between 0 and 3. Over 3 the clip will be skewed almost flat. | -
+flip | [FlipTransformation](#fliptransformation) | Flip a clip vertically or horizontally. Acts as a mirror effect of the clip along the selected plane. | -
 
 ---
 
@@ -661,11 +628,11 @@ rotateTransformation = RotateTransformation(
 )
 ```
 
-#### Methods:
+#### Arguments:
 
-Method | Description | Required
-:--- | :--- | :---: 
-setAngle(int angle) | The angle to rotate the clip. Can be 0 to 360, or 0 to -360. Using a positive number rotates the clip clockwise, negative numbers counter-clockwise. | -
+Argument | Type | Description | Required
+:--- | :--- | :--- | :---: 
+angle | int | The angle to rotate the clip. Can be 0 to 360, or 0 to -360. Using a positive number rotates the clip clockwise, negative numbers counter-clockwise. | -
 
 ---
 
@@ -684,12 +651,12 @@ skewTransformation = SkewTransformation(
 )
 ```
 
-#### Methods:
+#### Arguments:
 
-Method | Description | Required
-:--- | :--- | :---: 
-setX(float x) | Skew the clip along it&#39;s x axis. [default to `0`] | -
-setY(float y) | Skew the clip along it&#39;s y axis. [default to `0`] | -
+Argument | Type | Description | Required
+:--- | :--- | :--- | :---: 
+x | float | Skew the clip along it&#39;s x axis. [default to `0`] | -
+y | float | Skew the clip along it&#39;s y axis. [default to `0`] | -
 
 ---
 
@@ -708,12 +675,12 @@ flipTransformation = FlipTransformation(
 )
 ```
 
-#### Methods:
+#### Arguments:
 
-Method | Description | Required
-:--- | :--- | :---: 
-setHorizontal(bool horizontal) | Flip a clip horizontally. [default to `false`] | - 
-setVertical(bool vertical) | Flip a clip vertically. [default to `false`] | -
+Argument | Type | Description | Required
+:--- | :--- | :--- | :---: 
+horizontal | bool | Flip a clip horizontally. [default to `false`] | - 
+vertical | bool | Flip a clip vertically. [default to `false`] | -
 
 ---
 
@@ -733,12 +700,12 @@ mergeField = MergeField(
 )
 ```
 
-#### Methods:
+#### Arguments:
 
-Method | Description | Required
-:--- | :--- | :---: 
-setFind(string find) | The string to find <u>without</u> delimiters. | Y
-setReplace(replace) | The replacement value. The replacement can be any valid JSON type - string, boolean, number, etc... | Y
+Argument | Type | Description | Required
+:--- | :--- | :--- | :---: 
+find | string | The string to find <u>without</u> delimiters. | Y
+replace | replace | The replacement value. The replacement can be any valid JSON type - string, boolean, number, etc... | Y
 
 ---
 
@@ -770,32 +737,22 @@ output = Output(
 )
 ```
 
-#### Methods:
+#### Arguments:
 
-Method | Description | Required
-:--- | :--- | :---: 
-setFormat(string format) | The output format and type of media file to generate. <ul><li>`mp4` - mp4 video file</li><li>`gif` - animated gif</li><li>`jpg` - jpg image file</li><li>`png` - png image file</li><li>`bmp` - bmp image file</li><li>`mp3` 
-- mp3 audio file (audio only)</li></ul> | Y
-setResolution(string resolution) | The output resolution of the video or image. <ul><li>`preview` - 512px x 288px @ 15fps</li><li>`mobile` - 640px x 360px @ 25fps</li><li>`sd` - 1024px x 576px @ 25fps</li><li>`hd` - 1280px x 720px @ 
-25fps</li><li>`1080` - 1920px x 1080px @ 25fps</li></ul> | -
-setAspectRatio(string aspectRatio) | The aspect ratio (shape) of the video or image. Useful for social media output formats. Options are: <ul><li>`16:9` - regular landscape/horizontal aspect ratio (default)</li><li>`9:16` - vertical/portrait aspect 
-ratio</li><li>`1:1` - square aspect ratio</li><li>`4:5` - short vertical/portrait aspect ratio</li><li>`4:3` - legacy TV aspect ratio</li></ul> | -
-setSize([Shotstack.Size](#size) size) | Set a custom size for a video or image. When using a custom size omit the `resolution` and `aspectRatio`. Custom sizes must be divisible by 2 based on the encoder specifications. | -
-setFps(float fps) | Override the default frames per second. Useful for when the source footage is recorded at 30fps, i.e. on  mobile devices. Lower frame rates can be used to add cinematic quality (24fps) or to create smaller file size/faster 
-render times or animated gifs (12 or 15fps). Default is 25fps. <ul><li>`12` - 12fps</li><li>`15` - 15fps</li><li>`23.976` - 23.976fps</li><li>`24` - 24fps</li><li>`25` - 25fps</li><li>`29.97` - 29.97fps</li><li>`30` - 30fps</li></ul> | - 
-setScaleTo(string scaleTo) | Override the resolution and scale the video or image to render at a different size. When using scaleTo the asset should be edited at the resolution dimensions, i.e. use font sizes that look best at HD, then use scaleTo 
-to output the file at SD and the text will be scaled to the correct size. This is useful if you want to create multiple asset sizes. <ul><li>`preview` - 512px x 288px @ 15fps</li><li>`mobile` - 640px x 360px @ 25fps</li><li>`sd` - 1024px x 576px 
-@25fps</li><li>`hd` - 1280px x 720px @25fps</li><li>`1080` - 1920px x 1080px @25fps</li></ul> | -
-setQuality(string quality) | Adjust the output quality of the video, image or audio. Adjusting quality affects  render speed, download speeds and storage requirements due to file size. The default `medium` provides the most optimized choice for all 
-three  factors. <ul><li>`low` - slightly reduced quality, smaller file size</li><li>`medium` - optimized quality, render speeds and file size</li><li>`high` - slightly increased quality, larger file size</li></ul> | -
-setRepeat(bool repeat) | Loop settings for gif files. Set to `true` to loop, `false` to play only once. [default to `true`] | -
-setRange([Shotstack.Range](#range) range) | Specify a time range to render, i.e. to render only a portion of a video or audio file. Omit this setting to export the entire video. Range can also be used to render a frame at a specific time point - 
-setting a range and output format as `jpg` will output a single frame image at the range `start` point. | -
-setPoster([Shotstack.Poster](#poster) poster) | Generate a poster image from a specific point on the timeline. | -
-setThumbnail([Shotstack.Thumbnail](#thumbnail) thumbnail) | Generate a thumbnail image from a specific point on the timeline. | -
-setDestinations([AnyOfShotstackDestination[]](#shotstackdestination) destinations) | A destination is a location where output files can be sent to for serving or hosting. By default all rendered assets are automatically sent to the Shotstack 
-hosting destination. [ShotstackDestination](#shotstackdestination) is currently the only option with plans to add more in the future such as S3, YouTube, Vimeo and Mux. If you do not require hosting you can opt-out using the  `exclude` property. | 
--
+Argument | Type | Description | Required
+:--- | :--- | :--- | :---: 
+format | string | The output format and type of media file to generate. <ul><li>`mp4` - mp4 video file</li><li>`gif` - animated gif</li><li>`jpg` - jpg image file</li><li>`png` - png image file</li><li>`bmp` - bmp image file</li><li>`mp3` - mp3 audio file (audio only)</li></ul> | Y
+resolution | string | The output resolution of the video or image. <ul><li>`preview` - 512px x 288px @ 15fps</li><li>`mobile` - 640px x 360px @ 25fps</li><li>`sd` - 1024px x 576px @ 25fps</li><li>`hd` - 1280px x 720px @ 25fps</li><li>`1080` - 1920px x 1080px @ 25fps</li></ul> | -
+aspectRatio | string | The aspect ratio (shape) of the video or image. Useful for social media output formats. Options are: <ul><li>`16:9` - regular landscape/horizontal aspect ratio (default)</li><li>`9:16` - vertical/portrait aspect ratio</li><li>`1:1` - square aspect ratio</li><li>`4:5` - short vertical/portrait aspect ratio</li><li>`4:3` - legacy TV aspect ratio</li></ul> | -
+size | [Size](#size) | Set a custom size for a video or image. When using a custom size omit the `resolution` and `aspectRatio`. Custom sizes must be divisible by 2 based on the encoder specifications. | -
+fps | float | Override the default frames per second. Useful for when the source footage is recorded at 30fps, i.e. on  mobile devices. Lower frame rates can be used to add cinematic quality (24fps) or to create smaller file size/faster render times or animated gifs (12 or 15fps). Default is 25fps. <ul><li>`12` - 12fps</li><li>`15` - 15fps</li><li>`23.976` - 23.976fps</li><li>`24` - 24fps</li><li>`29.97` - 29.97fps</li><li>`25` - 25fps</li><li>`30` - 30fps</li></ul> | - 
+scaleTo | string | Override the resolution and scale the video or image to render at a different size. When using scaleTo the asset should be edited at the resolution dimensions, i.e. use font sizes that look best at HD, then use scaleTo to output the file at SD and the text will be scaled to the correct size. This is useful if you want to create multiple asset sizes. <ul><li>`preview` - 512px x 288px @ 15fps</li><li>`mobile` - 640px x 360px @ 25fps</li><li>`sd` - 1024px x 576px @25fps</li><li>`hd` - 1280px x 720px @25fps</li><li>`1080` - 1920px x 1080px @25fps</li></ul> | -
+quality | string | Adjust the output quality of the video, image or audio. Adjusting quality affects  render speed, download speeds and storage requirements due to file size. The default `medium` provides the most optimized choice for all three  factors. <ul><li>`low` - slightly reduced quality, smaller file size</li><li>`medium` - optimized quality, render speeds and file size</li><li>`high` - slightly increased quality, larger file size</li></ul> | -
+repeat | bool | Loop tings for gif files. Set to `true` to loop, `false` to play only once. [default to `true`] | -
+range | [Range](#range) | Specify a time range to render, i.e. to render only a portion of a video or audio file. Omit this ting to export the entire video. Range can also be used to render a frame at a specific time point - ting a range and output format as `jpg` will output a single frame image at the range `start` point. | -
+poster | [Poster](#poster) | Generate a poster image from a specific point on the timeline. | -
+thumbnail | [Thumbnail](#thumbnail) | Generate a thumbnail image from a specific point on the timeline. | -
+destinations | [AnyOfShotstackDestination[]](#shotstackdestination) | A destination is a location where output files can be sent to for serving or hosting. By default all rendered assets are automatically sent to the Shotstack hosting destination. [ShotstackDestination](#shotstackdestination) is currently the only option with plans to add more in the future such as S3, YouTube, Vimeo and Mux. If you do not require hosting you can opt-out using the  `exclude` property. | -
 
 ---
 
@@ -814,12 +771,12 @@ size = Size(
 )
 ```
 
-#### Methods:
+#### Arguments:
 
-Method | Description | Required
-:--- | :--- | :---: 
-setWidth(int width) | Set a custom width for the video or image file. Value must be divisible by 2. Maximum video width is 1920px, maximum image width is 4096px. | -
-setHeight(int height) | Set a custom height for the video or image file. Value must be divisible by 2. Maximum video height is 1920px, maximum image height is 4096px. | -
+Argument | Type | Description | Required
+:--- | :--- | :--- | :---: 
+width | int | Set a custom width for the video or image file. Value must be divisible by 2. Maximum video width is 1920px, maximum image width is 4096px. | -
+height | int | Set a custom height for the video or image file. Value must be divisible by 2. Maximum video height is 1920px, maximum image height is 4096px. | -
 
 ---
 
@@ -839,12 +796,12 @@ _range = Range(
 )
 ```
 
-#### Methods:
+#### Arguments:
 
-Method | Description | Required
-:--- | :--- | :---: 
-setStart(float start) | The point on the timeline, in seconds, to start the render from - i.e. start at second 3. | -
-setLength(float length) | The length of the portion of the video or audio to render - i.e. render 6 seconds of the video. | -
+Argument | Type | Description | Required
+:--- | :--- | :--- | :---: 
+start | float | The point on the timeline, in seconds, to start the render from - i.e. start at second 3. | -
+length | float | The length of the portion of the video or audio to render - i.e. render 6 seconds of the video. | -
 
 ---
 
@@ -862,11 +819,11 @@ poster = Poster(
 )
 ```
 
-#### Methods:
+#### Arguments:
 
-Method | Description | Required
-:--- | :--- | :---: 
-setCapture(float capture) | The point on the timeline in seconds to capture a single frame to use as the poster image. | Y
+Argument | Type | Description | Required
+:--- | :--- | :--- | :---: 
+capture | float | The point on the timeline in seconds to capture a single frame to use as the poster image. | Y
 
 ---
 
@@ -885,12 +842,12 @@ thumbnail = Thumbnail(
 )
 ```
 
-#### Methods:
+#### Arguments:
 
-Method | Description | Required
-:--- | :--- | :---: 
-setCapture(float capture) | The point on the timeline in seconds to capture a single frame to use as the thumbnail image. | Y
-setScale(float scale) | Scale the thumbnail size to a fraction of the viewport size - i.e. setting the scale to 0.5 will scale  the thumbnail to half the size of the viewport. | Y
+Argument | Type | Description | Required
+:--- | :--- | :--- | :---: 
+capture | float | The point on the timeline in seconds to capture a single frame to use as the thumbnail image. | Y
+scale | float | Scale the thumbnail size to a fraction of the viewport size - i.e. ting the scale to 0.5 will scale  the thumbnail to half the size of the viewport. | Y
 
 ---
 
@@ -909,12 +866,12 @@ shotstackDestination = ShotstackDestination(
 )
 ```
 
-#### Methods:
+#### Arguments:
 
-Method | Description | Required
-:--- | :--- | :---: 
-setProvider(string provider) | The destination to send rendered assets to - set to `shotstack` for Shotstack hosting and CDN. [default to `shotstack`] | Y
-setExclude(bool exclude) | Set to `true` to opt-out from the Shotstack hosting and CDN service. All files must be downloaded within 24 hours of rendering. [default to `false`] | -
+Argument | Type | Description | Required
+:--- | :--- | :--- | :---: 
+provider | string | The destination to send rendered asset to - set to `shotstack` for Shotstack hosting and CDN. [default to `shotstack`] | Y
+exclude | bool | Set to `true` to opt-out from the Shotstack hosting and CDN service. All files must be downloaded within 24 hours of rendering. [default to `false`] | -
 
 ---
 
@@ -926,13 +883,13 @@ The following schemas are returned by the render request and status request.
 
 The response received after a [render request](https://shotstack.io/docs/api/#render-asset) is submitted. The render task is queued for rendering and a unique render id is returned.
 
-#### Methods:
+#### Attributes:
 
-Method | Description | Required
-:--- | :--- | :---: 
-getSuccess(): bool | `true` if successfully queued, else `false`. | Y
-getMessage(): string | `Created`, `Bad Request` or an error message. | Y
-getResponse(): [Shotstack.QueuedResponseData](#queuedresponsedata) | `QueuedResponseData` or an error message. | Y
+Attribute | Type | Description | Required
+:--- | :--- | :--- | :---: 
+success | bool | `true` if successfully queued, else `false`. | Y
+message | string | `Created`, `Bad Request` or an error message. | Y
+response | [QueuedResponseData](#queuedresponsedata) | `QueuedResponseData` or an error message. | Y
 
 ---
 
@@ -940,12 +897,12 @@ getResponse(): [Shotstack.QueuedResponseData](#queuedresponsedata) | `QueuedResp
 
 The **QueuedResponseData** is the response data returned with the [QueuedResponse](#queuedresponse).
 
-#### Methods:
+#### Attributes:
 
-Method | Description | Required
-:--- | :--- | :---: 
-getMessage(): string | Success response message or error details. | Y
-getId(): string | The id of the render task in UUID format. | Y
+Attribute | Type | Description | Required
+:--- | :--- | :--- | :---: 
+message | string | Success response message or error details. | Y
+id | string | The id of the render task in UUID format. | Y
 
 ---
 
@@ -953,13 +910,13 @@ getId(): string | The id of the render task in UUID format. | Y
 
 The **RenderResponse** is the response received after a [render status request](https://shotstack.io/docs/api/#get-render-status) is submitted. The response includes details about status of a render and the output URL.
 
-#### Methods:
+#### Attributes:
 
-Method | Description | Required
-:--- | :--- | :---: 
-getSuccess(): bool | `true` if status available, else `false`. | Y
-getMessage(): string | `OK` or an error message. | Y
-getResponse(): [Shotstack.RenderResponseData](#renderresponsedata) | `RenderResponse` or an error message. | Y
+Attribute | Type | Description | Required
+:--- | :--- | :--- | :---: 
+success | bool | `true` if status available, else `false`. | Y
+message | string | `OK` or an error message. | Y
+response | [RenderResponseData](#renderresponsedata) | `RenderResponse` or an error message. | Y
 
 ---
 
@@ -967,24 +924,23 @@ getResponse(): [Shotstack.RenderResponseData](#renderresponsedata) | `RenderResp
 
 The **RenderResponseData** is the response data returned with the [RenderResponse](https://shotstack.io/docs/api/#tocs_renderresponse) request including status and URL.
 
-#### Methods:
+#### Arguments:
 
-Method | Description | Required
-:--- | :--- | :---: 
-getId(): string | The id of the render task in UUID format. | Y
-getOwner(): string | The owner id of the render task. | Y
-getPlan(): string | The customer subscription plan. | -
-getStatus(): string | The status of the render task. <ul>   <li>`queued` - render is queued waiting to be rendered</li><li>`fetching` - assets are being fetched</li><li>`rendering` - the asset is being rendered</li><li>`saving` - the final asset is 
-being saved to storage</li><li>`done` - the asset is ready to be downloaded</li><li>`failed` - there was an error rendering the asset</li></ul> | Y
-getError(): string | An error message, only displayed if an error occurred. | -
-getDuration(): float | The output video or audio length in seconds. | -
-getRender_time(): float | The time taken to render the asset in milliseconds. | -
-getUrl(): string | The URL of the final asset. This will only be available if status is done. This is a temporary URL and will be deleted after 24 hours. By default all assets are copied to the Shotstack hosting and CDN destination. | -
-getPoster(): string | The URL of the poster image if requested. This will only be available if status is done. | -
-getThumbnail(): string | The URL of the thumbnail image if requested. This will only be available if status is done. | -
-getData(): [Shotstack.Edit](#edit) | The timeline and output data to be rendered. | Y
-getCreated(): string | The time the render task was initially queued. | Y
-getUpdated(): string | The time the render status was last updated. | Y
+Argument | Type | Description | Required
+:--- | :--- | :--- | :---: 
+id | string | The id of the render task in UUID format. | Y
+owner | string | The owner id of the render task. | Y
+plan | string | The customer subscription plan. | -
+status | string | The status of the render task. <ul>   <li>`queued` - render is queued waiting to be rendered</li><li>`fetching` - asset are being fetched</li><li>`rendering` - the asset is being rendered</li><li>`saving` - the final asset is being saved to storage</li><li>`done` - the asset is ready to be downloaded</li><li>`failed` - there was an error rendering the asset</li></ul> | Y
+error | string | An error message, only displayed if an error occurred. | -
+duration | float | The output video or audio length in seconds. | -
+render_time | float | The time taken to render the asset in milliseconds. | -
+url | string | The URL of the final asset. This will only be available if status is done. This is a temporary URL and will be deleted after 24 hours. By default all asset are copied to the Shotstack hosting and CDN destination. | -
+poster | string | The URL of the poster image if requested. This will only be available if status is done. | -
+thumbnail | string | The URL of the thumbnail image if requested. This will only be available if status is done. | -
+data | [Edit](#edit) | The timeline and output data to be rendered. | Y
+created | string | The time the render task was initially queued. | Y
+updated | string | The time the render status was last updated. | Y
 
 ---
 ## Inspecting Media
@@ -1028,13 +984,13 @@ The following schemas are returned by the probe request.
 
 The **ProbeResponse** is the response returned after a [probe request](https://shotstack.io/docs/api/#inspect-media) is submitted. The probe requests returns data from FFprobe formatted as JSON.
 
-#### Methods:
+#### Arguments:
 
-Method | Description | Required
-:--- | :--- | :---: 
-getSuccess(): bool | `true` if media successfully read, else `false`. | Y
-getMessage(): string | `Created`, `Bad Request` or an error message. | Y
-getResponse(): object | The response from FFprobe in JSON format | Y
+Argument | Type | Description | Required
+:--- | :--- | :--- | :---: 
+success | bool | `true` if media successfully read, else `false`. | Y
+message | string | `Created`, `Bad Request` or an error message. | Y
+response | object | The response from FFprobe in JSON format | Y
 
 ---
 
@@ -1116,11 +1072,11 @@ The following schemas are returned by requests to the Serve API.
 The **AssetResponse** is the response returned by the Serve API [get asset](https://shotstack.io/docs/api/#get-asset) request. Includes details of a hosted video, image, audio file, thumbnail or poster image. The response follows  the 
 [json:api](https://jsonapi.org/) specification.
 
-#### Methods:
+#### Arguments:
 
-Method | Description | Required
-:--- | :--- | :---: 
-getData(): [Shotstack.AssetResponseData](#assetresponsedata) | Returns an asset resource. | -
+Argument | Type | Description | Required
+:--- | :--- | :--- | :---: 
+data | [AssetResponseData](#assetresponsedata) | Returns an asset resource. | -
 
 ---
 
@@ -1129,11 +1085,11 @@ getData(): [Shotstack.AssetResponseData](#assetresponsedata) | Returns an asset 
 The **AssetRenderResponse** is the response returned by the Serve API [get asset by render id](https://shotstack.io/docs/api/#get-asset-by-render-id) request. The response is an array of asset resources, including video, image, audio, thumbnail and 
 poster image. The response follows  the [json:api](https://jsonapi.org/) specification.
 
-#### Methods:
+#### Arguments:
 
-Method | Description | Required
-:--- | :--- | :---: 
-getData(): [Shotstack.AssetResponseData[]](#assetresponsedata) | Returns an array of asset resources grouped by render id. | -
+Argument | Type | Description | Required
+:--- | :--- | :--- | :---: 
+data | [AssetResponseData[]](#assetresponsedata) | Returns an array of asset resources grouped by render id. | -
 
 ---
 
@@ -1141,12 +1097,12 @@ getData(): [Shotstack.AssetResponseData[]](#assetresponsedata) | Returns an arra
 
 The **AssetResponseData** contains the type of resource (an asset) and attributes of the asset.
 
-#### Methods:
+#### Arguments:
 
-Method | Description | Required
-:--- | :--- | :---: 
-getType(): string | The type of resource, in this case it is an `asset`. | -
-getAttributes(): [Shotstack.AssetResponseAttributes](#assetresponseattributes) | The asset attributes including render id, url, filename, file size, etc... | -
+Argument | Type | Description | Required
+:--- | :--- | :--- | :---: 
+type | string | The type of resource, in this case it is an `asset`. | -
+attributes | [AssetResponseAttributes](#assetresponseattributes) | The asset attributes including render id, url, filename, file size, etc... | -
 
 ---
 
@@ -1154,20 +1110,19 @@ getAttributes(): [Shotstack.AssetResponseAttributes](#assetresponseattributes) |
 
 The **AssetResponseAttributes** contains the list of asset attributes and their values.
 
-#### Methods:
+#### Arguments:
 
-Method | Description | Required
-:--- | :--- | :---:
-getId(): string | The unique id of the hosted asset in UUID format. | -
-getOwner(): string | The owner id of the render task. | -
-getRegion(): string | The region the asset is hosted, currently only `au` (Australia). | -
-getRenderId(): string | The original render id that created the asset in UUID format. Multiple assets can share the same render id. | -
-getFilename(): string | The asset file name. | -
-getUrl(): string | The asset file name. | -
-getStatus(): string | The status of the asset. <ul><li>`importing` - the asset is being copied to the hosting service</li><li>`ready` - the asset is ready to be served to users</li><li>`failed` - the asset failed to copy or delete</li><li>`deleted` 
-- the asset has been deleted</li></ul> | -
-getCreated(): string | The time the asset was created. | -
-getUpdated(): string | The time the asset status was last updated. | -
+Argument | Type | Description | Required
+:--- | :--- | :--- | :---:
+id | string | The unique id of the hosted asset in UUID format. | -
+owner | string | The owner id of the render task. | -
+region | string | The region the asset is hosted, currently only `au` (Australia). | -
+renderId | string | The original render id that created the asset in UUID format. Multiple asset can share the same render id. | -
+filename | string | The asset file name. | -
+url | string | The asset file name. | -
+status | string | The status of the asset. <ul><li>`importing` - the asset is being copied to the hosting service</li><li>`ready` - the asset is ready to be served to users</li><li>`failed` - the asset failed to copy or delete</li><li>`deleted` - the asset has been deleted</li></ul> | -
+created | string | The time the asset was created. | -
+updated | string | The time the asset status was last updated. | -
 
 # API Documentation and Guides
 
