@@ -447,7 +447,7 @@ htmlAsset = HtmlAsset(
 #### Arguments:
 
 Argument | Type | Description | Required
-:--- | :--- | :---:
+:--- | :--- | :--- | :---:
 html | string | The HTML text string. See list of [supported HTML tags](https://shotstack.io/docs/guide/architecting-an-application/html-support/#supported-html-tags). | Y
 css | string | The CSS text string to apply styling to the HTML. See list of  [support CSS properties](https://shotstack.io/docs/guide/architecting-an-application/html-support/#supported-css-properties). | -
 width | int | Set the width of the HTML asset bounding box in pixels. Text will wrap to fill the bounding box. | -
