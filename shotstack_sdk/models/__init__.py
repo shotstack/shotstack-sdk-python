@@ -41,6 +41,15 @@ from shotstack_sdk.model.shotstack_destination import ShotstackDestination
 from shotstack_sdk.model.size import Size
 from shotstack_sdk.model.skew_transformation import SkewTransformation
 from shotstack_sdk.model.soundtrack import Soundtrack
+from shotstack_sdk.model.template import Template
+from shotstack_sdk.model.template_data_response import TemplateDataResponse
+from shotstack_sdk.model.template_data_response_data import TemplateDataResponseData
+from shotstack_sdk.model.template_list_response import TemplateListResponse
+from shotstack_sdk.model.template_list_response_data import TemplateListResponseData
+from shotstack_sdk.model.template_list_response_item import TemplateListResponseItem
+from shotstack_sdk.model.template_render import TemplateRender
+from shotstack_sdk.model.template_response import TemplateResponse
+from shotstack_sdk.model.template_response_data import TemplateResponseData
 from shotstack_sdk.model.thumbnail import Thumbnail
 from shotstack_sdk.model.timeline import Timeline
 from shotstack_sdk.model.title_asset import TitleAsset
