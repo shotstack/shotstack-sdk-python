@@ -1,7 +1,7 @@
-diff --git a/shotstack_sdk/model_utils.py b/model_utils.py
+diff --git a/shotstack_sdk/model_utils.py b/shotstack_sdk/model_utils.py
 index bb97211..eb381f6 100644
 --- a/shotstack_sdk/model_utils.py
-+++ b/model_utils.py
++++ b/shotstack_sdk/model_utils.py
 @@ -250,6 +250,7 @@ class OpenApiModel(object):
          # Get the name and value of the discriminator property.
          # The discriminator name is obtained from the discriminator meta-data
