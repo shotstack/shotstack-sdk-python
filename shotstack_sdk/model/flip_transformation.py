@@ -136,8 +136,8 @@ class FlipTransformation(ModelNormal):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
-            horizontal (bool): Flip a clip horizontally.. [optional] if omitted the server will use the default value of False  # noqa: E501
-            vertical (bool): Flip a clip vertically.. [optional] if omitted the server will use the default value of False  # noqa: E501
+            horizontal (bool): Flip a clip horizontally.. [optional]  # noqa: E501
+            vertical (bool): Flip a clip vertically.. [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
@@ -219,8 +219,8 @@ class FlipTransformation(ModelNormal):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
-            horizontal (bool): Flip a clip horizontally.. [optional] if omitted the server will use the default value of False  # noqa: E501
-            vertical (bool): Flip a clip vertically.. [optional] if omitted the server will use the default value of False  # noqa: E501
+            horizontal (bool): Flip a clip horizontally.. [optional]  # noqa: E501
+            vertical (bool): Flip a clip vertically.. [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
