@@ -372,6 +372,8 @@ class OpenApiModel(object):
         # The discriminator name is obtained from the discriminator meta-data
         # and the discriminator value is obtained from the input data.
         discr_propertyname_py = list(cls.discriminator.keys())[0]
+
+        # DO NOT REMOVE #
         if not discr_propertyname_py in cls.attribute_map:
             return None
 

@@ -103,8 +103,8 @@ class RenderResponseData(ModelNormal):
             'duration': (float,),  # noqa: E501
             'render_time': (float,),  # noqa: E501
             'url': (str,),  # noqa: E501
-            'poster': (str,),  # noqa: E501
-            'thumbnail': (str,),  # noqa: E501
+            'poster': (str, none_type,),  # noqa: E501
+            'thumbnail': (str, none_type,),  # noqa: E501
             'data': (Edit,),  # noqa: E501
             'created': (str,),  # noqa: E501
             'updated': (str,),  # noqa: E501
@@ -182,8 +182,8 @@ class RenderResponseData(ModelNormal):
             duration (float): The output video or audio length in seconds.. [optional]  # noqa: E501
             render_time (float): The time taken to render the asset in milliseconds.. [optional]  # noqa: E501
             url (str): The URL of the final asset. This will only be available if status is done. This is a temporary URL and will be deleted after 24 hours. By default all assets are copied to the Shotstack hosting and CDN destination.. [optional]  # noqa: E501
-            poster (str): The URL of the poster image if requested. This will only be available if status is done.. [optional]  # noqa: E501
-            thumbnail (str): The URL of the thumbnail image if requested. This will only be available if status is done.. [optional]  # noqa: E501
+            poster (str, none_type): The URL of the poster image if requested. This will only be available if status is done.. [optional]  # noqa: E501
+            thumbnail (str, none_type): The URL of the thumbnail image if requested. This will only be available if status is done.. [optional]  # noqa: E501
             data (Edit): [optional]  # noqa: E501
             created (str): The time the render task was initially queued.. [optional]  # noqa: E501
             updated (str): The time the render status was last updated.. [optional]  # noqa: E501
@@ -281,8 +281,8 @@ class RenderResponseData(ModelNormal):
             duration (float): The output video or audio length in seconds.. [optional]  # noqa: E501
             render_time (float): The time taken to render the asset in milliseconds.. [optional]  # noqa: E501
             url (str): The URL of the final asset. This will only be available if status is done. This is a temporary URL and will be deleted after 24 hours. By default all assets are copied to the Shotstack hosting and CDN destination.. [optional]  # noqa: E501
-            poster (str): The URL of the poster image if requested. This will only be available if status is done.. [optional]  # noqa: E501
-            thumbnail (str): The URL of the thumbnail image if requested. This will only be available if status is done.. [optional]  # noqa: E501
+            poster (str, none_type): The URL of the poster image if requested. This will only be available if status is done.. [optional]  # noqa: E501
+            thumbnail (str, none_type): The URL of the thumbnail image if requested. This will only be available if status is done.. [optional]  # noqa: E501
             data (Edit): [optional]  # noqa: E501
             created (str): The time the render task was initially queued.. [optional]  # noqa: E501
             updated (str): The time the render status was last updated.. [optional]  # noqa: E501
