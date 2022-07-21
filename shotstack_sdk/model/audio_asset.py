@@ -152,7 +152,7 @@ class AudioAsset(ModelNormal):
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
             trim (float): The start trim point of the audio clip, in seconds (defaults to 0). Audio will start from the in trim point. The audio will play until the file ends or the Clip length is reached.. [optional]  # noqa: E501
-            volume (float): Set the volume for the audio clip between 0 and 1 where 0 is muted and 1 is full volume (defaults to 1).. [optional] if omitted the server will use the default value of 1  # noqa: E501
+            volume (float): Set the volume for the audio clip between 0 and 1 where 0 is muted and 1 is full volume (defaults to 1).. [optional]  # noqa: E501
             effect (str): The effect to apply to the audio asset <ul>   <li>`fadeIn` - fade volume in only</li>   <li>`fadeOut` - fade volume out only</li>   <li>`fadeInFadeOut` - fade volume in and out</li> </ul>. [optional]  # noqa: E501
         """
 
@@ -243,7 +243,7 @@ class AudioAsset(ModelNormal):
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
             trim (float): The start trim point of the audio clip, in seconds (defaults to 0). Audio will start from the in trim point. The audio will play until the file ends or the Clip length is reached.. [optional]  # noqa: E501
-            volume (float): Set the volume for the audio clip between 0 and 1 where 0 is muted and 1 is full volume (defaults to 1).. [optional] if omitted the server will use the default value of 1  # noqa: E501
+            volume (float): Set the volume for the audio clip between 0 and 1 where 0 is muted and 1 is full volume (defaults to 1).. [optional]  # noqa: E501
             effect (str): The effect to apply to the audio asset <ul>   <li>`fadeIn` - fade volume in only</li>   <li>`fadeOut` - fade volume out only</li>   <li>`fadeInFadeOut` - fade volume in and out</li> </ul>. [optional]  # noqa: E501
         """
 

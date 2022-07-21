@@ -139,7 +139,7 @@ class ShotstackDestination(ModelNormal):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
-            exclude (bool): Set to `true` to opt-out from the Shotstack hosting and CDN service. All files must be downloaded within 24 hours of rendering.. [optional] if omitted the server will use the default value of False  # noqa: E501
+            exclude (bool): Set to `true` to opt-out from the Shotstack hosting and CDN service. All files must be downloaded within 24 hours of rendering.. [optional]  # noqa: E501
         """
 
         provider = kwargs.get('provider', "shotstack")
@@ -226,7 +226,7 @@ class ShotstackDestination(ModelNormal):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
-            exclude (bool): Set to `true` to opt-out from the Shotstack hosting and CDN service. All files must be downloaded within 24 hours of rendering.. [optional] if omitted the server will use the default value of False  # noqa: E501
+            exclude (bool): Set to `true` to opt-out from the Shotstack hosting and CDN service. All files must be downloaded within 24 hours of rendering.. [optional]  # noqa: E501
         """
 
         provider = kwargs.get('provider', "shotstack")

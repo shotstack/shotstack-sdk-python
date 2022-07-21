@@ -156,9 +156,9 @@ class Timeline(ModelNormal):
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
             soundtrack (Soundtrack): [optional]  # noqa: E501
-            background (str): A hexadecimal value for the timeline background colour. Defaults to #000000 (black).. [optional] if omitted the server will use the default value of "#000000"  # noqa: E501
+            background (str): A hexadecimal value for the timeline background colour. Defaults to #000000 (black).. [optional]  # noqa: E501
             fonts ([Font]): An array of custom fonts to be downloaded for use by the HTML assets.. [optional]  # noqa: E501
-            cache (bool): Disable the caching of ingested source footage and assets. See  [caching](https://shotstack.io/docs/guide/architecting-an-application/caching) for more details.. [optional] if omitted the server will use the default value of True  # noqa: E501
+            cache (bool): Disable the caching of ingested source footage and assets. See  [caching](https://shotstack.io/docs/guide/architecting-an-application/caching) for more details.. [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
@@ -245,9 +245,9 @@ class Timeline(ModelNormal):
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
             soundtrack (Soundtrack): [optional]  # noqa: E501
-            background (str): A hexadecimal value for the timeline background colour. Defaults to #000000 (black).. [optional] if omitted the server will use the default value of "#000000"  # noqa: E501
+            background (str): A hexadecimal value for the timeline background colour. Defaults to #000000 (black).. [optional]  # noqa: E501
             fonts ([Font]): An array of custom fonts to be downloaded for use by the HTML assets.. [optional]  # noqa: E501
-            cache (bool): Disable the caching of ingested source footage and assets. See  [caching](https://shotstack.io/docs/guide/architecting-an-application/caching) for more details.. [optional] if omitted the server will use the default value of True  # noqa: E501
+            cache (bool): Disable the caching of ingested source footage and assets. See  [caching](https://shotstack.io/docs/guide/architecting-an-application/caching) for more details.. [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
