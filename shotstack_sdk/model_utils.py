@@ -250,7 +250,6 @@ class OpenApiModel(object):
         # Get the name and value of the discriminator property.
         # The discriminator name is obtained from the discriminator meta-data
         # and the discriminator value is obtained from the input data.
-
         discr_propertyname_py = list(cls.discriminator.keys())[0]
         discr_propertyname_js = cls.attribute_map[discr_propertyname_py]
         if discr_propertyname_js in kwargs:
@@ -377,8 +376,6 @@ class OpenApiModel(object):
             return None
 
         discr_propertyname_js = cls.attribute_map[discr_propertyname_py]
-
-
         if discr_propertyname_js in kwargs:
             discr_value = kwargs[discr_propertyname_js]
         elif discr_propertyname_py in kwargs:
