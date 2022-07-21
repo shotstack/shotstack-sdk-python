@@ -89,14 +89,14 @@ class AssetResponseAttributes(ModelNormal):
         return {
             'id': (str,),  # noqa: E501
             'owner': (str,),  # noqa: E501
-            'filename': (str,),  # noqa: E501
             'status': (str,),  # noqa: E501
-            'created': (str,),  # noqa: E501
-            'updated': (str,),  # noqa: E501
             'region': (str,),  # noqa: E501
             'render_id': (str,),  # noqa: E501
             'provider_id': (str,),  # noqa: E501
+            'filename': (str,),  # noqa: E501
             'url': (str,),  # noqa: E501
+            'created': (str,),  # noqa: E501
+            'updated': (str,),  # noqa: E501
         }
 
     @cached_property
@@ -107,14 +107,14 @@ class AssetResponseAttributes(ModelNormal):
     attribute_map = {
         'id': 'id',  # noqa: E501
         'owner': 'owner',  # noqa: E501
-        'filename': 'filename',  # noqa: E501
         'status': 'status',  # noqa: E501
-        'created': 'created',  # noqa: E501
-        'updated': 'updated',  # noqa: E501
         'region': 'region',  # noqa: E501
         'render_id': 'renderId',  # noqa: E501
         'provider_id': 'providerId',  # noqa: E501
+        'filename': 'filename',  # noqa: E501
         'url': 'url',  # noqa: E501
+        'created': 'created',  # noqa: E501
+        'updated': 'updated',  # noqa: E501
     }
 
     read_only_vars = {
@@ -124,16 +124,13 @@ class AssetResponseAttributes(ModelNormal):
 
     @classmethod
     @convert_js_args_to_python_args
-    def _from_openapi_data(cls, id, owner, filename, status, created, updated, *args, **kwargs):  # noqa: E501
+    def _from_openapi_data(cls, id, owner, status, *args, **kwargs):  # noqa: E501
         """AssetResponseAttributes - a model defined in OpenAPI
 
         Args:
             id (str): The unique id of the hosted asset in UUID format.
             owner (str): The owner id of the render task.
-            filename (str): The asset file name.
             status (str): The status of the asset. <ul>   <li>`importing` - the asset is being copied to the hosting service</li>   <li>`ready` - the asset is ready to be served to users</li>   <li>`failed` - the asset failed to copy or delete</li>   <li>`deleted` - the asset has been deleted</li> </ul>
-            created (str): The time the asset was created.
-            updated (str): The time the asset status was last updated.
 
         Keyword Args:
             _check_type (bool): if True, values for parameters in openapi_types
@@ -169,7 +166,10 @@ class AssetResponseAttributes(ModelNormal):
             region (str): The region the asset is hosted, currently only `au` (Australia).. [optional]  # noqa: E501
             render_id (str): The original render id that created the asset in UUID format. Multiple assets can share the same render id.. [optional]  # noqa: E501
             provider_id (str): The third party id of an asset transferred to an external provider, i.e. Mux, YouTube or S3. If the provider is Shotstack, the providerID is the same as the asset id.. [optional]  # noqa: E501
+            filename (str): The asset file name.. [optional]  # noqa: E501
             url (str): The asset file name.. [optional]  # noqa: E501
+            created (str): The time the asset was created.. [optional]  # noqa: E501
+            updated (str): The time the asset status was last updated.. [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
@@ -199,15 +199,12 @@ class AssetResponseAttributes(ModelNormal):
 
         self.id = id
         self.owner = owner
-        self.filename = filename
         self.status = status
-        self.created = created
-        self.updated = updated
         for var_name, var_value in kwargs.items():
             if var_name not in self.attribute_map and \
                         self._configuration is not None and \
                         self._configuration.discard_unknown_keys and \
-                        self.additional_properties_type is None or var_value is None:
+                        self.additional_properties_type is None:
                 # discard variable.
                 continue
             setattr(self, var_name, var_value)
@@ -223,16 +220,13 @@ class AssetResponseAttributes(ModelNormal):
     ])
 
     @convert_js_args_to_python_args
-    def __init__(self, id, owner, filename, status, created, updated, *args, **kwargs):  # noqa: E501
+    def __init__(self, id, owner, status, *args, **kwargs):  # noqa: E501
         """AssetResponseAttributes - a model defined in OpenAPI
 
         Args:
             id (str): The unique id of the hosted asset in UUID format.
             owner (str): The owner id of the render task.
-            filename (str): The asset file name.
             status (str): The status of the asset. <ul>   <li>`importing` - the asset is being copied to the hosting service</li>   <li>`ready` - the asset is ready to be served to users</li>   <li>`failed` - the asset failed to copy or delete</li>   <li>`deleted` - the asset has been deleted</li> </ul>
-            created (str): The time the asset was created.
-            updated (str): The time the asset status was last updated.
 
         Keyword Args:
             _check_type (bool): if True, values for parameters in openapi_types
@@ -268,7 +262,10 @@ class AssetResponseAttributes(ModelNormal):
             region (str): The region the asset is hosted, currently only `au` (Australia).. [optional]  # noqa: E501
             render_id (str): The original render id that created the asset in UUID format. Multiple assets can share the same render id.. [optional]  # noqa: E501
             provider_id (str): The third party id of an asset transferred to an external provider, i.e. Mux, YouTube or S3. If the provider is Shotstack, the providerID is the same as the asset id.. [optional]  # noqa: E501
+            filename (str): The asset file name.. [optional]  # noqa: E501
             url (str): The asset file name.. [optional]  # noqa: E501
+            created (str): The time the asset was created.. [optional]  # noqa: E501
+            updated (str): The time the asset status was last updated.. [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
@@ -296,10 +293,7 @@ class AssetResponseAttributes(ModelNormal):
 
         self.id = id
         self.owner = owner
-        self.filename = filename
         self.status = status
-        self.created = created
-        self.updated = updated
         for var_name, var_value in kwargs.items():
             if var_name not in self.attribute_map and \
                         self._configuration is not None and \

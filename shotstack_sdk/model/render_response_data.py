@@ -98,9 +98,6 @@ class RenderResponseData(ModelNormal):
             'id': (str,),  # noqa: E501
             'owner': (str,),  # noqa: E501
             'status': (str,),  # noqa: E501
-            'data': (Edit,),  # noqa: E501
-            'created': (str,),  # noqa: E501
-            'updated': (str,),  # noqa: E501
             'plan': (str,),  # noqa: E501
             'error': (str,),  # noqa: E501
             'duration': (float,),  # noqa: E501
@@ -108,6 +105,9 @@ class RenderResponseData(ModelNormal):
             'url': (str,),  # noqa: E501
             'poster': (str,),  # noqa: E501
             'thumbnail': (str,),  # noqa: E501
+            'data': (Edit,),  # noqa: E501
+            'created': (str,),  # noqa: E501
+            'updated': (str,),  # noqa: E501
         }
 
     @cached_property
@@ -119,9 +119,6 @@ class RenderResponseData(ModelNormal):
         'id': 'id',  # noqa: E501
         'owner': 'owner',  # noqa: E501
         'status': 'status',  # noqa: E501
-        'data': 'data',  # noqa: E501
-        'created': 'created',  # noqa: E501
-        'updated': 'updated',  # noqa: E501
         'plan': 'plan',  # noqa: E501
         'error': 'error',  # noqa: E501
         'duration': 'duration',  # noqa: E501
@@ -129,6 +126,9 @@ class RenderResponseData(ModelNormal):
         'url': 'url',  # noqa: E501
         'poster': 'poster',  # noqa: E501
         'thumbnail': 'thumbnail',  # noqa: E501
+        'data': 'data',  # noqa: E501
+        'created': 'created',  # noqa: E501
+        'updated': 'updated',  # noqa: E501
     }
 
     read_only_vars = {
@@ -138,16 +138,13 @@ class RenderResponseData(ModelNormal):
 
     @classmethod
     @convert_js_args_to_python_args
-    def _from_openapi_data(cls, id, owner, status, data, created, updated, *args, **kwargs):  # noqa: E501
+    def _from_openapi_data(cls, id, owner, status, *args, **kwargs):  # noqa: E501
         """RenderResponseData - a model defined in OpenAPI
 
         Args:
             id (str): The id of the render task in UUID format.
             owner (str): The owner id of the render task.
             status (str): The status of the render task. <ul>   <li>`queued` - render is queued waiting to be rendered</li>   <li>`fetching` - assets are being fetched</li>   <li>`rendering` - the asset is being rendered</li>   <li>`saving` - the final asset is being saved to storage</li>   <li>`done` - the asset is ready to be downloaded</li>   <li>`failed` - there was an error rendering the asset</li> </ul>
-            data (Edit):
-            created (str): The time the render task was initially queued.
-            updated (str): The time the render status was last updated.
 
         Keyword Args:
             _check_type (bool): if True, values for parameters in openapi_types
@@ -187,6 +184,9 @@ class RenderResponseData(ModelNormal):
             url (str): The URL of the final asset. This will only be available if status is done. This is a temporary URL and will be deleted after 24 hours. By default all assets are copied to the Shotstack hosting and CDN destination.. [optional]  # noqa: E501
             poster (str): The URL of the poster image if requested. This will only be available if status is done.. [optional]  # noqa: E501
             thumbnail (str): The URL of the thumbnail image if requested. This will only be available if status is done.. [optional]  # noqa: E501
+            data (Edit): [optional]  # noqa: E501
+            created (str): The time the render task was initially queued.. [optional]  # noqa: E501
+            updated (str): The time the render status was last updated.. [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
@@ -217,14 +217,11 @@ class RenderResponseData(ModelNormal):
         self.id = id
         self.owner = owner
         self.status = status
-        self.data = data
-        self.created = created
-        self.updated = updated
         for var_name, var_value in kwargs.items():
             if var_name not in self.attribute_map and \
                         self._configuration is not None and \
                         self._configuration.discard_unknown_keys and \
-                        self.additional_properties_type is None or var_value is None:
+                        self.additional_properties_type is None:
                 # discard variable.
                 continue
             setattr(self, var_name, var_value)
@@ -240,16 +237,13 @@ class RenderResponseData(ModelNormal):
     ])
 
     @convert_js_args_to_python_args
-    def __init__(self, id, owner, status, data, created, updated, *args, **kwargs):  # noqa: E501
+    def __init__(self, id, owner, status, *args, **kwargs):  # noqa: E501
         """RenderResponseData - a model defined in OpenAPI
 
         Args:
             id (str): The id of the render task in UUID format.
             owner (str): The owner id of the render task.
             status (str): The status of the render task. <ul>   <li>`queued` - render is queued waiting to be rendered</li>   <li>`fetching` - assets are being fetched</li>   <li>`rendering` - the asset is being rendered</li>   <li>`saving` - the final asset is being saved to storage</li>   <li>`done` - the asset is ready to be downloaded</li>   <li>`failed` - there was an error rendering the asset</li> </ul>
-            data (Edit):
-            created (str): The time the render task was initially queued.
-            updated (str): The time the render status was last updated.
 
         Keyword Args:
             _check_type (bool): if True, values for parameters in openapi_types
@@ -289,6 +283,9 @@ class RenderResponseData(ModelNormal):
             url (str): The URL of the final asset. This will only be available if status is done. This is a temporary URL and will be deleted after 24 hours. By default all assets are copied to the Shotstack hosting and CDN destination.. [optional]  # noqa: E501
             poster (str): The URL of the poster image if requested. This will only be available if status is done.. [optional]  # noqa: E501
             thumbnail (str): The URL of the thumbnail image if requested. This will only be available if status is done.. [optional]  # noqa: E501
+            data (Edit): [optional]  # noqa: E501
+            created (str): The time the render task was initially queued.. [optional]  # noqa: E501
+            updated (str): The time the render status was last updated.. [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
@@ -317,9 +314,6 @@ class RenderResponseData(ModelNormal):
         self.id = id
         self.owner = owner
         self.status = status
-        self.data = data
-        self.created = created
-        self.updated = updated
         for var_name, var_value in kwargs.items():
             if var_name not in self.attribute_map and \
                         self._configuration is not None and \

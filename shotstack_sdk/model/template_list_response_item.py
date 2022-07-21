@@ -106,14 +106,12 @@ class TemplateListResponseItem(ModelNormal):
 
     @classmethod
     @convert_js_args_to_python_args
-    def _from_openapi_data(cls, id, name, created, updated, *args, **kwargs):  # noqa: E501
+    def _from_openapi_data(cls, id, name, *args, **kwargs):  # noqa: E501
         """TemplateListResponseItem - a model defined in OpenAPI
 
         Args:
             id (str): The unique id of the template in UUID format.
             name (str): The template name
-            created (str): The time the template was created.
-            updated (str): The time the template was last updated.
 
         Keyword Args:
             _check_type (bool): if True, values for parameters in openapi_types
@@ -146,6 +144,8 @@ class TemplateListResponseItem(ModelNormal):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
+            created (str): The time the template was created.. [optional]  # noqa: E501
+            updated (str): The time the template was last updated.. [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
@@ -175,13 +175,11 @@ class TemplateListResponseItem(ModelNormal):
 
         self.id = id
         self.name = name
-        self.created = created
-        self.updated = updated
         for var_name, var_value in kwargs.items():
             if var_name not in self.attribute_map and \
                         self._configuration is not None and \
                         self._configuration.discard_unknown_keys and \
-                        self.additional_properties_type is None  or var_value is None:
+                        self.additional_properties_type is None:
                 # discard variable.
                 continue
             setattr(self, var_name, var_value)
@@ -197,14 +195,12 @@ class TemplateListResponseItem(ModelNormal):
     ])
 
     @convert_js_args_to_python_args
-    def __init__(self, id, name, created, updated, *args, **kwargs):  # noqa: E501
+    def __init__(self, id, name, *args, **kwargs):  # noqa: E501
         """TemplateListResponseItem - a model defined in OpenAPI
 
         Args:
             id (str): The unique id of the template in UUID format.
             name (str): The template name
-            created (str): The time the template was created.
-            updated (str): The time the template was last updated.
 
         Keyword Args:
             _check_type (bool): if True, values for parameters in openapi_types
@@ -237,6 +233,8 @@ class TemplateListResponseItem(ModelNormal):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
+            created (str): The time the template was created.. [optional]  # noqa: E501
+            updated (str): The time the template was last updated.. [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
@@ -264,13 +262,11 @@ class TemplateListResponseItem(ModelNormal):
 
         self.id = id
         self.name = name
-        self.created = created
-        self.updated = updated
         for var_name, var_value in kwargs.items():
             if var_name not in self.attribute_map and \
                         self._configuration is not None and \
                         self._configuration.discard_unknown_keys and \
-                        self.additional_properties_type is None or var_value is None:
+                        self.additional_properties_type is None:
                 # discard variable.
                 continue
             setattr(self, var_name, var_value)
