@@ -26,7 +26,7 @@ setup(
     install_requires=REQUIRES,
     packages=find_packages(exclude=["test", "tests"]),
     include_package_data=True,
-    long_description_content_type="text/markdown"
+    long_description_content_type="text/markdown",
     long_description="""\
     Shotstack is a video, image and audio editing service that allows for the automated generation of videos, images and audio using JSON 
     and a RESTful API. You arrange and configure an edit and POST it to the API which will render your media and provide a file 
