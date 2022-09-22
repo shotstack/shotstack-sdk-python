@@ -18,7 +18,9 @@ For examples of how to use the SDK to create videos using code checkout the Pyth
     - [Status Check Example](#status-check-example)
   - [Video Editing Schemas](#video-editing-schemas)
     - [Edit](#edit)
+    - [Arguments:](#arguments)
     - [Timeline](#timeline)
+  - [cache | bool | Disable the caching of ingested source footage and assets. See  caching for more details. [default to `true`] | -](#cache--bool--disable-the-caching-of-ingested-source-footage-and-assets-see--caching-for-more-details-default-to-true---)
     - [Soundtrack](#soundtrack)
     - [Font](#font)
     - [Track](#track)
@@ -331,8 +333,8 @@ scale | float | Scale the asset to a fraction of the viewport size - i.e. ting t
 position | string | Place the asset in one of nine predefined positions of the viewport. This is most effective for when the asset is scaled and you want to position the element to a specific position [default to `center`].<ul><li>`top` - top (center)</li><li>`topRight` - top right</li><li>`right` - right (center)</li><li>`bottomRight` - bottom right</li><li>`bottom` - bottom (center)</li><li>`bottomLeft` - bottom left</li><li>`left` - left (center)</li><li>`topLeft` - top left</li><li>`center` - center</li></ul> | -
 offset | [Offset](#offset) | Offset the location of the asset relative to its position on the viewport. The offset distance is relative to the width of the viewport - for example an x offset of 0.5 will move the asset half the viewport width to the right. | -
 transition | [Transition](#transition) | In and out transitions for a clip - i.e. fade in and fade out | -
-effect | string | A motion effect to apply to the Clip. <ul><li>`zoomIn` - slow zoom in</li><li>`zoomOut` - slow zoom out</li><li>`slideLeft` - slow slide (pan) left</li><li>`slideRight` - slow slide (pan) right</li><li>`slideUp` - slow slide (pan) up</li><li>`slideDown` - slow slide (pan) down</li></ul>| -
-filter | string | A filter effect to apply to the Clip. <ul><li>`boost` - boost contrast and saturation</li><li>`contrast` - increase contrast</li><li>`darken` - darken the scene</li><li>`greyscale` - remove colour</li><li>`lighten` - lighten the scene</li><li>`muted` - reduce saturation and contrast</li><li>`invert` - invert colors</li></ul> | -
+effect | string | A motion effect to apply to the Clip. <ul><li>`zoomIn` - slow zoom in</li><li>`zoomOut` - slow zoom out</li><li>`slideLeft` - slow slide (pan) left</li><li>`slideRight` - slow slide (pan) right</li><li>`slideUp` - slow slide (pan) up</li><li>`slideDown` - slow slide (pan) down</li></ul> The motion effect speed can also be controlled by appending `Fast` or `Slow` to the effect, e.g. `zoomInFast` or `slideRightSlow`. | -
+filter | string | A filter effect to apply to the Clip. <ul><li>`boost` - boost contrast and saturation</li><li>`contrast` - increase contrast</li><li>`darken` - darken the scene</li><li>`greyscale` - remove colour</li><li>`lighten` - lighten the scene</li><li>`muted` - reduce saturation and contrast</li><li>`negative` - invert colors</li></ul> | -
 opacity | float | s the opacity of the Clip where 1 is opaque and 0 is transparent. [default to `1`] | -
 transform | [Transformation](#transformation) | A transformation lets you modify the visual properties of a clip. Available transformations are [RotateTransformation](#rotatetransformation), [SkewTransformation](#skewtransformation) and [FlipTransformation](#fliptransformation). Transformations can be combined to create interesting new shapes and effects. | -
 
