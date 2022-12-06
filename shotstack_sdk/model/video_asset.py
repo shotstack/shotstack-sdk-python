@@ -59,6 +59,11 @@ class VideoAsset(ModelNormal):
     """
 
     allowed_values = {
+        ('volume_effect',): {
+            'FADEIN': "fadeIn",
+            'FADEOUT': "fadeOut",
+            'FADEINFADEOUT': "fadeInFadeOut",
+        },
     }
 
     validations = {
@@ -91,6 +96,7 @@ class VideoAsset(ModelNormal):
             'src': (str,),  # noqa: E501
             'trim': (float,),  # noqa: E501
             'volume': (float,),  # noqa: E501
+            'volume_effect': (str,),  # noqa: E501
             'crop': (Crop,),  # noqa: E501
         }
 
@@ -104,6 +110,7 @@ class VideoAsset(ModelNormal):
         'src': 'src',  # noqa: E501
         'trim': 'trim',  # noqa: E501
         'volume': 'volume',  # noqa: E501
+        'volume_effect': 'volumeEffect',  # noqa: E501
         'crop': 'crop',  # noqa: E501
     }
 
@@ -153,7 +160,8 @@ class VideoAsset(ModelNormal):
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
             trim (float): The start trim point of the video clip, in seconds (defaults to 0). Videos will start from the in trim point. The video will play until the file ends or the Clip length is reached.. [optional]  # noqa: E501
-            volume (float): Set the volume for the video clip between 0 and 1 where 0 is muted and 1 is full volume (defaults to 0).. [optional]  # noqa: E501
+            volume (float): Set the volume for the video clip between 0 and 1 where 0 is muted and 1 is full volume (defaults to 1).. [optional]  # noqa: E501
+            volume_effect (str): The volume effect to apply to the video asset <ul>   <li>`fadeIn` - fade volume in only</li>   <li>`fadeOut` - fade volume out only</li>   <li>`fadeInFadeOut` - fade volume in and out</li> </ul>. [optional]  # noqa: E501
             crop (Crop): [optional]  # noqa: E501
         """
 
@@ -244,7 +252,8 @@ class VideoAsset(ModelNormal):
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
             trim (float): The start trim point of the video clip, in seconds (defaults to 0). Videos will start from the in trim point. The video will play until the file ends or the Clip length is reached.. [optional]  # noqa: E501
-            volume (float): Set the volume for the video clip between 0 and 1 where 0 is muted and 1 is full volume (defaults to 0).. [optional]  # noqa: E501
+            volume (float): Set the volume for the video clip between 0 and 1 where 0 is muted and 1 is full volume (defaults to 1).. [optional]  # noqa: E501
+            volume_effect (str): The volume effect to apply to the video asset <ul>   <li>`fadeIn` - fade volume in only</li>   <li>`fadeOut` - fade volume out only</li>   <li>`fadeInFadeOut` - fade volume in and out</li> </ul>. [optional]  # noqa: E501
             crop (Crop): [optional]  # noqa: E501
         """
 
