@@ -165,18 +165,18 @@ configuration = shotstack.Configuration(host = host)
 configuration.api_key['DeveloperKey'] = 'H7jKyj90kd09lbLOF7J900jNbSWS67X87xs9j0cD'
 
 with shotstack.ApiClient(configuration) as api_client:
-  api_instance = edit_api.EditApi(api_client)
+    api_instance = edit_api.EditApi(api_client)
 
-  id = '75143ec6-4b72-46f8-a67a-fd7284546935'
+    id = '75143ec6-4b72-46f8-a67a-fd7284546935'
 
-  try:
-    api_response = api_instance.get_render(id, data=False, merged=True)
-    status = api_response['response']['status']
+    try:
+        api_response = api_instance.get_render(id, data=False, merged=True)
+        status = api_response['response']['status']
 
-    if status == 'done':
-      print(f"{api_response['response']['url']}")
-  except Exception as e:
-    print(f"Unable to resolve API call: {e}")
+        if status == 'done':
+            print(f"{api_response['response']['url']}")
+    except Exception as e:
+        print(f"Unable to resolve API call: {e}")
 ```
 
 ### Save a Template Example
@@ -316,11 +316,11 @@ An **Edit** defines the arrangement of a video on a timeline, an audio edit or a
 from shotstack_sdk.model.edit import Edit
 
 edit = Edit(
-  timeline  = timeline,
-  output    = output,
-  merge     = merge,
-  callback  = "https://my-server.com/callback.php",
-  disk      = "local"
+  timeline = timeline,
+  output = output,
+  merge = merge,
+  callback = "https://my-server.com/callback.php",
+  disk = "local"
 )
 ```
 
@@ -347,11 +347,11 @@ as clips which are placed along the track at specific starting point and lasting
 from shotstack_sdk.model.timeline import Timeline
 
 timeline = Timeline(
-  soundtrack  = soundtrack,
-  background  = '#000000',
-  fonts       = fonts,
-  tracks      = tracks,
-  cache       = True,
+  soundtrack = soundtrack,
+  background = '#000000',
+  fonts = fonts,
+  tracks = tracks,
+  cache = True,
 )
 ```
 
@@ -377,7 +377,7 @@ A music or audio file in mp3 format that plays for the duration of the rendered 
 from shotstack_sdk.model.soundtrack import Soundtrack
 
 soundtrack = Soundtrack(
-  src    = 'https://s3-ap-southeast-2.amazonaws.com/shotstack-assets/music/disco.mp3',
+  src = 'https://s3-ap-southeast-2.amazonaws.com/shotstack-assets/music/disco.mp3',
   effect = 'fadeIn',
   volume = 1.0
 )
@@ -443,17 +443,17 @@ A **Clip** is a container for a specific type of asset, i.e. a title, image, vid
 from shotstack_sdk.model.clip import Clip
 
 clip = Clip(
-  asset     = asset,
-  start     = 2.0,
-  length    = 5.0,
-  fit       = 'crop',
-  scale     = 0.0,
-  position  = 'center',
-  offset    = offset,
-  transition= transition,
-  effect    = 'zoomIn',
-  filter    = 'greyscale',
-  opacity   = 1.0,
+  asset = asset,
+  start = 2.0,
+  length = 5.0,
+  fit = 'crop',
+  scale = 0.0,
+  position = 'center',
+  offset = offset,
+  transition = transition,
+  effect = 'zoomIn',
+  filter = 'greyscale',
+  opacity = 1.0,
   transform = transform,
 )
 ```
@@ -487,7 +487,7 @@ resource such as an mp4 file.
 ```python
 from shotstack_sdk.model.video_asset import VideoAsset
 
-videoAsset = VideoAsset(
+video_asset = VideoAsset(
   src = 'https://shotstack-assets.s3.aws.com/mountain.mp4',
   trim = 5.0,
   volume = 0.5,
@@ -517,8 +517,8 @@ The **ImageAsset** is used to create video from images to compose an image. The 
 ```python
 from shotstack_sdk.model.image_asset import ImageAsset
 
-imageAsset = ImageAsset(
-  src  = 'https://shotstack-assets.s3-ap-southeast-2.amazonaws.com/images/earth.jpg',
+image_asset = ImageAsset(
+  src = 'https://shotstack-assets.s3-ap-southeast-2.amazonaws.com/images/earth.jpg',
   crop = crop
 )
 ```
@@ -541,14 +541,14 @@ The **TitleAsset** clip type lets you create video titles from a text string and
 ```python
 from shotstack_sdk.model.title_asset import TitleAsset
 
-titleAsset = TitleAsset(
-  text       = 'My Title',
-  style      = 'minimal',
-  color      = '#ffffff',
-  size       = 'medium',
+title_asset = TitleAsset(
+  text = 'My Title',
+  style = 'minimal',
+  color = '#ffffff',
+  size = 'medium',
   background = '#000000',
-  position   = 'center',
-  offset     = offset
+  position = 'center',
+  offset = offset
 )
 ```
 
@@ -575,13 +575,13 @@ The **HtmlAsset** clip type lets you create text based layout and formatting usi
 ```python
 from shotstack_sdk.model.html_asset import HtmlAsset
 
-htmlAsset = HtmlAsset(
-  html      = '<p>Hello <b>World</b></p>',
-  css       = 'p { color: #ffffff; } b { color: #ffff00; }',
-  width     = 400,
-  height    = 200,
-  background= 'transparent',
-  position  = 'center'
+html_asset = HtmlAsset(
+  html = '<p>Hello <b>World</b></p>',
+  css = 'p { color: #ffffff; } b { color: #ffff00; }',
+  width = 400,
+  height = 200,
+  background = 'transparent',
+  position = 'center'
 )
 ```
 
@@ -608,9 +608,9 @@ publicly accessible URL to an audio resource such as an mp3 file.
 ```python
 from shotstack_sdk.model.audio_asset import AudioAsset
 
-audioAsset = AudioAsset(
-  src    = 'https://shotstack-assets.s3-ap-southeast-2.amazonaws.com/music/unminus/lit.mp3',
-  trim   = 2.0,
+audio_asset = AudioAsset(
+  src = 'https://shotstack-assets.s3-ap-southeast-2.amazonaws.com/music/unminus/lit.mp3',
+  trim = 2.0,
   volume = 0.5,
   effect = 'fadeInFadeOut'
 )
@@ -637,8 +637,8 @@ should be provided as an mp4 video file. The src must be a publicly accessible U
 ```python
 from shotstack_sdk.model.luma_asset import LumaAsset
 
-lumaAsset = LumaAsset(
-  src  = 'https://shotstack-assets.s3-ap-southeast-2.amazonaws.com/examples/luma-mattes/paint-left.mp4',
+luma_asset = LumaAsset(
+  src = 'https://shotstack-assets.s3-ap-southeast-2.amazonaws.com/examples/luma-mattes/paint-left.mp4',
   trim = 5.0
 )
 ```
@@ -711,9 +711,9 @@ by quarter of the asset.
 from shotstack_sdk.model.crop import Crop
 
 crop = Crop(
-  top   = 0.15,
+  top = 0.15,
   bottom= 0.15,
-  left  = 0.0,
+  left = 0.0,
   right = 0.0
 )
 ```
@@ -739,9 +739,9 @@ Apply one or more transformations to a clip. **Transformations** alter the visua
 from shotstack_sdk.model.transformation import Transformation
 
 transformation = Transformation(
-  rotate= rotate,
-  skew  = skew,
-  flip  = flip 
+  rotate = rotate,
+  skew = skew,
+  flip = flip 
 )
 ```
 
@@ -764,7 +764,7 @@ Rotate a clip by the specified angle in degrees. Rotation origin is set based on
 ```python
 from shotstack_sdk.model.rotate_transformation import RotateTransformation
 
-rotateTransformation = RotateTransformation(
+rotate_transformation = RotateTransformation(
   angle = 45.0
 )
 ```
@@ -786,9 +786,9 @@ Skew a clip so its edges are sheared at an angle. Use values between 0 and 3. Ov
 ```python
 from shotstack_sdk.model.skew_transformation import SkewTransformation
 
-skewTransformation = SkewTransformation(
-  .x = 0.5,
-  .y = 0.5
+skew_transformation = SkewTransformation(
+  x = 0.5,
+  y = 0.5
 )
 ```
 
@@ -810,7 +810,7 @@ Flip a clip vertically or horizontally. Acts as a mirror effect of the clip alon
 ```python
 from shotstack_sdk.model.flip_transformation import FlipTransformation
 
-flipTransformation = FlipTransformation(
+flip_transformation = FlipTransformation(
   horizontal = True,
   vertical   = True
 )
@@ -835,7 +835,7 @@ placeholder can be used for any value within the JSON edit.
 ```python
 from shotstack_sdk.model.merge_field import MergeField
 
-mergeField = MergeField(
+merge_field = MergeField(
   find = 'NAME',
   replace = 'Jane'
 )
@@ -887,7 +887,7 @@ Configure the id and optional merge fields to render a template by id.
 ```python
 from shotstack_sdk.model.template_render import TemplateRender
 
-template = Template(
+template_render = TemplateRender(
   id = '21e781c0-8232-4418-fec1-cc99f0280c21',
   merge = merge
 )
@@ -961,7 +961,7 @@ Set a custom size for a video or image. When using a custom size omit the `resol
 from shotstack_sdk.model.size import Size
 
 size = Size(
-  width  = 1200,
+  width = 1200,
   height = 800
 )
 ```
@@ -986,7 +986,7 @@ will output a single frame image at the range `start` point.
 from shotstack_sdk.model.range import Range
 
 _range = Range(
-  start  = 3.0,
+  start = 3.0,
   length = 6.0
 )
 ```
@@ -1033,7 +1033,7 @@ from shotstack_sdk.model.thumbnail import Thumbnail
 
 thumbnail = Thumbnail(
   capture = 1.0,
-  scale  = 0.3
+  scale = 0.3
 )
 ```
 
