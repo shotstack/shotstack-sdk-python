@@ -40,6 +40,9 @@ For examples of how to use the SDK to create videos using code checkout the Pyth
     - [SkewTransformation](#skewtransformation)
     - [FlipTransformation](#fliptransformation)
     - [MergeField](#mergefield)
+  - [Template Schemas](#template-schemas)
+    - [Template](#template)
+    - [TemplateRender](#templaterender)
   - [Output Schemas](#output-schemas)
     - [Output](#output)
     - [Size](#size)
@@ -820,8 +823,8 @@ placeholder can be used for any value within the JSON edit.
 from shotstack_sdk.model.merge_field import MergeField
 
 mergeField = MergeField(
-  find    ='NAME',
-  replace   ='Jane'
+  find = 'NAME',
+  replace = 'Jane'
 )
 ```
 
@@ -831,6 +834,71 @@ Argument | Type | Description | Required
 :--- | :--- | :--- | :---: 
 find | string | The string to find <u>without</u> delimiters. | Y
 replace | replace | The replacement value. The replacement can be any valid JSON type - string, boolean, number, etc... | Y
+
+---
+
+
+
+
+
+## Template Schemas
+
+The following schemas specify how to use templates to store and render templates. A template lets you save an
+[Edit](#edit) that can be rendered by its template ID and optionally include merge fields that are merged with the
+template when rendered.
+
+### Template
+
+A template is a saved [Edit](#edit) than can be loaded and re-used.
+
+#### Example:
+
+```python
+from shotstack_sdk.model.template import Template
+
+template = Template(
+  name = 'My Template',
+  template = edit
+)
+```
+
+#### Arguments:
+
+Argument | Type | Description | Required
+:--- | :--- | :--- | :---: 
+name | string | The template name. | Y
+template | [Edit](#edit) | An edit defines the arrangement of a video on a timeline, an audio edit or an image design and the output format. | Y
+
+### TemplateRender
+
+Configure the id and optional merge fields to render a template by id.
+
+#### Example:
+
+```python
+from shotstack_sdk.model.template_render import TemplateRender
+
+template = Template(
+  id = '21e781c0-8232-4418-fec1-cc99f0280c21',
+  merge = merge
+)
+```
+
+#### Arguments:
+
+Argument | Type | Description | Required
+:--- | :--- | :--- | :---: 
+id | string id | The id of the template to render in UUID format. | Y
+merge | [MergeField[]](#mergefield) | An array of key/value pairs that provides an easy way to create templates with placeholders. The placeholders can be used to find and replace keys with values. For example you can search for the placeholder `{{NAME}}` and replace it with the value `Jane`. | -
+
+---
+
+
+
+
+
+
+
 
 ---
 
