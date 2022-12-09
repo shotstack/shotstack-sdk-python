@@ -316,7 +316,7 @@ timeline | [Timeline](#timeline) | A timeline represents the contents of a video
 output | [Output](#output) | The output format, render range and type of media to generate. | Y
 merge | [MergeField[]](#mergefield) | An array of key/value pairs that provides an easy way to create templates with placeholders. The placeholders can be used to find and replace keys with values. For example you can search for the placeholder `{{NAME}}` and replace it with the value `Jane`. | -
 callback | string | An optional webhook callback URL used to receive status notifications when a render completes or fails. See [webhooks](https://shotstack.io/docs/guide/architecting-an-application/webhooks/) for  more details. | -
-disk | string | The disk type to use for storing footage and asset for each render. See [disk types](https://shotstack.io/docs/guide/architecting-an-application/disk-types/) for more details. [default to `local`] <ul><li>`local` - optimized for high speed rendering with up to 512MB storage</li><li>`mount` - optimized for larger file sizes and longer videos with 5GB for source footage and 512MB for output render</li></ul> | -
+disk | string | **(Deprecated)** The disk type to use for storing footage and asset for each render. See [disk types](https://shotstack.io/docs/guide/architecting-an-application/disk-types/) for more details. [default to `local`] <ul><li>`local` - optimized for high speed rendering with up to 512MB storage</li><li>`mount` - optimized for larger file sizes and longer videos with 5GB for source footage and 512MB for output render</li></ul> | -
 
 -----
 
@@ -472,10 +472,11 @@ resource such as an mp4 file.
 from shotstack_sdk.model.video_asset import VideoAsset
 
 videoAsset = VideoAsset(
-  src   = 'https://shotstack-assets.s3.aws.com/mountain.mp4',
-  trim  = 5.0,
-  volume= 0.5,
-  crop  = crop
+  src = 'https://shotstack-assets.s3.aws.com/mountain.mp4',
+  trim = 5.0,
+  volume = 0.5,
+  volumeEffect = 'fadeIn'
+  crop = crop
 )
 ```
 
@@ -486,6 +487,7 @@ Argument | Type | Description | Required
 src | string | The video source URL. The URL must be publicly accessible or include credentials. | Y
 trim | float | The start trim point of the video clip, in seconds (defaults to 0). Videos will start from the in trim point. The video will play until the file ends or the Clip length is reached. | -
 volume | float | Set the volume for the video clip between 0 and 1 where 0 is muted and 1 is full volume (defaults to 0). | -
+volumeEffect | effect | The volume effect to apply to the video asset.<ul><li>`fadeIn` - fade volume in only</li><li>`fadeOut` - fade volume out only</li><li>`fadeInFadeOut` - fade volume in and out</li></ul> | -
 crop | [Crop](#crop) | Crop the sides of an asset by a relative amount. The size of the crop is specified using a scale between 0 and 1, relative to the screen width - i.e. a left crop of 0.5 will crop half of the asset from the left, a top crop of 0.25 will crop the top by quarter of the asset. | -
 
 ---
@@ -677,8 +679,8 @@ offset = Offset(
 
 Argument | Type | Description | Required
 :--- | :--- | :--- | :---: 
-x | float | Offset an asset on the horizontal axis (left or right), range varies from -1 to 1. Positive numbers move the asset right, negative left. For all asset except titles the distance moved is relative to the width  of the viewport - i.e. an X offset of 0.5 will move the asset half the  screen width to the right. [default to `0`] | -
-y | float | Offset an asset on the vertical axis (up or down), range varies from -1 to 1. Positive numbers move the asset up, negative down. For all asset except titles the distance moved is relative to the height of the viewport - i.e. an Y offset of 0.5 will move the asset up half the screen height. [default to `0`] | -
+x | float | Offset an asset on the horizontal axis (left or right), range varies from -10 to 10. Positive numbers move the asset right, negative left. For all asset except titles the distance moved is relative to the width  of the viewport - i.e. an X offset of 0.5 will move the asset half the  screen width to the right. [default to `0`] | -
+y | float | Offset an asset on the vertical axis (up or down), range varies from -10 to 10. Positive numbers move the asset up, negative down. For all asset except titles the distance moved is relative to the height of the viewport - i.e. an Y offset of 0.5 will move the asset up half the screen height. [default to `0`] | -
 
 ---
 
@@ -802,8 +804,8 @@ flipTransformation = FlipTransformation(
 
 Argument | Type | Description | Required
 :--- | :--- | :--- | :---: 
-horizontal | bool | Flip a clip horizontally. [default to `false`] | - 
-vertical | bool | Flip a clip vertically. [default to `false`] | -
+horizontal | bool | Flip a clip horizontally. [default to `False`] | - 
+vertical | bool | Flip a clip vertically. [default to `False`] | -
 
 ---
 
@@ -845,17 +847,18 @@ The output format, render range and type of media to generate.
 from shotstack_sdk.model.output import Output
 
 output = Output(
-  format      = 'mp4',
-  resolution  = 'sd',
+  format = 'mp4',
+  resolution = 'sd',
   aspectRatio = '16:9',
-  size        = size,
-  fps         = 25.0,
-  scaleTo     = 'preview',
-  quality     = 'mediue',
-  repeat      = True,
-  _range      = _range,
-  poster      = poster,
-  thumbnail   = thumbnail,
+  size = size,
+  fps = 25.0,
+  scaleTo = 'preview',
+  quality = 'mediue',
+  repeat  = True,
+  mute = False,
+  _range = _range,
+  poster = poster,
+  thumbnail = thumbnail,
   destination = destination
 )
 ```
@@ -871,7 +874,8 @@ size | [Size](#size) | Set a custom size for a video or image. When using a cust
 fps | float | Override the default frames per second. Useful for when the source footage is recorded at 30fps, i.e. on  mobile devices. Lower frame rates can be used to add cinematic quality (24fps) or to create smaller file size/faster render times or animated gifs (12 or 15fps). Default is 25fps. <ul><li>`12` - 12fps</li><li>`15` - 15fps</li><li>`23.976` - 23.976fps</li><li>`24` - 24fps</li><li>`29.97` - 29.97fps</li><li>`25` - 25fps</li><li>`30` - 30fps</li></ul> | - 
 scaleTo | string | Override the resolution and scale the video or image to render at a different size. When using scaleTo the asset should be edited at the resolution dimensions, i.e. use font sizes that look best at HD, then use scaleTo to output the file at SD and the text will be scaled to the correct size. This is useful if you want to create multiple asset sizes. <ul><li>`preview` - 512px x 288px @ 15fps</li><li>`mobile` - 640px x 360px @ 25fps</li><li>`sd` - 1024px x 576px @25fps</li><li>`hd` - 1280px x 720px @25fps</li><li>`1080` - 1920px x 1080px @25fps</li></ul> | -
 quality | string | Adjust the output quality of the video, image or audio. Adjusting quality affects  render speed, download speeds and storage requirements due to file size. The default `medium` provides the most optimized choice for all three  factors. <ul><li>`low` - slightly reduced quality, smaller file size</li><li>`medium` - optimized quality, render speeds and file size</li><li>`high` - slightly increased quality, larger file size</li></ul> | -
-repeat | bool | Loop tings for gif files. Set to `true` to loop, `false` to play only once. [default to `true`] | -
+repeat | bool | Loop tings for gif files. Set to `True` to loop, `False` to play only once. [default to `True`] | -
+mute | mute | Mute the audio track of the output video. Set to `True` to mute, `False` to un-mute. | -
 range | [Range](#range) | Specify a time range to render, i.e. to render only a portion of a video or audio file. Omit this ting to export the entire video. Range can also be used to render a frame at a specific time point - ting a range and output format as `jpg` will output a single frame image at the range `start` point. | -
 poster | [Poster](#poster) | Generate a poster image from a specific point on the timeline. | -
 thumbnail | [Thumbnail](#thumbnail) | Generate a thumbnail image from a specific point on the timeline. | -
@@ -994,7 +998,7 @@ shotstackDestination = ShotstackDestination(
 Argument | Type | Description | Required
 :--- | :--- | :--- | :---: 
 provider | string | The destination to send rendered asset to - set to `shotstack` for Shotstack hosting and CDN. [default to `shotstack`] | Y
-exclude | bool | Set to `true` to opt-out from the Shotstack hosting and CDN service. All files must be downloaded within 24 hours of rendering. [default to `false`] | -
+exclude | bool | Set to `True` to opt-out from the Shotstack hosting and CDN service. All files must be downloaded within 24 hours of rendering. [default to `False`] | -
 
 ---
 
