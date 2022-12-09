@@ -146,6 +146,7 @@ class Output(ModelNormal):
             'scale_to': (str,),  # noqa: E501
             'quality': (str,),  # noqa: E501
             'repeat': (bool,),  # noqa: E501
+            'mute': (bool,),  # noqa: E501
             'range': (Range,),  # noqa: E501
             'poster': (Poster,),  # noqa: E501
             'thumbnail': (Thumbnail,),  # noqa: E501
@@ -166,6 +167,7 @@ class Output(ModelNormal):
         'scale_to': 'scaleTo',  # noqa: E501
         'quality': 'quality',  # noqa: E501
         'repeat': 'repeat',  # noqa: E501
+        'mute': 'mute',  # noqa: E501
         'range': 'range',  # noqa: E501
         'poster': 'poster',  # noqa: E501
         'thumbnail': 'thumbnail',  # noqa: E501
@@ -223,10 +225,11 @@ class Output(ModelNormal):
             scale_to (str): Override the resolution and scale the video or image to render at a different size. When using scaleTo the asset should be edited at the resolution dimensions, i.e. use font sizes that look best at HD, then use scaleTo to output the file at SD and the text will be scaled to the correct size. This is useful if you want to create multiple asset sizes. <ul>   <li>`preview` - 512px x 288px @ 15fps</li>   <li>`mobile` - 640px x 360px @ 25fps</li>   <li>`sd` - 1024px x 576px @25fps</li>   <li>`hd` - 1280px x 720px @25fps</li>   <li>`1080` - 1920px x 1080px @25fps</li> </ul>. [optional]  # noqa: E501
             quality (str): Adjust the output quality of the video, image or audio. Adjusting quality affects  render speed, download speeds and storage requirements due to file size. The default `medium` provides the most optimized choice for all three  factors. <ul>   <li>`low` - slightly reduced quality, smaller file size</li>   <li>`medium` (default) - optimized quality, render speeds and file size</li>   <li>`high` - slightly increased quality, larger file size</li> </ul>. [optional]  # noqa: E501
             repeat (bool): Loop settings for gif files. Set to `true` to loop, `false` to play only once.. [optional]  # noqa: E501
+            mute (bool): Mute the audio track of the output video. Set to `true` to mute, `false` to un-mute.. [optional]  # noqa: E501
             range (Range): [optional]  # noqa: E501
             poster (Poster): [optional]  # noqa: E501
             thumbnail (Thumbnail): [optional]  # noqa: E501
-            destinations ([Destinations]): [optional]  # noqa: E501
+            destinations ([Destinations]): Specify the storage locations and hosting services to send rendered videos to.. [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
@@ -319,10 +322,11 @@ class Output(ModelNormal):
             scale_to (str): Override the resolution and scale the video or image to render at a different size. When using scaleTo the asset should be edited at the resolution dimensions, i.e. use font sizes that look best at HD, then use scaleTo to output the file at SD and the text will be scaled to the correct size. This is useful if you want to create multiple asset sizes. <ul>   <li>`preview` - 512px x 288px @ 15fps</li>   <li>`mobile` - 640px x 360px @ 25fps</li>   <li>`sd` - 1024px x 576px @25fps</li>   <li>`hd` - 1280px x 720px @25fps</li>   <li>`1080` - 1920px x 1080px @25fps</li> </ul>. [optional]  # noqa: E501
             quality (str): Adjust the output quality of the video, image or audio. Adjusting quality affects  render speed, download speeds and storage requirements due to file size. The default `medium` provides the most optimized choice for all three  factors. <ul>   <li>`low` - slightly reduced quality, smaller file size</li>   <li>`medium` (default) - optimized quality, render speeds and file size</li>   <li>`high` - slightly increased quality, larger file size</li> </ul>. [optional]  # noqa: E501
             repeat (bool): Loop settings for gif files. Set to `true` to loop, `false` to play only once.. [optional]  # noqa: E501
+            mute (bool): Mute the audio track of the output video. Set to `true` to mute, `false` to un-mute.. [optional]  # noqa: E501
             range (Range): [optional]  # noqa: E501
             poster (Poster): [optional]  # noqa: E501
             thumbnail (Thumbnail): [optional]  # noqa: E501
-            destinations ([Destinations]): [optional]  # noqa: E501
+            destinations ([Destinations]): Specify the storage locations and hosting services to send rendered videos to.. [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)

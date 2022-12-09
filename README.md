@@ -1,6 +1,6 @@
 # Shotstack Python SDK <!-- omit in toc -->
 
-Python SDK for [Shotstack](http://shotstack.io), the cloud video editing API.
+Python SDK for the Shotstack [Python video editor](https://shotstack.io/product/sdk/python/) and cloud video editing API.
 
 Shotstack is a cloud based video editing platform that enables the editing of videos using code.
 
@@ -16,11 +16,12 @@ For examples of how to use the SDK to create videos using code checkout the Pyth
   - [Video Editing](#video-editing)
     - [Video Editing Example](#video-editing-example)
     - [Status Check Example](#status-check-example)
+    - [Save a Template Example](#save-a-template-example)
+    - [Render a Template Example](#render-a-template-example)
   - [Video Editing Schemas](#video-editing-schemas)
     - [Edit](#edit)
     - [Arguments:](#arguments)
     - [Timeline](#timeline)
-  - [cache | bool | Disable the caching of ingested source footage and assets. See  caching for more details. [default to `true`] | -](#cache--bool--disable-the-caching-of-ingested-source-footage-and-assets-see--caching-for-more-details-default-to-true---)
     - [Soundtrack](#soundtrack)
     - [Font](#font)
     - [Track](#track)
@@ -39,18 +40,34 @@ For examples of how to use the SDK to create videos using code checkout the Pyth
     - [SkewTransformation](#skewtransformation)
     - [FlipTransformation](#fliptransformation)
     - [MergeField](#mergefield)
+  - [Template Schemas](#template-schemas)
+    - [Template](#template)
+    - [TemplateRender](#templaterender)
   - [Output Schemas](#output-schemas)
     - [Output](#output)
     - [Size](#size)
     - [Range](#range)
     - [Poster](#poster)
     - [Thumbnail](#thumbnail)
+  - [Destinations](#destinations)
     - [ShotstackDestination](#shotstackdestination)
+    - [MuxDestination](#muxdestination)
+    - [MuxDestinationOptions](#muxdestinationoptions)
+    - [S3Destination](#s3destination)
+    - [S3DestinationOptions](#s3destinationoptions)
   - [Render Response Schemas](#render-response-schemas)
     - [QueuedResponse](#queuedresponse)
     - [QueuedResponseData](#queuedresponsedata)
     - [RenderResponse](#renderresponse)
     - [RenderResponseData](#renderresponsedata)
+  - [Template Response Schemas](#template-response-schemas)
+    - [TemplateResponse](#templateresponse)
+    - [TemplateResponseData](#templateresponsedata)
+    - [TemplateDataResponse](#templatedataresponse)
+    - [TemplateDataResponseData](#templatedataresponsedata)
+    - [TemplateListResponse](#templatelistresponse)
+    - [TemplateListResponseData](#templatelistresponsedata)
+    - [TemplateListResponseItem](#templatelistresponseitem)
   - [Inspecting Media](#inspecting-media)
     - [Probe Example](#probe-example)
   - [Probe Schemas](#probe-schemas)
@@ -84,30 +101,30 @@ and then sent to the API for rendering.
 ```python
 import shotstack_sdk as shotstack
 from shotstack_sdk.api import edit_api
-from shotstack_sdk.model.clip        import Clip
-from shotstack_sdk.model.track       import Track
-from shotstack_sdk.model.timeline    import Timeline
-from shotstack_sdk.model.output      import Output
-from shotstack_sdk.model.edit        import Edit
 from shotstack_sdk.model.video_asset import VideoAsset
+from shotstack_sdk.model.clip import Clip
+from shotstack_sdk.model.track import Track
+from shotstack_sdk.model.timeline import Timeline
+from shotstack_sdk.model.output import Output
+from shotstack_sdk.model.edit import Edit
 
-host = "https://api.shotstack.io/stage"
+host = 'https://api.shotstack.io/stage'
 configuration = shotstack.Configuration(host = host)
 
-configuration.api_key['DeveloperKey'] = "H7jKyj90kd09lbLOF7J900jNbSWS67X87xs9j0cD"
+configuration.api_key['DeveloperKey'] = 'H7jKyj90kd09lbLOF7J900jNbSWS67X87xs9j0cD'
 
 with shotstack.ApiClient(configuration) as api_client:
     api_instance = edit_api.EditApi(api_client)
 
     video_asset = VideoAsset(
-        src = "https://s3-ap-southeast-2.amazonaws.com/shotstack-assets/footage/skater.hd.mp4",
+        src = 'https://s3-ap-southeast-2.amazonaws.com/shotstack-assets/footage/skater.hd.mp4',
         trim = 3.0
     )
 
     video_clip = Clip(
         asset = video_asset,
         start = 0.0,
-        length= 8.0
+        length = 8.0
     )
 
     track = Track(clips=[video_clip])
@@ -117,20 +134,20 @@ with shotstack.ApiClient(configuration) as api_client:
     timeline['tracks'] = [another_track]
 
     output = Output(
-        format      = "mp4",
-        resolution  = "sd"
+        format = 'mp4',
+        resolution = 'sd'
     )
 
     edit = Edit(
         timeline = timeline,
-        output   = output
+        output = output
     )
 
     try:
         api_response = api_instance.post_render(edit)
-        print(f"{api_response['response']['id']}\n")
+        print(f"{api_response['response']['id']}")
     except Exception as e:
-         print(f"Unable to resolve API call: {e}")
+        print(f"Unable to resolve API call: {e}")
 ```
 
 ### Status Check Example
@@ -142,28 +159,147 @@ the render, which can take several seconds to process.
 import shotstack_sdk as shotstack
 from shotstack_sdk.api import edit_api
 
+host = 'https://api.shotstack.io/stage'
+configuration = shotstack.Configuration(host = host)
+
+configuration.api_key['DeveloperKey'] = 'H7jKyj90kd09lbLOF7J900jNbSWS67X87xs9j0cD'
+
+with shotstack.ApiClient(configuration) as api_client:
+    api_instance = edit_api.EditApi(api_client)
+
+    id = '75143ec6-4b72-46f8-a67a-fd7284546935'
+
+    try:
+        api_response = api_instance.get_render(id, data=False, merged=True)
+        status = api_response['response']['status']
+
+        if status == 'done':
+            print(f"{api_response['response']['url']}")
+    except Exception as e:
+        print(f"Unable to resolve API call: {e}")
+```
+
+### Save a Template Example
+
+The example below uses the Edit we create in the [Video Editing Example](#video-editing-example) and saves it as a
+template. The template can be rendered at a later date and can include placeholders. Placeholders can be replaced 
+when rendered using [merge fields](#mergefield).
+
+This example uses a placeholder for the video src (URL), trim (TRIM), and length (LENGTH) to allow you to trim any video
+using a template.
+
+```python
+import shotstack_sdk as shotstack
+import os
+
+from shotstack_sdk.api import edit_api
+from shotstack_sdk.model.video_asset import VideoAsset
+from shotstack_sdk.model.clip import Clip
+from shotstack_sdk.model.track import Track
+from shotstack_sdk.model.timeline import Timeline
+from shotstack_sdk.model.output import Output
+from shotstack_sdk.model.edit import Edit
+from shotstack_sdk.model.template import Template
+
 host = "https://api.shotstack.io/stage"
 configuration = shotstack.Configuration(host = host)
 
-configuration.api_key['DeveloperKey'] = "H7jKyj90kd09lbLOF7J900jNbSWS67X87xs9j0cD"
+configuration.api_key['DeveloperKey'] = os.getenv("SHOTSTACK_KEY")
 
 with shotstack.ApiClient(configuration) as api_client:
-  api_instance = edit_api.EditApi(api_client)
+    api_instance = edit_api.EditApi(api_client)
 
-  id = '75143ec6-4b72-46f8-a67a-fd7284546935'
+    video_asset = VideoAsset(
+        src = '{{ URL }}',
+        trim = '{{ TRIM }}'
+    )
 
-  try:
-    api_response = api_instance.get_render(id, data=False, merged=True)
+    video_clip = Clip(
+        asset = video_asset,
+        start = 0.0,
+        length = '{{ LENGTH }}'
+    )
 
-    status = api_response['response']['status']
+    track = Track(clips=[video_clip])
 
-    print('Status: ' + status.upper() + '\n')
+    timeline = Timeline(
+        background = '#000000',
+        tracks = [track]
+    )
 
-    if status == "done":
-      url = api_response['response']['url']
-      print(f">> Asset URL: {url}")
-  except Exception as e:
-    print(f"Unable to resolve API call: {e}")
+    output = Output(
+        format = 'mp4',
+        resolution = 'sd'
+    )
+
+    edit = Edit(
+        timeline = timeline,
+        output = output
+    )
+
+    template = Template(
+        name = 'Trim Template',
+        template = edit
+    )
+
+    try:
+        api_response = api_instance.post_template(template)
+        print(f"{api_response['response']['id']}")
+    except Exception as e:
+        print(f"Unable to resolve API call: {e}")
+```
+
+### Render a Template Example
+
+The example below renders the template we created in the previous example and includes merge fields that will replace
+the placeholders. Once submitted use the returned render ID and call the [Status Check Example](#status-check-example)
+to get the render progress.
+
+```python
+import shotstack_sdk as shotstack
+import os
+
+from shotstack_sdk.api import edit_api
+from shotstack_sdk.model.template_render import TemplateRender
+from shotstack_sdk.model.merge_field import MergeField
+
+host = "https://api.shotstack.io/stage"
+configuration = shotstack.Configuration(host = host)
+
+configuration.api_key['DeveloperKey'] = os.getenv("SHOTSTACK_KEY")
+
+with shotstack.ApiClient(configuration) as api_client:
+    api_instance = edit_api.EditApi(api_client)
+
+    merge_field_url = MergeField(
+        find = 'URL',
+        replace = 'https://s3-ap-southeast-2.amazonaws.com/shotstack-assets/footage/skater.hd.mp4'
+    )
+
+    merge_field_trim = MergeField(
+        find = 'TRIM',
+        replace = 3
+    )
+
+    merge_field_length = MergeField(
+        find = 'LENGTH',
+        replace = 6
+    )
+
+    template = TemplateRender(
+        id = id,
+        merge = [
+            merge_field_url,
+            merge_field_trim,
+            merge_field_length
+        ]
+    )
+
+    try:
+        api_response = api_instance.post_template_render(template)
+        print(f"{api_response['response']['id']}")
+    except Exception as e:
+        print(f"Unable to resolve API call: {e}")
 ```
 
 ## Video Editing Schemas
@@ -180,11 +316,11 @@ An **Edit** defines the arrangement of a video on a timeline, an audio edit or a
 from shotstack_sdk.model.edit import Edit
 
 edit = Edit(
-  timeline  = timeline,
-  output    = output,
-  merge     = merge,
-  callback  = "https://my-server.com/callback.php",
-  disk      = "local"
+  timeline = timeline,
+  output = output,
+  merge = merge,
+  callback = "https://my-server.com/callback.php",
+  disk = "local"
 )
 ```
 
@@ -196,7 +332,7 @@ timeline | [Timeline](#timeline) | A timeline represents the contents of a video
 output | [Output](#output) | The output format, render range and type of media to generate. | Y
 merge | [MergeField[]](#mergefield) | An array of key/value pairs that provides an easy way to create templates with placeholders. The placeholders can be used to find and replace keys with values. For example you can search for the placeholder `{{NAME}}` and replace it with the value `Jane`. | -
 callback | string | An optional webhook callback URL used to receive status notifications when a render completes or fails. See [webhooks](https://shotstack.io/docs/guide/architecting-an-application/webhooks/) for  more details. | -
-disk | string | The disk type to use for storing footage and asset for each render. See [disk types](https://shotstack.io/docs/guide/architecting-an-application/disk-types/) for more details. [default to `local`] <ul><li>`local` - optimized for high speed rendering with up to 512MB storage</li><li>`mount` - optimized for larger file sizes and longer videos with 5GB for source footage and 512MB for output render</li></ul> | -
+disk | string | **(Deprecated)** The disk type to use for storing footage and asset for each render. See [disk types](https://shotstack.io/docs/guide/architecting-an-application/disk-types/) for more details. [default to `local`] <ul><li>`local` - optimized for high speed rendering with up to 512MB storage</li><li>`mount` - optimized for larger file sizes and longer videos with 5GB for source footage and 512MB for output render</li></ul> | -
 
 -----
 
@@ -211,11 +347,11 @@ as clips which are placed along the track at specific starting point and lasting
 from shotstack_sdk.model.timeline import Timeline
 
 timeline = Timeline(
-  soundtrack  = soundtrack,
-  background  = '#000000',
-  fonts       = fonts,
-  tracks      = tracks,
-  cache       = True,
+  soundtrack = soundtrack,
+  background = '#000000',
+  fonts = fonts,
+  tracks = tracks,
+  cache = True,
 )
 ```
 
@@ -226,8 +362,9 @@ Argument | Type | Description | Required
 soundtrack | [Soundtrack](#soundtrack) | A music or audio soundtrack file in mp3 format. | -
 background | string | A hexadecimal value for the timeline background colour. Defaults to `#000000` (black). | -
 fonts | [Font[]](#font) | An array of custom fonts to be downloaded for use by the HTML assets. | -
-tracks | [Track[]](#track) | A timeline consists of an array of tracks, each track containing clips. Tracks are layered on top of each other in the same order they are added to the array with the top most track layered over the top of those below it. Ensure that a track containing titles is the top most track so that it is displayed above videos and images. | Y
-cache | bool | Disable the caching of ingested source footage and assets. See  [caching](https://shotstack.io/docs/guide/architecting-an-application/caching) for more details. [default to `true`] | -
+tracks | [Track[](#track) | A timeline consists of an array of tracks, each track containing clips. Tracks are layered on top of each other in the same order they are added to the array with the top most track layered over the top of those below it. Ensure that a track containing titles is the top most track so that it is displayed above videos and images. | Y
+cache | bool | Disable the caching of ingested source footage and assets. See  [caching](https://shotstack.io/docs/guide/architecting-an-application/caching) for more details. [default to `True`] | -
+
 ---
 
 ### Soundtrack
@@ -240,7 +377,7 @@ A music or audio file in mp3 format that plays for the duration of the rendered 
 from shotstack_sdk.model.soundtrack import Soundtrack
 
 soundtrack = Soundtrack(
-  src    = 'https://s3-ap-southeast-2.amazonaws.com/shotstack-assets/music/disco.mp3',
+  src = 'https://s3-ap-southeast-2.amazonaws.com/shotstack-assets/music/disco.mp3',
   effect = 'fadeIn',
   volume = 1.0
 )
@@ -306,17 +443,17 @@ A **Clip** is a container for a specific type of asset, i.e. a title, image, vid
 from shotstack_sdk.model.clip import Clip
 
 clip = Clip(
-  asset     = asset,
-  start     = 2.0,
-  length    = 5.0,
-  fit       = 'crop',
-  scale     = 0.0,
-  position  = 'center',
-  offset    = offset,
-  transition= transition,
-  effect    = 'zoomIn',
-  filter    = 'greyscale',
-  opacity   = 1.0,
+  asset = asset,
+  start = 2.0,
+  length = 5.0,
+  fit = 'crop',
+  scale = 0.0,
+  position = 'center',
+  offset = offset,
+  transition = transition,
+  effect = 'zoomIn',
+  filter = 'greyscale',
+  opacity = 1.0,
   transform = transform,
 )
 ```
@@ -350,11 +487,12 @@ resource such as an mp4 file.
 ```python
 from shotstack_sdk.model.video_asset import VideoAsset
 
-videoAsset = VideoAsset(
-  src   = 'https://shotstack-assets.s3.aws.com/mountain.mp4',
-  trim  = 5.0,
-  volume= 0.5,
-  crop  = crop
+video_asset = VideoAsset(
+  src = 'https://shotstack-assets.s3.aws.com/mountain.mp4',
+  trim = 5.0,
+  volume = 0.5,
+  volumeEffect = 'fadeIn'
+  crop = crop
 )
 ```
 
@@ -365,6 +503,7 @@ Argument | Type | Description | Required
 src | string | The video source URL. The URL must be publicly accessible or include credentials. | Y
 trim | float | The start trim point of the video clip, in seconds (defaults to 0). Videos will start from the in trim point. The video will play until the file ends or the Clip length is reached. | -
 volume | float | Set the volume for the video clip between 0 and 1 where 0 is muted and 1 is full volume (defaults to 0). | -
+volumeEffect | effect | The volume effect to apply to the video asset.<ul><li>`fadeIn` - fade volume in only</li><li>`fadeOut` - fade volume out only</li><li>`fadeInFadeOut` - fade volume in and out</li></ul> | -
 crop | [Crop](#crop) | Crop the sides of an asset by a relative amount. The size of the crop is specified using a scale between 0 and 1, relative to the screen width - i.e. a left crop of 0.5 will crop half of the asset from the left, a top crop of 0.25 will crop the top by quarter of the asset. | -
 
 ---
@@ -378,8 +517,8 @@ The **ImageAsset** is used to create video from images to compose an image. The 
 ```python
 from shotstack_sdk.model.image_asset import ImageAsset
 
-imageAsset = ImageAsset(
-  src  = 'https://shotstack-assets.s3-ap-southeast-2.amazonaws.com/images/earth.jpg',
+image_asset = ImageAsset(
+  src = 'https://shotstack-assets.s3-ap-southeast-2.amazonaws.com/images/earth.jpg',
   crop = crop
 )
 ```
@@ -402,14 +541,14 @@ The **TitleAsset** clip type lets you create video titles from a text string and
 ```python
 from shotstack_sdk.model.title_asset import TitleAsset
 
-titleAsset = TitleAsset(
-  text       = 'My Title',
-  style      = 'minimal',
-  color      = '#ffffff',
-  size       = 'medium',
+title_asset = TitleAsset(
+  text = 'My Title',
+  style = 'minimal',
+  color = '#ffffff',
+  size = 'medium',
   background = '#000000',
-  position   = 'center',
-  offset     = offset
+  position = 'center',
+  offset = offset
 )
 ```
 
@@ -436,13 +575,13 @@ The **HtmlAsset** clip type lets you create text based layout and formatting usi
 ```python
 from shotstack_sdk.model.html_asset import HtmlAsset
 
-htmlAsset = HtmlAsset(
-  html      = '<p>Hello <b>World</b></p>',
-  css       = 'p { color: #ffffff; } b { color: #ffff00; }',
-  width     = 400,
-  height    = 200,
-  background= 'transparent',
-  position  = 'center'
+html_asset = HtmlAsset(
+  html = '<p>Hello <b>World</b></p>',
+  css = 'p { color: #ffffff; } b { color: #ffff00; }',
+  width = 400,
+  height = 200,
+  background = 'transparent',
+  position = 'center'
 )
 ```
 
@@ -469,9 +608,9 @@ publicly accessible URL to an audio resource such as an mp3 file.
 ```python
 from shotstack_sdk.model.audio_asset import AudioAsset
 
-audioAsset = AudioAsset(
-  src    = 'https://shotstack-assets.s3-ap-southeast-2.amazonaws.com/music/unminus/lit.mp3',
-  trim   = 2.0,
+audio_asset = AudioAsset(
+  src = 'https://shotstack-assets.s3-ap-southeast-2.amazonaws.com/music/unminus/lit.mp3',
+  trim = 2.0,
   volume = 0.5,
   effect = 'fadeInFadeOut'
 )
@@ -498,8 +637,8 @@ should be provided as an mp4 video file. The src must be a publicly accessible U
 ```python
 from shotstack_sdk.model.luma_asset import LumaAsset
 
-lumaAsset = LumaAsset(
-  src  = 'https://shotstack-assets.s3-ap-southeast-2.amazonaws.com/examples/luma-mattes/paint-left.mp4',
+luma_asset = LumaAsset(
+  src = 'https://shotstack-assets.s3-ap-southeast-2.amazonaws.com/examples/luma-mattes/paint-left.mp4',
   trim = 5.0
 )
 ```
@@ -556,8 +695,8 @@ offset = Offset(
 
 Argument | Type | Description | Required
 :--- | :--- | :--- | :---: 
-x | float | Offset an asset on the horizontal axis (left or right), range varies from -1 to 1. Positive numbers move the asset right, negative left. For all asset except titles the distance moved is relative to the width  of the viewport - i.e. an X offset of 0.5 will move the asset half the  screen width to the right. [default to `0`] | -
-y | float | Offset an asset on the vertical axis (up or down), range varies from -1 to 1. Positive numbers move the asset up, negative down. For all asset except titles the distance moved is relative to the height of the viewport - i.e. an Y offset of 0.5 will move the asset up half the screen height. [default to `0`] | -
+x | float | Offset an asset on the horizontal axis (left or right), range varies from -10 to 10. Positive numbers move the asset right, negative left. For all asset except titles the distance moved is relative to the width  of the viewport - i.e. an X offset of 0.5 will move the asset half the  screen width to the right. [default to `0`] | -
+y | float | Offset an asset on the vertical axis (up or down), range varies from -10 to 10. Positive numbers move the asset up, negative down. For all asset except titles the distance moved is relative to the height of the viewport - i.e. an Y offset of 0.5 will move the asset up half the screen height. [default to `0`] | -
 
 ---
 
@@ -572,9 +711,9 @@ by quarter of the asset.
 from shotstack_sdk.model.crop import Crop
 
 crop = Crop(
-  top   = 0.15,
+  top = 0.15,
   bottom= 0.15,
-  left  = 0.0,
+  left = 0.0,
   right = 0.0
 )
 ```
@@ -600,9 +739,9 @@ Apply one or more transformations to a clip. **Transformations** alter the visua
 from shotstack_sdk.model.transformation import Transformation
 
 transformation = Transformation(
-  rotate= rotate,
-  skew  = skew,
-  flip  = flip 
+  rotate = rotate,
+  skew = skew,
+  flip = flip 
 )
 ```
 
@@ -625,7 +764,7 @@ Rotate a clip by the specified angle in degrees. Rotation origin is set based on
 ```python
 from shotstack_sdk.model.rotate_transformation import RotateTransformation
 
-rotateTransformation = RotateTransformation(
+rotate_transformation = RotateTransformation(
   angle = 45.0
 )
 ```
@@ -647,9 +786,9 @@ Skew a clip so its edges are sheared at an angle. Use values between 0 and 3. Ov
 ```python
 from shotstack_sdk.model.skew_transformation import SkewTransformation
 
-skewTransformation = SkewTransformation(
-  .x = 0.5,
-  .y = 0.5
+skew_transformation = SkewTransformation(
+  x = 0.5,
+  y = 0.5
 )
 ```
 
@@ -671,7 +810,7 @@ Flip a clip vertically or horizontally. Acts as a mirror effect of the clip alon
 ```python
 from shotstack_sdk.model.flip_transformation import FlipTransformation
 
-flipTransformation = FlipTransformation(
+flip_transformation = FlipTransformation(
   horizontal = True,
   vertical   = True
 )
@@ -681,8 +820,8 @@ flipTransformation = FlipTransformation(
 
 Argument | Type | Description | Required
 :--- | :--- | :--- | :---: 
-horizontal | bool | Flip a clip horizontally. [default to `false`] | - 
-vertical | bool | Flip a clip vertically. [default to `false`] | -
+horizontal | bool | Flip a clip horizontally. [default to `False`] | - 
+vertical | bool | Flip a clip vertically. [default to `False`] | -
 
 ---
 
@@ -696,9 +835,9 @@ placeholder can be used for any value within the JSON edit.
 ```python
 from shotstack_sdk.model.merge_field import MergeField
 
-mergeField = MergeField(
-  find    ='NAME',
-  replace   ='Jane'
+merge_field = MergeField(
+  find = 'NAME',
+  replace = 'Jane'
 )
 ```
 
@@ -708,6 +847,58 @@ Argument | Type | Description | Required
 :--- | :--- | :--- | :---: 
 find | string | The string to find <u>without</u> delimiters. | Y
 replace | replace | The replacement value. The replacement can be any valid JSON type - string, boolean, number, etc... | Y
+
+---
+
+## Template Schemas
+
+The following schemas specify how to use templates to store and render templates. A template lets you save an
+[Edit](#edit) that can be rendered by its template ID and optionally include merge fields that are merged with the
+template when rendered.
+
+### Template
+
+A template is a saved [Edit](#edit) than can be loaded and re-used.
+
+#### Example:
+
+```python
+from shotstack_sdk.model.template import Template
+
+template = Template(
+  name = 'My Template',
+  template = edit
+)
+```
+
+#### Arguments:
+
+Argument | Type | Description | Required
+:--- | :--- | :--- | :---: 
+name | string | The template name. | Y
+template | [Edit](#edit) | An edit defines the arrangement of a video on a timeline, an audio edit or an image design and the output format. | Y
+
+### TemplateRender
+
+Configure the id and optional merge fields to render a template by id.
+
+#### Example:
+
+```python
+from shotstack_sdk.model.template_render import TemplateRender
+
+template_render = TemplateRender(
+  id = '21e781c0-8232-4418-fec1-cc99f0280c21',
+  merge = merge
+)
+```
+
+#### Arguments:
+
+Argument | Type | Description | Required
+:--- | :--- | :--- | :---: 
+id | string id | The id of the template to render in UUID format. | Y
+merge | [MergeField[]](#mergefield) | An array of key/value pairs that provides an easy way to create templates with placeholders. The placeholders can be used to find and replace keys with values. For example you can search for the placeholder `{{NAME}}` and replace it with the value `Jane`. | -
 
 ---
 
@@ -724,18 +915,19 @@ The output format, render range and type of media to generate.
 from shotstack_sdk.model.output import Output
 
 output = Output(
-  format      = 'mp4',
-  resolution  = 'sd',
+  format = 'mp4',
+  resolution = 'sd',
   aspectRatio = '16:9',
-  size        = size,
-  fps         = 25.0,
-  scaleTo     = 'preview',
-  quality     = 'mediue',
-  repeat      = True,
-  _range      = _range,
-  poster      = poster,
-  thumbnail   = thumbnail,
-  destination = destination
+  size = size,
+  fps = 25.0,
+  scaleTo = 'preview',
+  quality = 'mediue',
+  repeat = True,
+  mute = False,
+  _range = _range,
+  poster = poster,
+  thumbnail = thumbnail,
+  destinations = destinations
 )
 ```
 
@@ -750,11 +942,12 @@ size | [Size](#size) | Set a custom size for a video or image. When using a cust
 fps | float | Override the default frames per second. Useful for when the source footage is recorded at 30fps, i.e. on  mobile devices. Lower frame rates can be used to add cinematic quality (24fps) or to create smaller file size/faster render times or animated gifs (12 or 15fps). Default is 25fps. <ul><li>`12` - 12fps</li><li>`15` - 15fps</li><li>`23.976` - 23.976fps</li><li>`24` - 24fps</li><li>`29.97` - 29.97fps</li><li>`25` - 25fps</li><li>`30` - 30fps</li></ul> | - 
 scaleTo | string | Override the resolution and scale the video or image to render at a different size. When using scaleTo the asset should be edited at the resolution dimensions, i.e. use font sizes that look best at HD, then use scaleTo to output the file at SD and the text will be scaled to the correct size. This is useful if you want to create multiple asset sizes. <ul><li>`preview` - 512px x 288px @ 15fps</li><li>`mobile` - 640px x 360px @ 25fps</li><li>`sd` - 1024px x 576px @25fps</li><li>`hd` - 1280px x 720px @25fps</li><li>`1080` - 1920px x 1080px @25fps</li></ul> | -
 quality | string | Adjust the output quality of the video, image or audio. Adjusting quality affects  render speed, download speeds and storage requirements due to file size. The default `medium` provides the most optimized choice for all three  factors. <ul><li>`low` - slightly reduced quality, smaller file size</li><li>`medium` - optimized quality, render speeds and file size</li><li>`high` - slightly increased quality, larger file size</li></ul> | -
-repeat | bool | Loop tings for gif files. Set to `true` to loop, `false` to play only once. [default to `true`] | -
+repeat | bool | Loop tings for gif files. Set to `True` to loop, `False` to play only once. [default to `True`] | -
+mute | mute | Mute the audio track of the output video. Set to `True` to mute, `False` to un-mute. | -
 range | [Range](#range) | Specify a time range to render, i.e. to render only a portion of a video or audio file. Omit this ting to export the entire video. Range can also be used to render a frame at a specific time point - ting a range and output format as `jpg` will output a single frame image at the range `start` point. | -
 poster | [Poster](#poster) | Generate a poster image from a specific point on the timeline. | -
 thumbnail | [Thumbnail](#thumbnail) | Generate a thumbnail image from a specific point on the timeline. | -
-destinations | [AnyOfShotstackDestination[]](#shotstackdestination) | A destination is a location where output files can be sent to for serving or hosting. By default all rendered assets are automatically sent to the Shotstack hosting destination. [ShotstackDestination](#shotstackdestination) is currently the only option with plans to add more in the future such as S3, YouTube, Vimeo and Mux. If you do not require hosting you can opt-out using the  `exclude` property. | -
+destinations | [Destinations[]](#destinations) | A destination is a location where output files can be sent to for serving or hosting. By default all rendered assets are automatically sent to the Shotstack hosting destination. | -
 
 ---
 
@@ -768,7 +961,7 @@ Set a custom size for a video or image. When using a custom size omit the `resol
 from shotstack_sdk.model.size import Size
 
 size = Size(
-  width  = 1200,
+  width = 1200,
   height = 800
 )
 ```
@@ -793,7 +986,7 @@ will output a single frame image at the range `start` point.
 from shotstack_sdk.model.range import Range
 
 _range = Range(
-  start  = 3.0,
+  start = 3.0,
   length = 6.0
 )
 ```
@@ -840,7 +1033,7 @@ from shotstack_sdk.model.thumbnail import Thumbnail
 
 thumbnail = Thumbnail(
   capture = 1.0,
-  scale  = 0.3
+  scale = 0.3
 )
 ```
 
@@ -853,6 +1046,8 @@ scale | float | Scale the thumbnail size to a fraction of the viewport size - i.
 
 ---
 
+## Destinations
+
 ### ShotstackDestination
 
 Send rendered assets to the Shotstack hosting and CDN service. This destination is enabled by default.
@@ -862,9 +1057,9 @@ Send rendered assets to the Shotstack hosting and CDN service. This destination 
 ```python
 from shotstack_sdk.model.shotstack_destination import ShotstackDestination
 
-shotstackDestination = ShotstackDestination(
+shotstack_destination = ShotstackDestination(
   provider = 'shotstack',
-  exclude  = False
+  exclude = False
 )
 ```
 
@@ -873,7 +1068,103 @@ shotstackDestination = ShotstackDestination(
 Argument | Type | Description | Required
 :--- | :--- | :--- | :---: 
 provider | string | The destination to send rendered asset to - set to `shotstack` for Shotstack hosting and CDN. [default to `shotstack`] | Y
-exclude | bool | Set to `true` to opt-out from the Shotstack hosting and CDN service. All files must be downloaded within 24 hours of rendering. [default to `false`] | -
+exclude | bool | Set to `True` to opt-out from the Shotstack hosting and CDN service. All files must be downloaded within 24 hours of rendering. [default to `False`] | -
+
+### MuxDestination
+
+Send rendered videos to the [Mux](https://shotstack.io/docs/guide/serving-assets/destinations/mux) video hosting and
+streaming service. Mux credentials are required and added via the 
+[dashboard](https://dashboard.shotstack.io/integrations/mux), not in the request.
+
+#### Example:
+
+```python
+from shotstack_sdk.model.mux_destination import MuxDestination
+
+mux_destination = MuxDestination(
+  provider = 'mux',
+  options = options
+)
+```
+
+#### Arguments:
+
+Argument | Type | Description | Required
+:--- | :--- | :--- | :---: 
+provider | string | The destination to send rendered assets to - set to `mux` for Mux. | Y
+options | [MuxDestinationOptions](#muxdestinationoptions) | Additional Mux configuration and features. | - 
+
+### MuxDestinationOptions
+
+Pass additional options to control how Mux processes video. Currently supports playback policy option.
+
+#### Example:
+
+```python
+from shotstack_sdk.model.mux_destination_options import MuxDestinationOptions
+
+mux_destination_options = MuxDestinationOptions(
+  playback_policy = ['public']
+)
+```
+
+#### Arguments:
+
+Argument | Type | Description | Required
+:--- | :--- | :--- | :---: 
+playback_policy | string | Sets the Mux `playback_policy` option. Value is an array of strings - use **public**, **signed**, or both. | -  
+
+### S3Destination
+
+Send rendered videos to an [Amazon S3](https://shotstack.io/docs/guide/serving-assets/destinations/s3) bucket. Send 
+files to any region with your own prefix and filename. AWS credentials are required and added via the 
+[dashboard](https://dashboard.shotstack.io/integrations/s3), not in the request.
+
+#### Example:
+
+```python
+from shotstack_sdk.model.s3_destination import S3Destination
+
+s3_destination = S3Destination(
+  provider = 's3',
+  options = options
+)
+```
+
+#### Arguments:
+
+Argument | Type | Description | Required
+:--- | :--- | :--- | :---: 
+provider | string | The destination to send rendered assets to - set to `s3` for S3. | Y
+options | [S3DestinationOptions](#s3destinationoptions) | Additional S3 configuration options. | - 
+
+### S3DestinationOptions
+
+Pass additional options to control how files are stored in S3.
+
+#### Example:
+
+```python
+from shotstack_sdk.model.s3_destination_options import S3DestinationOptions
+
+s3_destination_options = S3DestinationOptions(
+  region = 'us-east-1',
+  bucket = 'my-bucket',
+  prefix = 'my-renders',
+  filename = 'my-file',
+  acl = 'public-read'
+)
+```
+
+#### Arguments:
+
+Argument | Type | Description | Required
+:--- | :--- | :--- | :---: 
+region | string | Choose the region to send the file to. Must be a valid [AWS region](https://docs.aws.amazon.com/general/latest/gr/s3.html#s3_region) string like `us-east-1` or `ap-southeast-2` | Y
+bucket | string | The bucket name to send files to. The bucket must exist in the AWS account before files can be sent. | Y
+prefix | string | A prefix for the file being sent. This is typically a folder name, i.e. `videos` or `customerId/videos`. | -
+filename | string | Use your own filename instead of the default render ID filename. Note: omit the file extension as this will be appended depending on the output format. Also `-poster.jpg` and `-thumb.jpg` will be appended for poster and thumbnail images. | -
+acl | string | Sets the S3 Access Control List (acl) permissions. Default is `private`. Must use a valid  S3 [Canned ACL](https://docs.aws.amazon.com/AmazonS3/latest/userguide/acl-overview.html#canned-acl). | -
 
 ---
 
@@ -889,7 +1180,7 @@ The response received after a [render request](https://shotstack.io/docs/api/#re
 
 Attribute | Type | Description | Required
 :--- | :--- | :--- | :---: 
-success | bool | `true` if successfully queued, else `false`. | Y
+success | bool | `True` if successfully queued, else `False`. | Y
 message | string | `Created`, `Bad Request` or an error message. | Y
 response | [QueuedResponseData](#queuedresponsedata) | `QueuedResponseData` or an error message. | Y
 
@@ -916,7 +1207,7 @@ The **RenderResponse** is the response received after a [render status request](
 
 Attribute | Type | Description | Required
 :--- | :--- | :--- | :---: 
-success | bool | `true` if status available, else `false`. | Y
+success | bool | `True` if status available, else `False`. | Y
 message | string | `OK` or an error message. | Y
 response | [RenderResponseData](#renderresponsedata) | `RenderResponse` or an error message. | Y
 
@@ -943,6 +1234,98 @@ thumbnail | string | The URL of the thumbnail image if requested. This will only
 data | [Edit](#edit) | The timeline and output data to be rendered. | Y
 created | string | The time the render task was initially queued. | Y
 updated | string | The time the render status was last updated. | Y
+
+---
+
+## Template Response Schemas
+
+The following schemas are returned by the templates endpoint, including create, update and rendering a template.
+
+### TemplateResponse
+
+The response received after a [template](#create-template) is submitted. The template is saved and a unique
+template id is returned.
+
+#### Attributes:
+
+Attribute | Type | Description | Required
+:--- | :--- | :--- | :---: 
+success | bool | `True` if successfully queued, else `False`. | Y
+message | string | `Created`, `Bad Request` or an error message. | Y
+response | [TemplateResponseData](#templateresponsedata) | `TemplateResponseData` or an error message. | Y
+
+### TemplateResponseData
+
+The response data returned with the [TemplateResponse](#templateresponse).
+
+#### Attributes:
+
+Attribute | Type | Description | Required
+:--- | :--- | :--- | :---: 
+message | string | Success response message or error details. | Y
+id | string | The unique id of the template in UUID format. | Y
+
+### TemplateDataResponse
+
+The template data including the template name and [Edit](#edit).
+
+#### Attributes:
+
+Attribute | Type | Description | Required
+:--- | :--- | :--- | :---:
+success | bool | `True` if successfully queued, else `False`. | Y
+message | string | `Created`, `Bad Request` or an error message. | Y
+response | [TemplateDataResponseData](#templatedataresponsedata) | `TemplateDataResponseData` or an error message. | Y
+
+### TemplateDataResponseData
+
+The response data returned with the [TemplateDataResponse](#templatedataresponse).
+
+#### Attributes:
+
+Attribute | Type | Description | Required
+:--- | :--- | :--- | :---:
+id | string | The unique id of the template in UUID format. | Y
+name | string | The template name. | Y
+owner | string | The owner id of the templates. | Y
+template | [Edit](#edit) | `Edit` or an error message. | Y
+
+### TemplateListResponse
+
+A list of previously saved templates.
+
+#### Attributes:
+
+Attribute | Type | Description | Required
+:--- | :--- | :--- | :---:
+success | bool | `True` if successfully queued, else `False`. | Y
+message | string | `Created`, `Bad Request` or an error message. | Y
+response | [TemplateListResponseData](#templatelistresponsedata) | `TemplateListResponseData` or an error message. | Y
+
+### TemplateListResponseData
+
+The response data returned with the [TemplateListResponse](#templatelistresponse).
+
+#### Attributes:
+
+Attribute | Type | Description | Required
+:--- | :--- | :--- | :---:
+owner | bool | The owner id of the templates. | Y
+templates | [TemplateListResponseItem[]](#templatelistresponseitem) | The list of templates. | Y
+
+### TemplateListResponseItem
+
+The individual template item returned with the [TemplateListResponseData](#templatelistresponsedata) templates
+list.
+
+#### Attributes:
+
+Attribute | Type | Description | Required
+:--- | :--- | :--- | :---:
+id | string | The unique id of the template in UUID format. | Y
+name | string | The template name | Y
+created | string | The time the template was created. | -
+updated | string | The time the template was last updated. | -
 
 ---
 ## Inspecting Media
@@ -990,7 +1373,7 @@ The **ProbeResponse** is the response returned after a [probe request](https://s
 
 Argument | Type | Description | Required
 :--- | :--- | :--- | :---: 
-success | bool | `true` if media successfully read, else `false`. | Y
+success | bool | `True` if media successfully read, else `False`. | Y
 message | string | `Created`, `Bad Request` or an error message. | Y
 response | object | The response from FFprobe in JSON format | Y
 
@@ -1010,22 +1393,22 @@ created for a render, i.e. video, thumb and poster. Each asset has a unique asse
 import shotstack_sdk as shotstack
 from shotstack_sdk.api import serve_api
 
-host = "https://api.shotstack.io/stage"
+host = 'https://api.shotstack.io/stage'
 configuration = shotstack.Configuration(host = host)
 
-configuration.api_key['DeveloperKey'] = "H7jKyj90kd09lbLOF7J900jNbSWS67X87xs9j0cD"
+configuration.api_key['DeveloperKey'] = 'H7jKyj90kd09lbLOF7J900jNbSWS67X87xs9j0cD'
 
 with shotstack.ApiClient(configuration) as api_client:
     api_instance = serve_api.ServeApi(api_client)
 
-    id = "140924c6-077d-4334-a89f-94befcfc0155"
+    id = '140924c6-077d-4334-a89f-94befcfc0155'
 
     try:
         api_response = api_instance.get_asset_by_render_id(id)
 
         data = api_response['data']
 
-        if data['attributes']['status'] == "ready":
+        if data['attributes']['status'] == 'ready':
             print(f">> Asset CDN URL: {data['attributes']['url']}")
             print(f">> Asset ID:  {data['attributes']['id']}")
             print(f">> Render ID:  {data['attributes']['render_id']}")
@@ -1041,22 +1424,22 @@ Every asset has a unique asset ID, the example below looks up an asset by its as
 import shotstack_sdk as shotstack
 from shotstack_sdk.api import serve_api
 
-host = "https://api.shotstack.io/stage"
+host = 'https://api.shotstack.io/stage'
 configuration = shotstack.Configuration(host = host)
 
-configuration.api_key['DeveloperKey'] = "H7jKyj90kd09lbLOF7J900jNbSWS67X87xs9j0cD"
+configuration.api_key['DeveloperKey'] = 'H7jKyj90kd09lbLOF7J900jNbSWS67X87xs9j0cD'
 
 with shotstack.ApiClient(configuration) as api_client:
     api_instance = serve_api.ServeApi(api_client)
 
-    id = "ed43eae3-4825-4c03-979d-f7dc47b9997c"
+    id = 'ed43eae3-4825-4c03-979d-f7dc47b9997c'
 
     try:
         api_response = api_instance.get_asset(id)
 
         data = api_response['data']
 
-        if data['attributes']['status'] == "ready":
+        if data['attributes']['status'] == 'ready':
             print(">> Something went wrong, asset could not be copied.")
         else:
             print(f">> Asset CDN URL: {data['attributes']['url']}")

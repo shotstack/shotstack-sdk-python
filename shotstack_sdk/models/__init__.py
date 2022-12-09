@@ -37,6 +37,8 @@ from shotstack_sdk.model.range import Range
 from shotstack_sdk.model.render_response import RenderResponse
 from shotstack_sdk.model.render_response_data import RenderResponseData
 from shotstack_sdk.model.rotate_transformation import RotateTransformation
+from shotstack_sdk.model.s3_destination import S3Destination
+from shotstack_sdk.model.s3_destination_options import S3DestinationOptions
 from shotstack_sdk.model.shotstack_destination import ShotstackDestination
 from shotstack_sdk.model.size import Size
 from shotstack_sdk.model.skew_transformation import SkewTransformation

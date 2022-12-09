@@ -144,8 +144,8 @@ class Size(ModelNormal):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
-            width (int): Set a custom width for the video or image file. Value must be divisible by 2. Maximum video width is 1920px, maximum image width is 4096px.. [optional]  # noqa: E501
-            height (int): Set a custom height for the video or image file. Value must be divisible by 2. Maximum video height is 1920px, maximum image height is 4096px.. [optional]  # noqa: E501
+            width (int): Set a custom width for the video or image file in pixels. Value must be divisible by 2. Maximum video width is 1920px, maximum image width is 4096px.. [optional]  # noqa: E501
+            height (int): Set a custom height for the video or image file in pixels. Value must be divisible by 2. Maximum video height is 1920px, maximum image height is 4096px.. [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
@@ -227,8 +227,8 @@ class Size(ModelNormal):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
-            width (int): Set a custom width for the video or image file. Value must be divisible by 2. Maximum video width is 1920px, maximum image width is 4096px.. [optional]  # noqa: E501
-            height (int): Set a custom height for the video or image file. Value must be divisible by 2. Maximum video height is 1920px, maximum image height is 4096px.. [optional]  # noqa: E501
+            width (int): Set a custom width for the video or image file in pixels. Value must be divisible by 2. Maximum video width is 1920px, maximum image width is 4096px.. [optional]  # noqa: E501
+            height (int): Set a custom height for the video or image file in pixels. Value must be divisible by 2. Maximum video height is 1920px, maximum image height is 4096px.. [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)

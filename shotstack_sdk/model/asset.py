@@ -73,6 +73,11 @@ class Asset(ModelComposed):
     """
 
     allowed_values = {
+        ('volume_effect',): {
+            'FADEIN': "fadeIn",
+            'FADEOUT': "fadeOut",
+            'FADEINFADEOUT': "fadeInFadeOut",
+        },
         ('style',): {
             'MINIMAL': "minimal",
             'BLOCKBUSTER': "blockbuster",
@@ -133,6 +138,7 @@ class Asset(ModelComposed):
         return {
             'trim': (float,),  # noqa: E501
             'volume': (float,),  # noqa: E501
+            'volume_effect': (str,),  # noqa: E501
             'crop': (Crop,),  # noqa: E501
             'style': (str,),  # noqa: E501
             'color': (str,),  # noqa: E501
@@ -168,6 +174,7 @@ class Asset(ModelComposed):
     attribute_map = {
         'trim': 'trim',  # noqa: E501
         'volume': 'volume',  # noqa: E501
+        'volume_effect': 'volumeEffect',  # noqa: E501
         'crop': 'crop',  # noqa: E501
         'style': 'style',  # noqa: E501
         'color': 'color',  # noqa: E501
@@ -226,6 +233,7 @@ class Asset(ModelComposed):
                                 _visited_composed_classes = (Animal,)
             trim (float): The start trim point of the luma matte clip, in seconds (defaults to 0). Videos will start from the in trim point. A luma matte video will play until the file ends or the Clip length is reached.. [optional]  # noqa: E501
             volume (float): Set the volume for the audio clip between 0 and 1 where 0 is muted and 1 is full volume (defaults to 1).. [optional]  # noqa: E501
+            volume_effect (str): The volume effect to apply to the video asset <ul>   <li>`fadeIn` - fade volume in only</li>   <li>`fadeOut` - fade volume out only</li>   <li>`fadeInFadeOut` - fade volume in and out</li> </ul>. [optional]  # noqa: E501
             crop (Crop): [optional]  # noqa: E501
             style (str): Uses a preset to apply font properties and styling to the title. <ul>   <li>`minimal`</li>   <li>`blockbuster`</li>   <li>`vogue`</li>   <li>`sketchy`</li>   <li>`skinny`</li>   <li>`chunk`</li>   <li>`chunkLight`</li>   <li>`marker`</li>   <li>`future`</li>   <li>`subtitle`</li> </ul>. [optional]  # noqa: E501
             color (str): Set the text color using hexadecimal color notation. Transparency is supported by setting the first two characters of the hex string (opposite to HTML),  i.e. #80ffffff will be white with  50% transparency.. [optional]  # noqa: E501
@@ -342,6 +350,7 @@ class Asset(ModelComposed):
                                 _visited_composed_classes = (Animal,)
             trim (float): The start trim point of the luma matte clip, in seconds (defaults to 0). Videos will start from the in trim point. A luma matte video will play until the file ends or the Clip length is reached.. [optional]  # noqa: E501
             volume (float): Set the volume for the audio clip between 0 and 1 where 0 is muted and 1 is full volume (defaults to 1).. [optional]  # noqa: E501
+            volume_effect (str): The volume effect to apply to the video asset <ul>   <li>`fadeIn` - fade volume in only</li>   <li>`fadeOut` - fade volume out only</li>   <li>`fadeInFadeOut` - fade volume in and out</li> </ul>. [optional]  # noqa: E501
             crop (Crop): [optional]  # noqa: E501
             style (str): Uses a preset to apply font properties and styling to the title. <ul>   <li>`minimal`</li>   <li>`blockbuster`</li>   <li>`vogue`</li>   <li>`sketchy`</li>   <li>`skinny`</li>   <li>`chunk`</li>   <li>`chunkLight`</li>   <li>`marker`</li>   <li>`future`</li>   <li>`subtitle`</li> </ul>. [optional]  # noqa: E501
             color (str): Set the text color using hexadecimal color notation. Transparency is supported by setting the first two characters of the hex string (opposite to HTML),  i.e. #80ffffff will be white with  50% transparency.. [optional]  # noqa: E501
