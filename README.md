@@ -1,6 +1,6 @@
 # Shotstack Python SDK <!-- omit in toc -->
 
-Python SDK for [Shotstack](http://shotstack.io), the cloud video editing API.
+Python SDK for the Shotstack [Python video editor](https://shotstack.io/product/sdk/python/) and cloud video editing API.
 
 Shotstack is a cloud based video editing platform that enables the editing of videos using code.
 
@@ -16,11 +16,12 @@ For examples of how to use the SDK to create videos using code checkout the Pyth
   - [Video Editing](#video-editing)
     - [Video Editing Example](#video-editing-example)
     - [Status Check Example](#status-check-example)
+    - [Save a Template Example](#save-a-template-example)
+    - [Render a Template Example](#render-a-template-example)
   - [Video Editing Schemas](#video-editing-schemas)
     - [Edit](#edit)
     - [Arguments:](#arguments)
     - [Timeline](#timeline)
-  - [cache | bool | Disable the caching of ingested source footage and assets. See  caching for more details. [default to `true`] | -](#cache--bool--disable-the-caching-of-ingested-source-footage-and-assets-see--caching-for-more-details-default-to-true---)
     - [Soundtrack](#soundtrack)
     - [Font](#font)
     - [Track](#track)
@@ -84,30 +85,30 @@ and then sent to the API for rendering.
 ```python
 import shotstack_sdk as shotstack
 from shotstack_sdk.api import edit_api
-from shotstack_sdk.model.clip        import Clip
-from shotstack_sdk.model.track       import Track
-from shotstack_sdk.model.timeline    import Timeline
-from shotstack_sdk.model.output      import Output
-from shotstack_sdk.model.edit        import Edit
 from shotstack_sdk.model.video_asset import VideoAsset
+from shotstack_sdk.model.clip import Clip
+from shotstack_sdk.model.track import Track
+from shotstack_sdk.model.timeline import Timeline
+from shotstack_sdk.model.output import Output
+from shotstack_sdk.model.edit import Edit
 
-host = "https://api.shotstack.io/stage"
+host = 'https://api.shotstack.io/stage'
 configuration = shotstack.Configuration(host = host)
 
-configuration.api_key['DeveloperKey'] = "H7jKyj90kd09lbLOF7J900jNbSWS67X87xs9j0cD"
+configuration.api_key['DeveloperKey'] = 'H7jKyj90kd09lbLOF7J900jNbSWS67X87xs9j0cD'
 
 with shotstack.ApiClient(configuration) as api_client:
     api_instance = edit_api.EditApi(api_client)
 
     video_asset = VideoAsset(
-        src = "https://s3-ap-southeast-2.amazonaws.com/shotstack-assets/footage/skater.hd.mp4",
+        src = 'https://s3-ap-southeast-2.amazonaws.com/shotstack-assets/footage/skater.hd.mp4',
         trim = 3.0
     )
 
     video_clip = Clip(
         asset = video_asset,
         start = 0.0,
-        length= 8.0
+        length = 8.0
     )
 
     track = Track(clips=[video_clip])
@@ -117,20 +118,20 @@ with shotstack.ApiClient(configuration) as api_client:
     timeline['tracks'] = [another_track]
 
     output = Output(
-        format      = "mp4",
-        resolution  = "sd"
+        format = 'mp4',
+        resolution = 'sd'
     )
 
     edit = Edit(
         timeline = timeline,
-        output   = output
+        output = output
     )
 
     try:
         api_response = api_instance.post_render(edit)
-        print(f"{api_response['response']['id']}\n")
+        print(f"{api_response['response']['id']}")
     except Exception as e:
-         print(f"Unable to resolve API call: {e}")
+        print(f"Unable to resolve API call: {e}")
 ```
 
 ### Status Check Example
@@ -142,10 +143,10 @@ the render, which can take several seconds to process.
 import shotstack_sdk as shotstack
 from shotstack_sdk.api import edit_api
 
-host = "https://api.shotstack.io/stage"
+host = 'https://api.shotstack.io/stage'
 configuration = shotstack.Configuration(host = host)
 
-configuration.api_key['DeveloperKey'] = "H7jKyj90kd09lbLOF7J900jNbSWS67X87xs9j0cD"
+configuration.api_key['DeveloperKey'] = 'H7jKyj90kd09lbLOF7J900jNbSWS67X87xs9j0cD'
 
 with shotstack.ApiClient(configuration) as api_client:
   api_instance = edit_api.EditApi(api_client)
@@ -154,16 +155,135 @@ with shotstack.ApiClient(configuration) as api_client:
 
   try:
     api_response = api_instance.get_render(id, data=False, merged=True)
-
     status = api_response['response']['status']
 
-    print('Status: ' + status.upper() + '\n')
-
-    if status == "done":
-      url = api_response['response']['url']
-      print(f">> Asset URL: {url}")
+    if status == 'done':
+      print(f"{api_response['response']['url']}")
   except Exception as e:
     print(f"Unable to resolve API call: {e}")
+```
+
+### Save a Template Example
+
+The example below uses the Edit we create in the [Video Editing Example](#video-editing-example) and saves it as a
+template. The template can be rendered at a later date and can include placeholders. Placeholders can be replaced 
+when rendered using [merge fields](#mergefield).
+
+This example uses a placeholder for the video src (URL), trim (TRIM), and length (LENGTH) to allow you to trim any video
+using a template.
+
+```python
+import shotstack_sdk as shotstack
+import os
+
+from shotstack_sdk.api import edit_api
+from shotstack_sdk.model.video_asset import VideoAsset
+from shotstack_sdk.model.clip import Clip
+from shotstack_sdk.model.track import Track
+from shotstack_sdk.model.timeline import Timeline
+from shotstack_sdk.model.output import Output
+from shotstack_sdk.model.edit import Edit
+from shotstack_sdk.model.template import Template
+
+host = "https://api.shotstack.io/stage"
+configuration = shotstack.Configuration(host = host)
+
+configuration.api_key['DeveloperKey'] = os.getenv("SHOTSTACK_KEY")
+
+with shotstack.ApiClient(configuration) as api_client:
+    api_instance = edit_api.EditApi(api_client)
+
+    video_asset = VideoAsset(
+        src = '{{ URL }}',
+        trim = '{{ TRIM }}'
+    )
+
+    video_clip = Clip(
+        asset = video_asset,
+        start = 0.0,
+        length = '{{ LENGTH }}'
+    )
+
+    track = Track(clips=[video_clip])
+
+    timeline = Timeline(
+        background = '#000000',
+        tracks = [track]
+    )
+
+    output = Output(
+        format = 'mp4',
+        resolution = 'sd'
+    )
+
+    edit = Edit(
+        timeline = timeline,
+        output = output
+    )
+
+    template = Template(
+        name = 'Trim Template',
+        template = edit
+    )
+
+    try:
+        api_response = api_instance.post_template(template)
+        print(f"{api_response['response']['id']}")
+    except Exception as e:
+        print(f"Unable to resolve API call: {e}")
+```
+
+### Render a Template Example
+
+The example below renders the template we created in the previous example and includes merge fields that will replace
+the placeholders. Once submitted use the returned render ID and call the [Status Check Example](#status-check-example)
+to get the render progress.
+
+```python
+import shotstack_sdk as shotstack
+import os
+
+from shotstack_sdk.api import edit_api
+from shotstack_sdk.model.template_render import TemplateRender
+from shotstack_sdk.model.merge_field import MergeField
+
+host = "https://api.shotstack.io/stage"
+configuration = shotstack.Configuration(host = host)
+
+configuration.api_key['DeveloperKey'] = os.getenv("SHOTSTACK_KEY")
+
+with shotstack.ApiClient(configuration) as api_client:
+    api_instance = edit_api.EditApi(api_client)
+
+    merge_field_url = MergeField(
+        find = 'URL',
+        replace = 'https://s3-ap-southeast-2.amazonaws.com/shotstack-assets/footage/skater.hd.mp4'
+    )
+
+    merge_field_trim = MergeField(
+        find = 'TRIM',
+        replace = 3
+    )
+
+    merge_field_length = MergeField(
+        find = 'LENGTH',
+        replace = 6
+    )
+
+    template = TemplateRender(
+        id = id,
+        merge = [
+            merge_field_url,
+            merge_field_trim,
+            merge_field_length
+        ]
+    )
+
+    try:
+        api_response = api_instance.post_template_render(template)
+        print(f"{api_response['response']['id']}")
+    except Exception as e:
+        print(f"Unable to resolve API call: {e}")
 ```
 
 ## Video Editing Schemas
@@ -226,8 +346,9 @@ Argument | Type | Description | Required
 soundtrack | [Soundtrack](#soundtrack) | A music or audio soundtrack file in mp3 format. | -
 background | string | A hexadecimal value for the timeline background colour. Defaults to `#000000` (black). | -
 fonts | [Font[]](#font) | An array of custom fonts to be downloaded for use by the HTML assets. | -
-tracks | [Track[]](#track) | A timeline consists of an array of tracks, each track containing clips. Tracks are layered on top of each other in the same order they are added to the array with the top most track layered over the top of those below it. Ensure that a track containing titles is the top most track so that it is displayed above videos and images. | Y
+tracks | [Track[](#track) | A timeline consists of an array of tracks, each track containing clips. Tracks are layered on top of each other in the same order they are added to the array with the top most track layered over the top of those below it. Ensure that a track containing titles is the top most track so that it is displayed above videos and images. | Y
 cache | bool | Disable the caching of ingested source footage and assets. See  [caching](https://shotstack.io/docs/guide/architecting-an-application/caching) for more details. [default to `true`] | -
+
 ---
 
 ### Soundtrack
@@ -1010,22 +1131,22 @@ created for a render, i.e. video, thumb and poster. Each asset has a unique asse
 import shotstack_sdk as shotstack
 from shotstack_sdk.api import serve_api
 
-host = "https://api.shotstack.io/stage"
+host = 'https://api.shotstack.io/stage'
 configuration = shotstack.Configuration(host = host)
 
-configuration.api_key['DeveloperKey'] = "H7jKyj90kd09lbLOF7J900jNbSWS67X87xs9j0cD"
+configuration.api_key['DeveloperKey'] = 'H7jKyj90kd09lbLOF7J900jNbSWS67X87xs9j0cD'
 
 with shotstack.ApiClient(configuration) as api_client:
     api_instance = serve_api.ServeApi(api_client)
 
-    id = "140924c6-077d-4334-a89f-94befcfc0155"
+    id = '140924c6-077d-4334-a89f-94befcfc0155'
 
     try:
         api_response = api_instance.get_asset_by_render_id(id)
 
         data = api_response['data']
 
-        if data['attributes']['status'] == "ready":
+        if data['attributes']['status'] == 'ready':
             print(f">> Asset CDN URL: {data['attributes']['url']}")
             print(f">> Asset ID:  {data['attributes']['id']}")
             print(f">> Render ID:  {data['attributes']['render_id']}")
@@ -1041,22 +1162,22 @@ Every asset has a unique asset ID, the example below looks up an asset by its as
 import shotstack_sdk as shotstack
 from shotstack_sdk.api import serve_api
 
-host = "https://api.shotstack.io/stage"
+host = 'https://api.shotstack.io/stage'
 configuration = shotstack.Configuration(host = host)
 
-configuration.api_key['DeveloperKey'] = "H7jKyj90kd09lbLOF7J900jNbSWS67X87xs9j0cD"
+configuration.api_key['DeveloperKey'] = 'H7jKyj90kd09lbLOF7J900jNbSWS67X87xs9j0cD'
 
 with shotstack.ApiClient(configuration) as api_client:
     api_instance = serve_api.ServeApi(api_client)
 
-    id = "ed43eae3-4825-4c03-979d-f7dc47b9997c"
+    id = 'ed43eae3-4825-4c03-979d-f7dc47b9997c'
 
     try:
         api_response = api_instance.get_asset(id)
 
         data = api_response['data']
 
-        if data['attributes']['status'] == "ready":
+        if data['attributes']['status'] == 'ready':
             print(">> Something went wrong, asset could not be copied.")
         else:
             print(f">> Asset CDN URL: {data['attributes']['url']}")
