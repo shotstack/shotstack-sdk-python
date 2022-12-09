@@ -55,6 +55,14 @@ For examples of how to use the SDK to create videos using code checkout the Pyth
     - [QueuedResponseData](#queuedresponsedata)
     - [RenderResponse](#renderresponse)
     - [RenderResponseData](#renderresponsedata)
+  - [Template Response Schemas](#template-response-schemas)
+    - [TemplateResponse](#templateresponse)
+    - [TemplateResponseData](#templateresponsedata)
+    - [TemplateDataResponse](#templatedataresponse)
+    - [TemplateDataResponseData](#templatedataresponsedata)
+    - [TemplateListResponse](#templatelistresponse)
+    - [TemplateListResponseData](#templatelistresponsedata)
+    - [TemplateListResponseItem](#templatelistresponseitem)
   - [Inspecting Media](#inspecting-media)
     - [Probe Example](#probe-example)
   - [Probe Schemas](#probe-schemas)
@@ -350,7 +358,7 @@ soundtrack | [Soundtrack](#soundtrack) | A music or audio soundtrack file in mp3
 background | string | A hexadecimal value for the timeline background colour. Defaults to `#000000` (black). | -
 fonts | [Font[]](#font) | An array of custom fonts to be downloaded for use by the HTML assets. | -
 tracks | [Track[](#track) | A timeline consists of an array of tracks, each track containing clips. Tracks are layered on top of each other in the same order they are added to the array with the top most track layered over the top of those below it. Ensure that a track containing titles is the top most track so that it is displayed above videos and images. | Y
-cache | bool | Disable the caching of ingested source footage and assets. See  [caching](https://shotstack.io/docs/guide/architecting-an-application/caching) for more details. [default to `true`] | -
+cache | bool | Disable the caching of ingested source footage and assets. See  [caching](https://shotstack.io/docs/guide/architecting-an-application/caching) for more details. [default to `True`] | -
 
 ---
 
@@ -837,10 +845,6 @@ replace | replace | The replacement value. The replacement can be any valid JSON
 
 ---
 
-
-
-
-
 ## Template Schemas
 
 The following schemas specify how to use templates to store and render templates. A template lets you save an
@@ -890,15 +894,6 @@ Argument | Type | Description | Required
 :--- | :--- | :--- | :---: 
 id | string id | The id of the template to render in UUID format. | Y
 merge | [MergeField[]](#mergefield) | An array of key/value pairs that provides an easy way to create templates with placeholders. The placeholders can be used to find and replace keys with values. For example you can search for the placeholder `{{NAME}}` and replace it with the value `Jane`. | -
-
----
-
-
-
-
-
-
-
 
 ---
 
@@ -1082,7 +1077,7 @@ The response received after a [render request](https://shotstack.io/docs/api/#re
 
 Attribute | Type | Description | Required
 :--- | :--- | :--- | :---: 
-success | bool | `true` if successfully queued, else `false`. | Y
+success | bool | `True` if successfully queued, else `False`. | Y
 message | string | `Created`, `Bad Request` or an error message. | Y
 response | [QueuedResponseData](#queuedresponsedata) | `QueuedResponseData` or an error message. | Y
 
@@ -1109,7 +1104,7 @@ The **RenderResponse** is the response received after a [render status request](
 
 Attribute | Type | Description | Required
 :--- | :--- | :--- | :---: 
-success | bool | `true` if status available, else `false`. | Y
+success | bool | `True` if status available, else `False`. | Y
 message | string | `OK` or an error message. | Y
 response | [RenderResponseData](#renderresponsedata) | `RenderResponse` or an error message. | Y
 
@@ -1136,6 +1131,98 @@ thumbnail | string | The URL of the thumbnail image if requested. This will only
 data | [Edit](#edit) | The timeline and output data to be rendered. | Y
 created | string | The time the render task was initially queued. | Y
 updated | string | The time the render status was last updated. | Y
+
+---
+
+## Template Response Schemas
+
+The following schemas are returned by the templates endpoint, including create, update and rendering a template.
+
+### TemplateResponse
+
+The response received after a [template](#create-template) is submitted. The template is saved and a unique
+template id is returned.
+
+#### Attributes:
+
+Attribute | Type | Description | Required
+:--- | :--- | :--- | :---: 
+success | bool | `True` if successfully queued, else `False`. | Y
+message | string | `Created`, `Bad Request` or an error message. | Y
+response | [TemplateResponseData](#templateresponsedata) | `TemplateResponseData` or an error message. | Y
+
+### TemplateResponseData
+
+The response data returned with the [TemplateResponse](#templateresponse).
+
+#### Attributes:
+
+Attribute | Type | Description | Required
+:--- | :--- | :--- | :---: 
+message | string | Success response message or error details. | Y
+id | string | The unique id of the template in UUID format. | Y
+
+### TemplateDataResponse
+
+The template data including the template name and [Edit](#edit).
+
+#### Attributes:
+
+Attribute | Type | Description | Required
+:--- | :--- | :--- | :---:
+success | bool | `True` if successfully queued, else `False`. | Y
+message | string | `Created`, `Bad Request` or an error message. | Y
+response | [TemplateDataResponseData](#templatedataresponsedata) | `TemplateDataResponseData` or an error message. | Y
+
+### TemplateDataResponseData
+
+The response data returned with the [TemplateDataResponse](#templatedataresponse).
+
+#### Attributes:
+
+Attribute | Type | Description | Required
+:--- | :--- | :--- | :---:
+id | string | The unique id of the template in UUID format. | Y
+name | string | The template name. | Y
+owner | string | The owner id of the templates. | Y
+template | [Edit](#edit) | `Edit` or an error message. | Y
+
+### TemplateListResponse
+
+A list of previously saved templates.
+
+#### Attributes:
+
+Attribute | Type | Description | Required
+:--- | :--- | :--- | :---:
+success | bool | `True` if successfully queued, else `False`. | Y
+message | string | `Created`, `Bad Request` or an error message. | Y
+response | [TemplateListResponseData](#templatelistresponsedata) | `TemplateListResponseData` or an error message. | Y
+
+### TemplateListResponseData
+
+The response data returned with the [TemplateListResponse](#templatelistresponse).
+
+#### Attributes:
+
+Attribute | Type | Description | Required
+:--- | :--- | :--- | :---:
+owner | bool | The owner id of the templates. | Y
+templates | [TemplateListResponseItem[]](#templatelistresponseitem) | The list of templates. | Y
+
+### TemplateListResponseItem
+
+The individual template item returned with the [TemplateListResponseData](#templatelistresponsedata) templates
+list.
+
+#### Attributes:
+
+Attribute | Type | Description | Required
+:--- | :--- | :--- | :---:
+id | string | The unique id of the template in UUID format. | Y
+name | string | The template name | Y
+created | string | The time the template was created. | -
+updated | string | The time the template was last updated. | -
 
 ---
 ## Inspecting Media
@@ -1183,7 +1270,7 @@ The **ProbeResponse** is the response returned after a [probe request](https://s
 
 Argument | Type | Description | Required
 :--- | :--- | :--- | :---: 
-success | bool | `true` if media successfully read, else `false`. | Y
+success | bool | `True` if media successfully read, else `False`. | Y
 message | string | `Created`, `Bad Request` or an error message. | Y
 response | object | The response from FFprobe in JSON format | Y
 
