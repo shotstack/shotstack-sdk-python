@@ -49,7 +49,12 @@ For examples of how to use the SDK to create videos using code checkout the Pyth
     - [Range](#range)
     - [Poster](#poster)
     - [Thumbnail](#thumbnail)
+  - [Destinations](#destinations)
     - [ShotstackDestination](#shotstackdestination)
+    - [MuxDestination](#muxdestination)
+    - [MuxDestinationOptions](#muxdestinationoptions)
+    - [S3Destination](#s3destination)
+    - [S3DestinationOptions](#s3destinationoptions)
   - [Render Response Schemas](#render-response-schemas)
     - [QueuedResponse](#queuedresponse)
     - [QueuedResponseData](#queuedresponsedata)
@@ -917,12 +922,12 @@ output = Output(
   fps = 25.0,
   scaleTo = 'preview',
   quality = 'mediue',
-  repeat  = True,
+  repeat = True,
   mute = False,
   _range = _range,
   poster = poster,
   thumbnail = thumbnail,
-  destination = destination
+  destinations = destinations
 )
 ```
 
@@ -942,7 +947,7 @@ mute | mute | Mute the audio track of the output video. Set to `True` to mute, `
 range | [Range](#range) | Specify a time range to render, i.e. to render only a portion of a video or audio file. Omit this ting to export the entire video. Range can also be used to render a frame at a specific time point - ting a range and output format as `jpg` will output a single frame image at the range `start` point. | -
 poster | [Poster](#poster) | Generate a poster image from a specific point on the timeline. | -
 thumbnail | [Thumbnail](#thumbnail) | Generate a thumbnail image from a specific point on the timeline. | -
-destinations | [AnyOfShotstackDestination[]](#shotstackdestination) | A destination is a location where output files can be sent to for serving or hosting. By default all rendered assets are automatically sent to the Shotstack hosting destination. [ShotstackDestination](#shotstackdestination) is currently the only option with plans to add more in the future such as S3, YouTube, Vimeo and Mux. If you do not require hosting you can opt-out using the  `exclude` property. | -
+destinations | [Destinations[]](#destinations) | A destination is a location where output files can be sent to for serving or hosting. By default all rendered assets are automatically sent to the Shotstack hosting destination. | -
 
 ---
 
@@ -1041,6 +1046,8 @@ scale | float | Scale the thumbnail size to a fraction of the viewport size - i.
 
 ---
 
+## Destinations
+
 ### ShotstackDestination
 
 Send rendered assets to the Shotstack hosting and CDN service. This destination is enabled by default.
@@ -1050,9 +1057,9 @@ Send rendered assets to the Shotstack hosting and CDN service. This destination 
 ```python
 from shotstack_sdk.model.shotstack_destination import ShotstackDestination
 
-shotstackDestination = ShotstackDestination(
+shotstack_destination = ShotstackDestination(
   provider = 'shotstack',
-  exclude  = False
+  exclude = False
 )
 ```
 
@@ -1062,6 +1069,102 @@ Argument | Type | Description | Required
 :--- | :--- | :--- | :---: 
 provider | string | The destination to send rendered asset to - set to `shotstack` for Shotstack hosting and CDN. [default to `shotstack`] | Y
 exclude | bool | Set to `True` to opt-out from the Shotstack hosting and CDN service. All files must be downloaded within 24 hours of rendering. [default to `False`] | -
+
+### MuxDestination
+
+Send rendered videos to the [Mux](https://shotstack.io/docs/guide/serving-assets/destinations/mux) video hosting and
+streaming service. Mux credentials are required and added via the 
+[dashboard](https://dashboard.shotstack.io/integrations/mux), not in the request.
+
+#### Example:
+
+```python
+from shotstack_sdk.model.mux_destination import MuxDestination
+
+mux_destination = MuxDestination(
+  provider = 'mux',
+  options = options
+)
+```
+
+#### Arguments:
+
+Argument | Type | Description | Required
+:--- | :--- | :--- | :---: 
+provider | string | The destination to send rendered assets to - set to `mux` for Mux. | Y
+options | [MuxDestinationOptions](#muxdestinationoptions) | Additional Mux configuration and features. | - 
+
+### MuxDestinationOptions
+
+Pass additional options to control how Mux processes video. Currently supports playback policy option.
+
+#### Example:
+
+```python
+from shotstack_sdk.model.mux_destination_options import MuxDestinationOptions
+
+mux_destination_options = MuxDestinationOptions(
+  playback_policy = ['public']
+)
+```
+
+#### Arguments:
+
+Argument | Type | Description | Required
+:--- | :--- | :--- | :---: 
+playback_policy | string | Sets the Mux `playback_policy` option. Value is an array of strings - use **public**, **signed**, or both. | -  
+
+### S3Destination
+
+Send rendered videos to an [Amazon S3](https://shotstack.io/docs/guide/serving-assets/destinations/s3) bucket. Send 
+files to any region with your own prefix and filename. AWS credentials are required and added via the 
+[dashboard](https://dashboard.shotstack.io/integrations/s3), not in the request.
+
+#### Example:
+
+```python
+from shotstack_sdk.model.s3_destination import S3Destination
+
+s3_destination = S3Destination(
+  provider = 's3',
+  options = options
+)
+```
+
+#### Arguments:
+
+Argument | Type | Description | Required
+:--- | :--- | :--- | :---: 
+provider | string | The destination to send rendered assets to - set to `s3` for S3. | Y
+options | [S3DestinationOptions](#s3destinationoptions) | Additional S3 configuration options. | - 
+
+### S3DestinationOptions
+
+Pass additional options to control how files are stored in S3.
+
+#### Example:
+
+```python
+from shotstack_sdk.model.s3_destination_options import S3DestinationOptions
+
+s3_destination_options = S3DestinationOptions(
+  region = 'us-east-1',
+  bucket = 'my-bucket',
+  prefix = 'my-renders',
+  filename = 'my-file',
+  acl = 'public-read'
+)
+```
+
+#### Arguments:
+
+Argument | Type | Description | Required
+:--- | :--- | :--- | :---: 
+region | string | Choose the region to send the file to. Must be a valid [AWS region](https://docs.aws.amazon.com/general/latest/gr/s3.html#s3_region) string like `us-east-1` or `ap-southeast-2` | Y
+bucket | string | The bucket name to send files to. The bucket must exist in the AWS account before files can be sent. | Y
+prefix | string | A prefix for the file being sent. This is typically a folder name, i.e. `videos` or `customerId/videos`. | -
+filename | string | Use your own filename instead of the default render ID filename. Note: omit the file extension as this will be appended depending on the output format. Also `-poster.jpg` and `-thumb.jpg` will be appended for poster and thumbnail images. | -
+acl | string | Sets the S3 Access Control List (acl) permissions. Default is `private`. Must use a valid  S3 [Canned ACL](https://docs.aws.amazon.com/AmazonS3/latest/userguide/acl-overview.html#canned-acl). | -
 
 ---
 
