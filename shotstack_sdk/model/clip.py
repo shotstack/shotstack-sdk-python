@@ -103,6 +103,7 @@ class Clip(ModelNormal):
             'SLIDEDOWNFAST': "slideDownFast",
         },
         ('filter',): {
+            'BLUR': "blur",
             'BOOST': "boost",
             'CONTRAST': "contrast",
             'DARKEN': "darken",
