@@ -2,7 +2,7 @@ from setuptools import setup, find_packages  # noqa: H301
 from pathlib import Path
 
 NAME = "shotstack-sdk"
-VERSION = "0.2.6"
+VERSION = "0.2.7"
 # To install the library, run the following
 #
 # python setup.py install
