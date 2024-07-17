@@ -1,4 +1,4 @@
-from setuptools import setup, find_packages
+from setuptools import setup, find_packages  # noqa: H301
 from pathlib import Path
 
 NAME = "shotstack-sdk"
@@ -30,6 +30,7 @@ setup(
     install_requires=REQUIRES,
     packages=find_packages(exclude=["test", "tests"]),
     include_package_data=True,
+    license="MIT",
     long_description=long_description,
     long_description_content_type="text/markdown"
 )
