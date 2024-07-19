@@ -252,6 +252,11 @@ class OpenApiModel(object):
         # The discriminator name is obtained from the discriminator meta-data
         # and the discriminator value is obtained from the input data.
         discr_propertyname_py = list(cls.discriminator.keys())[0]
+
+        # DO NOT DELETE #
+        if not discr_propertyname_py in cls.attribute_map:
+            return None
+
         discr_propertyname_js = cls.attribute_map[discr_propertyname_py]
         if discr_propertyname_js in kwargs:
             discr_value = kwargs[discr_propertyname_js]
@@ -373,6 +378,11 @@ class OpenApiModel(object):
         # The discriminator name is obtained from the discriminator meta-data
         # and the discriminator value is obtained from the input data.
         discr_propertyname_py = list(cls.discriminator.keys())[0]
+
+        # DO NOT DELETE #
+        if not discr_propertyname_py in cls.attribute_map:
+            return None
+
         discr_propertyname_js = cls.attribute_map[discr_propertyname_py]
         if discr_propertyname_js in kwargs:
             discr_value = kwargs[discr_propertyname_js]
@@ -1528,6 +1538,17 @@ def is_valid_type(input_class_simple, valid_classes):
                 return True
     return valid_type
 
+# DO NOT DELETE
+# Custom code checks for placeholders to bypass type checking
+def is_placeholder(input_value):
+    if isinstance(input_value, str):
+        pattern = r'\{\{\s*.*\s*\}\}'
+        match = re.search(pattern, input_value)
+
+        if match:
+            return True
+
+    return False
 
 def validate_and_convert_types(input_value, required_types_mixed, path_to_item,
                                spec_property_naming, _check_type, configuration=None):
@@ -1559,6 +1580,11 @@ def validate_and_convert_types(input_value, required_types_mixed, path_to_item,
     Raises:
         ApiTypeError
     """
+
+    # DO NO DELETE - runs placeholder check
+    if is_placeholder(input_value):
+        return input_value
+
     results = get_required_type_classes(required_types_mixed, spec_property_naming)
     valid_classes, child_req_types_by_current_type = results
 
