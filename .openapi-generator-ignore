@@ -1,0 +1,7 @@
+# Preserve custom files during SDK regeneration
+README.md
+.github/**
+.openapi-generator-ignore
+.gitignore
+.oas-version
+scripts/**
