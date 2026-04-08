@@ -31,12 +31,9 @@ from shotstack_sdk.exceptions import ApiAttributeError
 
 
 def lazy_import():
-    from shotstack_sdk.model.enhancements import Enhancements
-    from shotstack_sdk.model.size import Size
-    from shotstack_sdk.model.speed import Speed
-    globals()['Enhancements'] = Enhancements
-    globals()['Size'] = Size
-    globals()['Speed'] = Speed
+    Enhancements
+    Size
+    Speed
 
 
 class Rendition(ModelNormal):
@@ -65,33 +62,33 @@ class Rendition(ModelNormal):
 
     allowed_values = {
         ('format',): {
-            'MP4': "mp4",
-            'WEBM': "webm",
-            'MOV': "mov",
-            'AVI': "avi",
-            'MKV': "mkv",
-            'OGV': "ogv",
-            'WMV': "wmv",
-            'AVIF': "avif",
-            'GIF': "gif",
-            'MP3': "mp3",
-            'WAV': "wav",
-            'JPG': "jpg",
-            'PNG': "png",
-            'WEBP': "webp",
-            'TIF': "tif",
+            '&#39;mp4&#39;': 'mp4',
+            '&#39;webm&#39;': 'webm',
+            '&#39;mov&#39;': 'mov',
+            '&#39;avi&#39;': 'avi',
+            '&#39;mkv&#39;': 'mkv',
+            '&#39;ogv&#39;': 'ogv',
+            '&#39;wmv&#39;': 'wmv',
+            '&#39;avif&#39;': 'avif',
+            '&#39;gif&#39;': 'gif',
+            '&#39;mp3&#39;': 'mp3',
+            '&#39;wav&#39;': 'wav',
+            '&#39;jpg&#39;': 'jpg',
+            '&#39;png&#39;': 'png',
+            '&#39;webp&#39;': 'webp',
+            '&#39;tif&#39;': 'tif',
         },
         ('fit',): {
-            'COVER': "cover",
-            'CONTAIN': "contain",
-            'CROP': "crop",
+            '&#39;cover&#39;': 'cover',
+            '&#39;contain&#39;': 'contain',
+            '&#39;crop&#39;': 'crop',
         },
         ('resolution',): {
-            'PREVIEW': "preview",
-            'MOBILE': "mobile",
-            'SD': "sd",
-            'HD': "hd",
-            'FHD': "fhd",
+            '&#39;preview&#39;': 'preview',
+            '&#39;mobile&#39;': 'mobile',
+            '&#39;sd&#39;': 'sd',
+            '&#39;hd&#39;': 'hd',
+            '&#39;fhd&#39;': 'fhd',
         },
         ('fps',): {
             '12': 12,
@@ -119,14 +116,7 @@ class Rendition(ModelNormal):
         },
     }
 
-    @cached_property
-    def additional_properties_type():
-        """
-        This must be a method because a model may have properties that are
-        of type self, this must run after the class is loaded
-        """
-        lazy_import()
-        return (bool, date, datetime, dict, float, int, list, str, none_type,)  # noqa: E501
+    additional_properties_type = None
 
     _nullable = False
 
@@ -150,6 +140,8 @@ class Rendition(ModelNormal):
             'fps': (float,),  # noqa: E501
             'speed': (Speed,),  # noqa: E501
             'keyframe_interval': (int,),  # noqa: E501
+            'fix_offset': (bool,),  # noqa: E501
+            'fix_rotation': (bool,),  # noqa: E501
             'enhance': (Enhancements,),  # noqa: E501
             'filename': (str,),  # noqa: E501
         }
@@ -168,6 +160,8 @@ class Rendition(ModelNormal):
         'fps': 'fps',  # noqa: E501
         'speed': 'speed',  # noqa: E501
         'keyframe_interval': 'keyframeInterval',  # noqa: E501
+        'fix_offset': 'fixOffset',  # noqa: E501
+        'fix_rotation': 'fixRotation',  # noqa: E501
         'enhance': 'enhance',  # noqa: E501
         'filename': 'filename',  # noqa: E501
     }
@@ -221,6 +215,8 @@ class Rendition(ModelNormal):
             fps (float): Change the frame rate of a video asset. <ul>   <li>`12` - 12fps</li>   <li>`15` - 15fps</li>   <li>`24` - 24fps</li>   <li>`23.976` - 23.976fps</li>   <li>`25` (default) - 25fps</li>   <li>`29.97` - 29.97fps</li>   <li>`30` - 30fps</li>   <li>`48` - 48fps</li>   <li>`50` - 50fps</li>   <li>`59.94` - 59.94fps</li>   <li>`60` - 60fps</li> </ul>. [optional]  # noqa: E501
             speed (Speed): [optional]  # noqa: E501
             keyframe_interval (int): The keyframe interval is useful to optimize playback, seeking and smoother scrubbing in browsers. The value sets the number of frames between a keyframe. The lower the number, the larger the file. Try a value between 10 and 25 for smooth scrubbing.. [optional]  # noqa: E501
+            fix_offset (bool): Attempt to fix audio and video sync issues. This can occur when recording devices, such as smartphones and  web cams use compression techniques like [Variable Frame Rate](https://en.wikipedia.org/wiki/Variable_frame_rate)  (VFR) which can cause audio and video to go out of sync. This option will attempt to fix the sync issues.. [optional]  # noqa: E501
+            fix_rotation (bool): Automatically reset the rotation of the video based on the orientation metadata in the video file. This is useful for videos recorded on smartphones that have orientation metadata that may not work correctly with certain video editing software, including the Shotstack Edit API.. [optional]  # noqa: E501
             enhance (Enhancements): [optional]  # noqa: E501
             filename (str): A custom name for the generated rendition file. The file extension will be automatically added based on the format of the rendition. If no filename is provided, the rendition ID will be used.. [optional]  # noqa: E501
         """
@@ -312,6 +308,8 @@ class Rendition(ModelNormal):
             fps (float): Change the frame rate of a video asset. <ul>   <li>`12` - 12fps</li>   <li>`15` - 15fps</li>   <li>`24` - 24fps</li>   <li>`23.976` - 23.976fps</li>   <li>`25` (default) - 25fps</li>   <li>`29.97` - 29.97fps</li>   <li>`30` - 30fps</li>   <li>`48` - 48fps</li>   <li>`50` - 50fps</li>   <li>`59.94` - 59.94fps</li>   <li>`60` - 60fps</li> </ul>. [optional]  # noqa: E501
             speed (Speed): [optional]  # noqa: E501
             keyframe_interval (int): The keyframe interval is useful to optimize playback, seeking and smoother scrubbing in browsers. The value sets the number of frames between a keyframe. The lower the number, the larger the file. Try a value between 10 and 25 for smooth scrubbing.. [optional]  # noqa: E501
+            fix_offset (bool): Attempt to fix audio and video sync issues. This can occur when recording devices, such as smartphones and  web cams use compression techniques like [Variable Frame Rate](https://en.wikipedia.org/wiki/Variable_frame_rate)  (VFR) which can cause audio and video to go out of sync. This option will attempt to fix the sync issues.. [optional]  # noqa: E501
+            fix_rotation (bool): Automatically reset the rotation of the video based on the orientation metadata in the video file. This is useful for videos recorded on smartphones that have orientation metadata that may not work correctly with certain video editing software, including the Shotstack Edit API.. [optional]  # noqa: E501
             enhance (Enhancements): [optional]  # noqa: E501
             filename (str): A custom name for the generated rendition file. The file extension will be automatically added based on the format of the rendition. If no filename is provided, the rendition ID will be used.. [optional]  # noqa: E501
         """

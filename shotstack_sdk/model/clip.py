@@ -31,14 +31,14 @@ from shotstack_sdk.exceptions import ApiAttributeError
 
 
 def lazy_import():
-    from shotstack_sdk.model.asset import Asset
-    from shotstack_sdk.model.offset import Offset
-    from shotstack_sdk.model.transformation import Transformation
-    from shotstack_sdk.model.transition import Transition
-    globals()['Asset'] = Asset
-    globals()['Offset'] = Offset
-    globals()['Transformation'] = Transformation
-    globals()['Transition'] = Transition
+    Asset
+    ClipLength
+    ClipOpacity
+    ClipScale
+    ClipStart
+    Offset
+    Transformation
+    Transition
 
 
 class Clip(ModelNormal):
@@ -67,65 +67,72 @@ class Clip(ModelNormal):
 
     allowed_values = {
         ('fit',): {
-            'COVER': "cover",
-            'CONTAIN': "contain",
-            'CROP': "crop",
-            'NONE': "none",
+            '&#39;cover&#39;': 'cover',
+            '&#39;contain&#39;': 'contain',
+            '&#39;crop&#39;': 'crop',
+            '&#39;none&#39;': 'none',
         },
         ('position',): {
-            'TOP': "top",
-            'TOPRIGHT': "topRight",
-            'RIGHT': "right",
-            'BOTTOMRIGHT': "bottomRight",
-            'BOTTOM': "bottom",
-            'BOTTOMLEFT': "bottomLeft",
-            'LEFT': "left",
-            'TOPLEFT': "topLeft",
-            'CENTER': "center",
+            '&#39;top&#39;': 'top',
+            '&#39;topRight&#39;': 'topRight',
+            '&#39;right&#39;': 'right',
+            '&#39;bottomRight&#39;': 'bottomRight',
+            '&#39;bottom&#39;': 'bottom',
+            '&#39;bottomLeft&#39;': 'bottomLeft',
+            '&#39;left&#39;': 'left',
+            '&#39;topLeft&#39;': 'topLeft',
+            '&#39;center&#39;': 'center',
         },
         ('effect',): {
-            'ZOOMIN': "zoomIn",
-            'ZOOMINSLOW': "zoomInSlow",
-            'ZOOMINFAST': "zoomInFast",
-            'ZOOMOUT': "zoomOut",
-            'ZOOMOUTSLOW': "zoomOutSlow",
-            'ZOOMOUTFAST': "zoomOutFast",
-            'SLIDELEFT': "slideLeft",
-            'SLIDELEFTSLOW': "slideLeftSlow",
-            'SLIDELEFTFAST': "slideLeftFast",
-            'SLIDERIGHT': "slideRight",
-            'SLIDERIGHTSLOW': "slideRightSlow",
-            'SLIDERIGHTFAST': "slideRightFast",
-            'SLIDEUP': "slideUp",
-            'SLIDEUPSLOW': "slideUpSlow",
-            'SLIDEUPFAST': "slideUpFast",
-            'SLIDEDOWN': "slideDown",
-            'SLIDEDOWNSLOW': "slideDownSlow",
-            'SLIDEDOWNFAST': "slideDownFast",
+            '&#39;zoomIn&#39;': 'zoomIn',
+            '&#39;zoomInSlow&#39;': 'zoomInSlow',
+            '&#39;zoomInFast&#39;': 'zoomInFast',
+            '&#39;zoomOut&#39;': 'zoomOut',
+            '&#39;zoomOutSlow&#39;': 'zoomOutSlow',
+            '&#39;zoomOutFast&#39;': 'zoomOutFast',
+            '&#39;slideLeft&#39;': 'slideLeft',
+            '&#39;slideLeftSlow&#39;': 'slideLeftSlow',
+            '&#39;slideLeftFast&#39;': 'slideLeftFast',
+            '&#39;slideRight&#39;': 'slideRight',
+            '&#39;slideRightSlow&#39;': 'slideRightSlow',
+            '&#39;slideRightFast&#39;': 'slideRightFast',
+            '&#39;slideUp&#39;': 'slideUp',
+            '&#39;slideUpSlow&#39;': 'slideUpSlow',
+            '&#39;slideUpFast&#39;': 'slideUpFast',
+            '&#39;slideDown&#39;': 'slideDown',
+            '&#39;slideDownSlow&#39;': 'slideDownSlow',
+            '&#39;slideDownFast&#39;': 'slideDownFast',
         },
         ('filter',): {
-            'BLUR': "blur",
-            'BOOST': "boost",
-            'CONTRAST': "contrast",
-            'DARKEN': "darken",
-            'GREYSCALE': "greyscale",
-            'LIGHTEN': "lighten",
-            'MUTED': "muted",
-            'NEGATIVE': "negative",
+            '&#39;none&#39;': 'none',
+            '&#39;blur&#39;': 'blur',
+            '&#39;boost&#39;': 'boost',
+            '&#39;contrast&#39;': 'contrast',
+            '&#39;darken&#39;': 'darken',
+            '&#39;greyscale&#39;': 'greyscale',
+            '&#39;lighten&#39;': 'lighten',
+            '&#39;muted&#39;': 'muted',
+            '&#39;negative&#39;': 'negative',
         },
     }
 
     validations = {
+        ('width',): {
+            'inclusive_maximum': 3840,
+            'inclusive_minimum': 1,
+        },
+        ('height',): {
+            'inclusive_maximum': 2160,
+            'inclusive_minimum': 1,
+        },
+        ('alias',): {
+            'regex': {
+                'pattern': r'',  # noqa: E501
+            },
+        },
     }
 
-    @cached_property
-    def additional_properties_type():
-        """
-        This must be a method because a model may have properties that are
-        of type self, this must run after the class is loaded
-        """
-        lazy_import()
-        return (bool, date, datetime, dict, float, int, list, str, none_type,)  # noqa: E501
+    additional_properties_type = None
 
     _nullable = False
 
@@ -142,17 +149,20 @@ class Clip(ModelNormal):
         lazy_import()
         return {
             'asset': (Asset,),  # noqa: E501
-            'start': (float,),  # noqa: E501
-            'length': (float,),  # noqa: E501
+            'start': (ClipStart,),  # noqa: E501
+            'length': (ClipLength,),  # noqa: E501
             'fit': (str,),  # noqa: E501
-            'scale': (float,),  # noqa: E501
+            'scale': (ClipScale,),  # noqa: E501
+            'width': (float,),  # noqa: E501
+            'height': (float,),  # noqa: E501
             'position': (str,),  # noqa: E501
             'offset': (Offset,),  # noqa: E501
             'transition': (Transition,),  # noqa: E501
             'effect': (str,),  # noqa: E501
             'filter': (str,),  # noqa: E501
-            'opacity': (float,),  # noqa: E501
+            'opacity': (ClipOpacity,),  # noqa: E501
             'transform': (Transformation,),  # noqa: E501
+            'alias': (str,),  # noqa: E501
         }
 
     @cached_property
@@ -166,6 +176,8 @@ class Clip(ModelNormal):
         'length': 'length',  # noqa: E501
         'fit': 'fit',  # noqa: E501
         'scale': 'scale',  # noqa: E501
+        'width': 'width',  # noqa: E501
+        'height': 'height',  # noqa: E501
         'position': 'position',  # noqa: E501
         'offset': 'offset',  # noqa: E501
         'transition': 'transition',  # noqa: E501
@@ -173,6 +185,7 @@ class Clip(ModelNormal):
         'filter': 'filter',  # noqa: E501
         'opacity': 'opacity',  # noqa: E501
         'transform': 'transform',  # noqa: E501
+        'alias': 'alias',  # noqa: E501
     }
 
     read_only_vars = {
@@ -187,8 +200,8 @@ class Clip(ModelNormal):
 
         Args:
             asset (Asset):
-            start (float): The start position of the Clip on the timeline, in seconds.
-            length (float): The length, in seconds, the Clip should play for.
+            start (ClipStart):
+            length (ClipLength):
 
         Keyword Args:
             _check_type (bool): if True, values for parameters in openapi_types
@@ -222,14 +235,17 @@ class Clip(ModelNormal):
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
             fit (str): Set how the asset should be scaled to fit the viewport using one of the following options:    <ul>     <li>`crop` <b>(default)</b> - scale the asset to fill the viewport while maintaining the aspect ratio. The asset will be cropped if it exceeds the bounds of the viewport.</li>     <li>`cover` - stretch the asset to fill the viewport without maintaining the aspect ratio.</li>     <li>`contain` - fit the entire asset within the viewport while maintaining the original aspect ratio.</li>     <li>`none` - preserves the original asset dimensions and does not apply any scaling.</li>   </ul>. [optional]  # noqa: E501
-            scale (float): Scale the asset to a fraction of the viewport size - i.e. setting the scale to 0.5 will scale asset to half the size of the viewport. This is useful for picture-in-picture video and  scaling images such as logos and watermarks.. [optional]  # noqa: E501
+            scale (ClipScale): [optional]  # noqa: E501
+            width (float): Set the width of the clip bounding box in pixels. This constrains the width of the clip, overriding the default behavior where clips fill the viewport width.. [optional]  # noqa: E501
+            height (float): Set the height of the clip bounding box in pixels. This constrains the height of the clip, overriding the default behavior where clips fill the viewport height.. [optional]  # noqa: E501
             position (str): Place the asset in one of nine predefined positions of the viewport. This is most effective for when the asset is scaled and you want to position the element to a specific position. <ul>   <li>`top` - top (center)</li>   <li>`topRight` - top right</li>   <li>`right` - right (center)</li>   <li>`bottomRight` - bottom right</li>   <li>`bottom` - bottom (center)</li>   <li>`bottomLeft` - bottom left</li>   <li>`left` - left (center)</li>   <li>`topLeft` - top left</li>   <li>`center` - center</li> </ul>. [optional]  # noqa: E501
             offset (Offset): [optional]  # noqa: E501
             transition (Transition): [optional]  # noqa: E501
             effect (str): A motion effect to apply to the Clip. <ul>   <li>`zoomIn` - slow zoom in</li>   <li>`zoomOut` - slow zoom out</li>   <li>`slideLeft` - slow slide (pan) left</li>   <li>`slideRight` - slow slide (pan) right</li>   <li>`slideUp` - slow slide (pan) up</li>   <li>`slideDown` - slow slide (pan) down</li> </ul> The motion effect speed can also be controlled by appending `Fast` or `Slow` to the effect, e.g. `zoomInFast` or `slideRightSlow`.. [optional]  # noqa: E501
-            filter (str): A filter effect to apply to the Clip. <ul>   <li>`blur` - blur the scene</li>   <li>`boost` - boost contrast and saturation</li>   <li>`contrast` - increase contrast</li>   <li>`darken` - darken the scene</li>   <li>`greyscale` - remove colour</li>   <li>`lighten` - lighten the scene</li>   <li>`muted` - reduce saturation and contrast</li>   <li>`negative` - negative colors</li> </ul>. [optional]  # noqa: E501
-            opacity (float): Sets the opacity of the Clip where 1 is opaque and 0 is transparent.. [optional]  # noqa: E501
+            filter (str): A filter effect to apply to the Clip. <ul>   <li>`none` - no filter applied</li>   <li>`blur` - blur the scene</li>   <li>`boost` - boost contrast and saturation</li>   <li>`contrast` - increase contrast</li>   <li>`darken` - darken the scene</li>   <li>`greyscale` - remove colour</li>   <li>`lighten` - lighten the scene</li>   <li>`muted` - reduce saturation and contrast</li>   <li>`negative` - negative colors</li> </ul>. [optional]  # noqa: E501
+            opacity (ClipOpacity): [optional]  # noqa: E501
             transform (Transformation): [optional]  # noqa: E501
+            alias (str): A unique identifier for this clip that can be used to reference it from other clips using the `alias://` protocol in asset sources. This is useful for features like auto-captioning where a caption asset needs to reference the audio from another clip.. [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
@@ -285,8 +301,8 @@ class Clip(ModelNormal):
 
         Args:
             asset (Asset):
-            start (float): The start position of the Clip on the timeline, in seconds.
-            length (float): The length, in seconds, the Clip should play for.
+            start (ClipStart):
+            length (ClipLength):
 
         Keyword Args:
             _check_type (bool): if True, values for parameters in openapi_types
@@ -320,14 +336,17 @@ class Clip(ModelNormal):
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
             fit (str): Set how the asset should be scaled to fit the viewport using one of the following options:    <ul>     <li>`crop` <b>(default)</b> - scale the asset to fill the viewport while maintaining the aspect ratio. The asset will be cropped if it exceeds the bounds of the viewport.</li>     <li>`cover` - stretch the asset to fill the viewport without maintaining the aspect ratio.</li>     <li>`contain` - fit the entire asset within the viewport while maintaining the original aspect ratio.</li>     <li>`none` - preserves the original asset dimensions and does not apply any scaling.</li>   </ul>. [optional]  # noqa: E501
-            scale (float): Scale the asset to a fraction of the viewport size - i.e. setting the scale to 0.5 will scale asset to half the size of the viewport. This is useful for picture-in-picture video and  scaling images such as logos and watermarks.. [optional]  # noqa: E501
+            scale (ClipScale): [optional]  # noqa: E501
+            width (float): Set the width of the clip bounding box in pixels. This constrains the width of the clip, overriding the default behavior where clips fill the viewport width.. [optional]  # noqa: E501
+            height (float): Set the height of the clip bounding box in pixels. This constrains the height of the clip, overriding the default behavior where clips fill the viewport height.. [optional]  # noqa: E501
             position (str): Place the asset in one of nine predefined positions of the viewport. This is most effective for when the asset is scaled and you want to position the element to a specific position. <ul>   <li>`top` - top (center)</li>   <li>`topRight` - top right</li>   <li>`right` - right (center)</li>   <li>`bottomRight` - bottom right</li>   <li>`bottom` - bottom (center)</li>   <li>`bottomLeft` - bottom left</li>   <li>`left` - left (center)</li>   <li>`topLeft` - top left</li>   <li>`center` - center</li> </ul>. [optional]  # noqa: E501
             offset (Offset): [optional]  # noqa: E501
             transition (Transition): [optional]  # noqa: E501
             effect (str): A motion effect to apply to the Clip. <ul>   <li>`zoomIn` - slow zoom in</li>   <li>`zoomOut` - slow zoom out</li>   <li>`slideLeft` - slow slide (pan) left</li>   <li>`slideRight` - slow slide (pan) right</li>   <li>`slideUp` - slow slide (pan) up</li>   <li>`slideDown` - slow slide (pan) down</li> </ul> The motion effect speed can also be controlled by appending `Fast` or `Slow` to the effect, e.g. `zoomInFast` or `slideRightSlow`.. [optional]  # noqa: E501
-            filter (str): A filter effect to apply to the Clip. <ul>   <li>`blur` - blur the scene</li>   <li>`boost` - boost contrast and saturation</li>   <li>`contrast` - increase contrast</li>   <li>`darken` - darken the scene</li>   <li>`greyscale` - remove colour</li>   <li>`lighten` - lighten the scene</li>   <li>`muted` - reduce saturation and contrast</li>   <li>`negative` - negative colors</li> </ul>. [optional]  # noqa: E501
-            opacity (float): Sets the opacity of the Clip where 1 is opaque and 0 is transparent.. [optional]  # noqa: E501
+            filter (str): A filter effect to apply to the Clip. <ul>   <li>`none` - no filter applied</li>   <li>`blur` - blur the scene</li>   <li>`boost` - boost contrast and saturation</li>   <li>`contrast` - increase contrast</li>   <li>`darken` - darken the scene</li>   <li>`greyscale` - remove colour</li>   <li>`lighten` - lighten the scene</li>   <li>`muted` - reduce saturation and contrast</li>   <li>`negative` - negative colors</li> </ul>. [optional]  # noqa: E501
+            opacity (ClipOpacity): [optional]  # noqa: E501
             transform (Transformation): [optional]  # noqa: E501
+            alias (str): A unique identifier for this clip that can be used to reference it from other clips using the `alias://` protocol in asset sources. This is useful for features like auto-captioning where a caption asset needs to reference the audio from another clip.. [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)

@@ -31,8 +31,7 @@ from shotstack_sdk.exceptions import ApiAttributeError
 
 
 def lazy_import():
-    from shotstack_sdk.model.crop import Crop
-    globals()['Crop'] = Crop
+    Crop
 
 
 class ImageAsset(ModelNormal):
@@ -60,19 +59,21 @@ class ImageAsset(ModelNormal):
     """
 
     allowed_values = {
+        ('type',): {
+            '&#39;image&#39;': 'image',
+        },
     }
 
     validations = {
+        ('src',): {
+            'min_length': 1,
+            'regex': {
+                'pattern': r'',  # noqa: E501
+            },
+        },
     }
 
-    @cached_property
-    def additional_properties_type():
-        """
-        This must be a method because a model may have properties that are
-        of type self, this must run after the class is loaded
-        """
-        lazy_import()
-        return (bool, date, datetime, dict, float, int, list, str, none_type,)  # noqa: E501
+    additional_properties_type = None
 
     _nullable = False
 
@@ -118,7 +119,7 @@ class ImageAsset(ModelNormal):
             src (str): The image source URL. The URL must be publicly accessible or include credentials.
 
         Keyword Args:
-            type (str): The type of asset - set to `image` for images.. defaults to "image"  # noqa: E501
+            type (str): The type of asset - set to `image` for images.. defaults to 'image', must be one of ['image', ]  # noqa: E501
             _check_type (bool): if True, values for parameters in openapi_types
                                 will be type checked and a TypeError will be
                                 raised if the wrong type is input.
@@ -152,7 +153,7 @@ class ImageAsset(ModelNormal):
             crop (Crop): [optional]  # noqa: E501
         """
 
-        type = kwargs.get('type', "image")
+        type = kwargs.get('type', 'image')
         _check_type = kwargs.pop('_check_type', True)
         _spec_property_naming = kwargs.pop('_spec_property_naming', False)
         _path_to_item = kwargs.pop('_path_to_item', ())
@@ -207,7 +208,7 @@ class ImageAsset(ModelNormal):
             src (str): The image source URL. The URL must be publicly accessible or include credentials.
 
         Keyword Args:
-            type (str): The type of asset - set to `image` for images.. defaults to "image"  # noqa: E501
+            type (str): The type of asset - set to `image` for images.. defaults to 'image', must be one of ['image', ]  # noqa: E501
             _check_type (bool): if True, values for parameters in openapi_types
                                 will be type checked and a TypeError will be
                                 raised if the wrong type is input.
@@ -241,7 +242,7 @@ class ImageAsset(ModelNormal):
             crop (Crop): [optional]  # noqa: E501
         """
 
-        type = kwargs.get('type', "image")
+        type = kwargs.get('type', 'image')
         _check_type = kwargs.pop('_check_type', True)
         _spec_property_naming = kwargs.pop('_spec_property_naming', False)
         _path_to_item = kwargs.pop('_path_to_item', ())

@@ -31,8 +31,7 @@ from shotstack_sdk.exceptions import ApiAttributeError
 
 
 def lazy_import():
-    from shotstack_sdk.model.google_cloud_storage_destination_options import GoogleCloudStorageDestinationOptions
-    globals()['GoogleCloudStorageDestinationOptions'] = GoogleCloudStorageDestinationOptions
+    GoogleCloudStorageDestinationOptions
 
 
 class GoogleCloudStorageDestination(ModelNormal):
@@ -65,14 +64,7 @@ class GoogleCloudStorageDestination(ModelNormal):
     validations = {
     }
 
-    @cached_property
-    def additional_properties_type():
-        """
-        This must be a method because a model may have properties that are
-        of type self, this must run after the class is loaded
-        """
-        lazy_import()
-        return (bool, date, datetime, dict, float, int, list, str, none_type,)  # noqa: E501
+    additional_properties_type = None
 
     _nullable = False
 
@@ -115,7 +107,7 @@ class GoogleCloudStorageDestination(ModelNormal):
         Args:
 
         Keyword Args:
-            provider (str): The destination to send assets to - set to `google-cloud-storage` for Google Cloud Storage.. defaults to "google-cloud-storage"  # noqa: E501
+            provider (str): The destination to send assets to - set to `google-cloud-storage` for Google Cloud Storage.. defaults to 'google-cloud-storage'  # noqa: E501
             _check_type (bool): if True, values for parameters in openapi_types
                                 will be type checked and a TypeError will be
                                 raised if the wrong type is input.
@@ -149,7 +141,7 @@ class GoogleCloudStorageDestination(ModelNormal):
             options (GoogleCloudStorageDestinationOptions): [optional]  # noqa: E501
         """
 
-        provider = kwargs.get('provider', "google-cloud-storage")
+        provider = kwargs.get('provider', 'google-cloud-storage')
         _check_type = kwargs.pop('_check_type', True)
         _spec_property_naming = kwargs.pop('_spec_property_naming', False)
         _path_to_item = kwargs.pop('_path_to_item', ())
@@ -202,7 +194,7 @@ class GoogleCloudStorageDestination(ModelNormal):
         Args:
 
         Keyword Args:
-            provider (str): The destination to send assets to - set to `google-cloud-storage` for Google Cloud Storage.. defaults to "google-cloud-storage"  # noqa: E501
+            provider (str): The destination to send assets to - set to `google-cloud-storage` for Google Cloud Storage.. defaults to 'google-cloud-storage'  # noqa: E501
             _check_type (bool): if True, values for parameters in openapi_types
                                 will be type checked and a TypeError will be
                                 raised if the wrong type is input.
@@ -236,7 +228,7 @@ class GoogleCloudStorageDestination(ModelNormal):
             options (GoogleCloudStorageDestinationOptions): [optional]  # noqa: E501
         """
 
-        provider = kwargs.get('provider', "google-cloud-storage")
+        provider = kwargs.get('provider', 'google-cloud-storage')
         _check_type = kwargs.pop('_check_type', True)
         _spec_property_naming = kwargs.pop('_spec_property_naming', False)
         _path_to_item = kwargs.pop('_path_to_item', ())

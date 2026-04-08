@@ -31,10 +31,8 @@ from shotstack_sdk.exceptions import ApiAttributeError
 
 
 def lazy_import():
-    from shotstack_sdk.model.dolby_enhancement import DolbyEnhancement
-    from shotstack_sdk.model.dolby_enhancement_options import DolbyEnhancementOptions
-    globals()['DolbyEnhancement'] = DolbyEnhancement
-    globals()['DolbyEnhancementOptions'] = DolbyEnhancementOptions
+    DolbyEnhancement
+    DolbyEnhancementOptions
 
 
 class AudioEnhancement(ModelComposed):
@@ -111,6 +109,8 @@ class AudioEnhancement(ModelComposed):
         """AudioEnhancement - a model defined in OpenAPI
 
         Keyword Args:
+            provider (str): The enhancement provider to use - set to `dolby` for Dolby.. defaults to 'dolby'  # noqa: E501
+            options (DolbyEnhancementOptions):
             _check_type (bool): if True, values for parameters in openapi_types
                                 will be type checked and a TypeError will be
                                 raised if the wrong type is input.
@@ -141,10 +141,9 @@ class AudioEnhancement(ModelComposed):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
-            provider (str): The enhancement provider to use - set to `dolby` for Dolby.. [optional] if omitted the server will use the default value of "dolby"  # noqa: E501
-            options (DolbyEnhancementOptions): [optional]  # noqa: E501
         """
 
+        provider = kwargs.get('provider', 'dolby')
         _check_type = kwargs.pop('_check_type', True)
         _spec_property_naming = kwargs.pop('_spec_property_naming', False)
         _path_to_item = kwargs.pop('_path_to_item', ())
@@ -212,6 +211,8 @@ class AudioEnhancement(ModelComposed):
         """AudioEnhancement - a model defined in OpenAPI
 
         Keyword Args:
+            provider (str): The enhancement provider to use - set to `dolby` for Dolby.. defaults to 'dolby'  # noqa: E501
+            options (DolbyEnhancementOptions):
             _check_type (bool): if True, values for parameters in openapi_types
                                 will be type checked and a TypeError will be
                                 raised if the wrong type is input.
@@ -242,10 +243,9 @@ class AudioEnhancement(ModelComposed):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
-            provider (str): The enhancement provider to use - set to `dolby` for Dolby.. [optional] if omitted the server will use the default value of "dolby"  # noqa: E501
-            options (DolbyEnhancementOptions): [optional]  # noqa: E501
         """
 
+        provider = kwargs.get('provider', 'dolby')
         _check_type = kwargs.pop('_check_type', True)
         _spec_property_naming = kwargs.pop('_spec_property_naming', False)
         _path_to_item = kwargs.pop('_path_to_item', ())

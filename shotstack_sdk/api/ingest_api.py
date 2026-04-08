@@ -22,12 +22,13 @@ from shotstack_sdk.model_utils import (  # noqa: F401
     none_type,
     validate_and_convert_types
 )
-from shotstack_sdk.model.ingest_error_response import IngestErrorResponse
-from shotstack_sdk.model.queued_source_response import QueuedSourceResponse
-from shotstack_sdk.model.source import Source
-from shotstack_sdk.model.source_list_response import SourceListResponse
-from shotstack_sdk.model.source_response import SourceResponse
-from shotstack_sdk.model.upload_response import UploadResponse
+from pydantic import Field, field_validator
+from typing_extensions import Annotated
+from shotstack_sdk.models.queued_source_response import QueuedSourceResponse
+from shotstack_sdk.models.source import Source
+from shotstack_sdk.models.source_list_response import SourceListResponse
+from shotstack_sdk.models.source_response import SourceResponse
+from shotstack_sdk.models.upload_response import UploadResponse
 
 
 class IngestApi(object):

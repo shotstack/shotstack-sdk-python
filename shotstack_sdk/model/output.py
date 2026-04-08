@@ -31,16 +31,11 @@ from shotstack_sdk.exceptions import ApiAttributeError
 
 
 def lazy_import():
-    from shotstack_sdk.model.destinations import Destinations
-    from shotstack_sdk.model.poster import Poster
-    from shotstack_sdk.model.range import Range
-    from shotstack_sdk.model.size import Size
-    from shotstack_sdk.model.thumbnail import Thumbnail
-    globals()['Destinations'] = Destinations
-    globals()['Poster'] = Poster
-    globals()['Range'] = Range
-    globals()['Size'] = Size
-    globals()['Thumbnail'] = Thumbnail
+    Destinations
+    Poster
+    Range
+    Size
+    Thumbnail
 
 
 class Output(ModelNormal):
@@ -69,27 +64,27 @@ class Output(ModelNormal):
 
     allowed_values = {
         ('format',): {
-            'MP4': "mp4",
-            'GIF': "gif",
-            'MP3': "mp3",
-            'JPG': "jpg",
-            'PNG': "png",
-            'BMP': "bmp",
+            '&#39;mp4&#39;': 'mp4',
+            '&#39;gif&#39;': 'gif',
+            '&#39;mp3&#39;': 'mp3',
+            '&#39;jpg&#39;': 'jpg',
+            '&#39;png&#39;': 'png',
+            '&#39;bmp&#39;': 'bmp',
         },
         ('resolution',): {
-            'PREVIEW': "preview",
-            'MOBILE': "mobile",
-            'SD': "sd",
-            'HD': "hd",
-            '1080': "1080",
-            '4K': "4k",
+            '&#39;preview&#39;': 'preview',
+            '&#39;mobile&#39;': 'mobile',
+            '&#39;sd&#39;': 'sd',
+            '&#39;hd&#39;': 'hd',
+            '&#39;1080&#39;': '1080',
+            '&#39;4k&#39;': '4k',
         },
         ('aspect_ratio',): {
-            '16:9': "16:9",
-            '9:16': "9:16",
-            '1:1': "1:1",
-            '4:5': "4:5",
-            '4:3': "4:3",
+            '&#39;16:9&#39;': '16:9',
+            '&#39;9:16&#39;': '9:16',
+            '&#39;1:1&#39;': '1:1',
+            '&#39;4:5&#39;': '4:5',
+            '&#39;4:3&#39;': '4:3',
         },
         ('fps',): {
             '12': 12,
@@ -105,32 +100,26 @@ class Output(ModelNormal):
             '60': 60,
         },
         ('scale_to',): {
-            'PREVIEW': "preview",
-            'MOBILE': "mobile",
-            'SD': "sd",
-            'HD': "hd",
-            '1080': "1080",
+            '&#39;preview&#39;': 'preview',
+            '&#39;mobile&#39;': 'mobile',
+            '&#39;sd&#39;': 'sd',
+            '&#39;hd&#39;': 'hd',
+            '&#39;1080&#39;': '1080',
+            '&#39;4k&#39;': '4k',
         },
         ('quality',): {
-            'VERYLOW': "verylow",
-            'LOW': "low",
-            'MEDIUM': "medium",
-            'HIGH': "high",
-            'VERYHIGH': "veryhigh",
+            '&#39;verylow&#39;': 'verylow',
+            '&#39;low&#39;': 'low',
+            '&#39;medium&#39;': 'medium',
+            '&#39;high&#39;': 'high',
+            '&#39;veryhigh&#39;': 'veryhigh',
         },
     }
 
     validations = {
     }
 
-    @cached_property
-    def additional_properties_type():
-        """
-        This must be a method because a model may have properties that are
-        of type self, this must run after the class is loaded
-        """
-        lazy_import()
-        return (bool, date, datetime, dict, float, int, list, str, none_type,)  # noqa: E501
+    additional_properties_type = None
 
     _nullable = False
 
@@ -158,7 +147,7 @@ class Output(ModelNormal):
             'range': (Range,),  # noqa: E501
             'poster': (Poster,),  # noqa: E501
             'thumbnail': (Thumbnail,),  # noqa: E501
-            'destinations': ([Destinations],),  # noqa: E501
+            'destinations': (List[Destinations],),  # noqa: E501
         }
 
     @cached_property
@@ -237,7 +226,7 @@ class Output(ModelNormal):
             range (Range): [optional]  # noqa: E501
             poster (Poster): [optional]  # noqa: E501
             thumbnail (Thumbnail): [optional]  # noqa: E501
-            destinations ([Destinations]): Specify the storage locations and hosting services to send rendered videos to.. [optional]  # noqa: E501
+            destinations (List[Destinations]): Specify the storage locations and hosting services to send rendered videos to.. [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
@@ -334,7 +323,7 @@ class Output(ModelNormal):
             range (Range): [optional]  # noqa: E501
             poster (Poster): [optional]  # noqa: E501
             thumbnail (Thumbnail): [optional]  # noqa: E501
-            destinations ([Destinations]): Specify the storage locations and hosting services to send rendered videos to.. [optional]  # noqa: E501
+            destinations (List[Destinations]): Specify the storage locations and hosting services to send rendered videos to.. [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)

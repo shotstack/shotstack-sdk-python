@@ -31,8 +31,7 @@ from shotstack_sdk.exceptions import ApiAttributeError
 
 
 def lazy_import():
-    from shotstack_sdk.model.source_response_data import SourceResponseData
-    globals()['SourceResponseData'] = SourceResponseData
+    SourceResponseData
 
 
 class SourceListResponse(ModelNormal):
@@ -65,14 +64,7 @@ class SourceListResponse(ModelNormal):
     validations = {
     }
 
-    @cached_property
-    def additional_properties_type():
-        """
-        This must be a method because a model may have properties that are
-        of type self, this must run after the class is loaded
-        """
-        lazy_import()
-        return (bool, date, datetime, dict, float, int, list, str, none_type,)  # noqa: E501
+    additional_properties_type = None
 
     _nullable = False
 
@@ -88,7 +80,7 @@ class SourceListResponse(ModelNormal):
         """
         lazy_import()
         return {
-            'data': ([SourceResponseData],),  # noqa: E501
+            'data': (List[SourceResponseData],),  # noqa: E501
         }
 
     @cached_property
@@ -111,7 +103,7 @@ class SourceListResponse(ModelNormal):
         """SourceListResponse - a model defined in OpenAPI
 
         Args:
-            data ([SourceResponseData]): An array of ingested source files.
+            data (List[SourceResponseData]): An array of ingested source files.
 
         Keyword Args:
             _check_type (bool): if True, values for parameters in openapi_types
@@ -196,7 +188,7 @@ class SourceListResponse(ModelNormal):
         """SourceListResponse - a model defined in OpenAPI
 
         Args:
-            data ([SourceResponseData]): An array of ingested source files.
+            data (List[SourceResponseData]): An array of ingested source files.
 
         Keyword Args:
             _check_type (bool): if True, values for parameters in openapi_types

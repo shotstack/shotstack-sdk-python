@@ -31,8 +31,7 @@ from shotstack_sdk.exceptions import ApiAttributeError
 
 
 def lazy_import():
-    from shotstack_sdk.model.offset import Offset
-    globals()['Offset'] = Offset
+    Offset
 
 
 class TitleAsset(ModelNormal):
@@ -60,51 +59,47 @@ class TitleAsset(ModelNormal):
     """
 
     allowed_values = {
+        ('type',): {
+            '&#39;title&#39;': 'title',
+        },
         ('style',): {
-            'MINIMAL': "minimal",
-            'BLOCKBUSTER': "blockbuster",
-            'VOGUE': "vogue",
-            'SKETCHY': "sketchy",
-            'SKINNY': "skinny",
-            'CHUNK': "chunk",
-            'CHUNKLIGHT': "chunkLight",
-            'MARKER': "marker",
-            'FUTURE': "future",
-            'SUBTITLE': "subtitle",
+            '&#39;minimal&#39;': 'minimal',
+            '&#39;blockbuster&#39;': 'blockbuster',
+            '&#39;vogue&#39;': 'vogue',
+            '&#39;sketchy&#39;': 'sketchy',
+            '&#39;skinny&#39;': 'skinny',
+            '&#39;chunk&#39;': 'chunk',
+            '&#39;chunkLight&#39;': 'chunkLight',
+            '&#39;marker&#39;': 'marker',
+            '&#39;future&#39;': 'future',
+            '&#39;subtitle&#39;': 'subtitle',
         },
         ('size',): {
-            'XX-SMALL': "xx-small",
-            'X-SMALL': "x-small",
-            'SMALL': "small",
-            'MEDIUM': "medium",
-            'LARGE': "large",
-            'X-LARGE': "x-large",
-            'XX-LARGE': "xx-large",
+            '&#39;xx-small&#39;': 'xx-small',
+            '&#39;x-small&#39;': 'x-small',
+            '&#39;small&#39;': 'small',
+            '&#39;medium&#39;': 'medium',
+            '&#39;large&#39;': 'large',
+            '&#39;x-large&#39;': 'x-large',
+            '&#39;xx-large&#39;': 'xx-large',
         },
         ('position',): {
-            'TOP': "top",
-            'TOPRIGHT': "topRight",
-            'RIGHT': "right",
-            'BOTTOMRIGHT': "bottomRight",
-            'BOTTOM': "bottom",
-            'BOTTOMLEFT': "bottomLeft",
-            'LEFT': "left",
-            'TOPLEFT': "topLeft",
-            'CENTER': "center",
+            '&#39;top&#39;': 'top',
+            '&#39;topRight&#39;': 'topRight',
+            '&#39;right&#39;': 'right',
+            '&#39;bottomRight&#39;': 'bottomRight',
+            '&#39;bottom&#39;': 'bottom',
+            '&#39;bottomLeft&#39;': 'bottomLeft',
+            '&#39;left&#39;': 'left',
+            '&#39;topLeft&#39;': 'topLeft',
+            '&#39;center&#39;': 'center',
         },
     }
 
     validations = {
     }
 
-    @cached_property
-    def additional_properties_type():
-        """
-        This must be a method because a model may have properties that are
-        of type self, this must run after the class is loaded
-        """
-        lazy_import()
-        return (bool, date, datetime, dict, float, int, list, str, none_type,)  # noqa: E501
+    additional_properties_type = None
 
     _nullable = False
 
@@ -160,7 +155,7 @@ class TitleAsset(ModelNormal):
             text (str): The title text string - i.e. \"My Title\".
 
         Keyword Args:
-            type (str): The type of asset - set to `title` for titles.. defaults to "title"  # noqa: E501
+            type (str): The type of asset - set to `title` for titles.. defaults to 'title', must be one of ['title', ]  # noqa: E501
             _check_type (bool): if True, values for parameters in openapi_types
                                 will be type checked and a TypeError will be
                                 raised if the wrong type is input.
@@ -199,7 +194,7 @@ class TitleAsset(ModelNormal):
             offset (Offset): [optional]  # noqa: E501
         """
 
-        type = kwargs.get('type', "title")
+        type = kwargs.get('type', 'title')
         _check_type = kwargs.pop('_check_type', True)
         _spec_property_naming = kwargs.pop('_spec_property_naming', False)
         _path_to_item = kwargs.pop('_path_to_item', ())
@@ -254,7 +249,7 @@ class TitleAsset(ModelNormal):
             text (str): The title text string - i.e. \"My Title\".
 
         Keyword Args:
-            type (str): The type of asset - set to `title` for titles.. defaults to "title"  # noqa: E501
+            type (str): The type of asset - set to `title` for titles.. defaults to 'title', must be one of ['title', ]  # noqa: E501
             _check_type (bool): if True, values for parameters in openapi_types
                                 will be type checked and a TypeError will be
                                 raised if the wrong type is input.
@@ -293,7 +288,7 @@ class TitleAsset(ModelNormal):
             offset (Offset): [optional]  # noqa: E501
         """
 
-        type = kwargs.get('type', "title")
+        type = kwargs.get('type', 'title')
         _check_type = kwargs.pop('_check_type', True)
         _spec_property_naming = kwargs.pop('_spec_property_naming', False)
         _path_to_item = kwargs.pop('_path_to_item', ())

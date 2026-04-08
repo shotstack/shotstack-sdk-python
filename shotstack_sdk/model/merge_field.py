@@ -61,13 +61,7 @@ class MergeField(ModelNormal):
     validations = {
     }
 
-    @cached_property
-    def additional_properties_type():
-        """
-        This must be a method because a model may have properties that are
-        of type self, this must run after the class is loaded
-        """
-        return (bool, date, datetime, dict, float, int, list, str, none_type,)  # noqa: E501
+    additional_properties_type = None
 
     _nullable = False
 
@@ -83,7 +77,7 @@ class MergeField(ModelNormal):
         """
         return {
             'find': (str,),  # noqa: E501
-            'replace': (bool, date, datetime, dict, float, int, list, str, none_type,),  # noqa: E501
+            'replace': (object,),  # noqa: E501
         }
 
     @cached_property
@@ -108,7 +102,7 @@ class MergeField(ModelNormal):
 
         Args:
             find (str): The string to find <u>without</u> delimiters.
-            replace (bool, date, datetime, dict, float, int, list, str, none_type): The replacement value. The replacement can be any valid JSON type - string, boolean, number, etc...
+            replace (object): The replacement value. The replacement can be any valid JSON type - string, boolean, number, etc...
 
         Keyword Args:
             _check_type (bool): if True, values for parameters in openapi_types
@@ -195,7 +189,7 @@ class MergeField(ModelNormal):
 
         Args:
             find (str): The string to find <u>without</u> delimiters.
-            replace (bool, date, datetime, dict, float, int, list, str, none_type): The replacement value. The replacement can be any valid JSON type - string, boolean, number, etc...
+            replace (object): The replacement value. The replacement can be any valid JSON type - string, boolean, number, etc...
 
         Keyword Args:
             _check_type (bool): if True, values for parameters in openapi_types

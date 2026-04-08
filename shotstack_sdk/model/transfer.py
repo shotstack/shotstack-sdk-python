@@ -31,8 +31,7 @@ from shotstack_sdk.exceptions import ApiAttributeError
 
 
 def lazy_import():
-    from shotstack_sdk.model.destinations import Destinations
-    globals()['Destinations'] = Destinations
+    Destinations
 
 
 class Transfer(ModelNormal):
@@ -65,14 +64,7 @@ class Transfer(ModelNormal):
     validations = {
     }
 
-    @cached_property
-    def additional_properties_type():
-        """
-        This must be a method because a model may have properties that are
-        of type self, this must run after the class is loaded
-        """
-        lazy_import()
-        return (bool, date, datetime, dict, float, int, list, str, none_type,)  # noqa: E501
+    additional_properties_type = None
 
     _nullable = False
 
@@ -90,7 +82,7 @@ class Transfer(ModelNormal):
         return {
             'url': (str,),  # noqa: E501
             'id': (str,),  # noqa: E501
-            'destinations': ([Destinations],),  # noqa: E501
+            'destinations': (List[Destinations],),  # noqa: E501
         }
 
     @cached_property
@@ -117,7 +109,7 @@ class Transfer(ModelNormal):
         Args:
             url (str): The file URL to fetch and transfer.
             id (str): An identifier for the asset which must be provided by the client. The identifier does not need to be unique.
-            destinations ([Destinations]): Specify the storage locations and hosting services to send the file to.
+            destinations (List[Destinations]): Specify the storage locations and hosting services to send the file to.
 
         Keyword Args:
             _check_type (bool): if True, values for parameters in openapi_types
@@ -206,7 +198,7 @@ class Transfer(ModelNormal):
         Args:
             url (str): The file URL to fetch and transfer.
             id (str): An identifier for the asset which must be provided by the client. The identifier does not need to be unique.
-            destinations ([Destinations]): Specify the storage locations and hosting services to send the file to.
+            destinations (List[Destinations]): Specify the storage locations and hosting services to send the file to.
 
         Keyword Args:
             _check_type (bool): if True, values for parameters in openapi_types

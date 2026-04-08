@@ -31,10 +31,8 @@ from shotstack_sdk.exceptions import ApiAttributeError
 
 
 def lazy_import():
-    from shotstack_sdk.model.rendition import Rendition
-    from shotstack_sdk.model.transcription import Transcription
-    globals()['Rendition'] = Rendition
-    globals()['Transcription'] = Transcription
+    Rendition
+    Transcription
 
 
 class Outputs(ModelNormal):
@@ -67,14 +65,7 @@ class Outputs(ModelNormal):
     validations = {
     }
 
-    @cached_property
-    def additional_properties_type():
-        """
-        This must be a method because a model may have properties that are
-        of type self, this must run after the class is loaded
-        """
-        lazy_import()
-        return (bool, date, datetime, dict, float, int, list, str, none_type,)  # noqa: E501
+    additional_properties_type = None
 
     _nullable = False
 
@@ -90,7 +81,7 @@ class Outputs(ModelNormal):
         """
         lazy_import()
         return {
-            'renditions': ([Rendition],),  # noqa: E501
+            'renditions': (List[Rendition],),  # noqa: E501
             'transcription': (Transcription,),  # noqa: E501
         }
 
@@ -145,7 +136,7 @@ class Outputs(ModelNormal):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
-            renditions ([Rendition]): The output renditions and transformations that should be generated from the source file.. [optional]  # noqa: E501
+            renditions (List[Rendition]): The output renditions and transformations that should be generated from the source file.. [optional]  # noqa: E501
             transcription (Transcription): [optional]  # noqa: E501
         """
 
@@ -228,7 +219,7 @@ class Outputs(ModelNormal):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
-            renditions ([Rendition]): The output renditions and transformations that should be generated from the source file.. [optional]  # noqa: E501
+            renditions (List[Rendition]): The output renditions and transformations that should be generated from the source file.. [optional]  # noqa: E501
             transcription (Transcription): [optional]  # noqa: E501
         """
 

@@ -31,8 +31,7 @@ from shotstack_sdk.exceptions import ApiAttributeError
 
 
 def lazy_import():
-    from shotstack_sdk.model.mux_destination_options import MuxDestinationOptions
-    globals()['MuxDestinationOptions'] = MuxDestinationOptions
+    MuxDestinationOptions
 
 
 class MuxDestination(ModelNormal):
@@ -65,14 +64,7 @@ class MuxDestination(ModelNormal):
     validations = {
     }
 
-    @cached_property
-    def additional_properties_type():
-        """
-        This must be a method because a model may have properties that are
-        of type self, this must run after the class is loaded
-        """
-        lazy_import()
-        return (bool, date, datetime, dict, float, int, list, str, none_type,)  # noqa: E501
+    additional_properties_type = None
 
     _nullable = False
 
@@ -115,7 +107,7 @@ class MuxDestination(ModelNormal):
         Args:
 
         Keyword Args:
-            provider (str): The destination to send video to - set to `mux` for Mux.. defaults to "mux"  # noqa: E501
+            provider (str): The destination to send video to - set to `mux` for Mux.. defaults to 'mux'  # noqa: E501
             _check_type (bool): if True, values for parameters in openapi_types
                                 will be type checked and a TypeError will be
                                 raised if the wrong type is input.
@@ -149,7 +141,7 @@ class MuxDestination(ModelNormal):
             options (MuxDestinationOptions): [optional]  # noqa: E501
         """
 
-        provider = kwargs.get('provider', "mux")
+        provider = kwargs.get('provider', 'mux')
         _check_type = kwargs.pop('_check_type', True)
         _spec_property_naming = kwargs.pop('_spec_property_naming', False)
         _path_to_item = kwargs.pop('_path_to_item', ())
@@ -202,7 +194,7 @@ class MuxDestination(ModelNormal):
         Args:
 
         Keyword Args:
-            provider (str): The destination to send video to - set to `mux` for Mux.. defaults to "mux"  # noqa: E501
+            provider (str): The destination to send video to - set to `mux` for Mux.. defaults to 'mux'  # noqa: E501
             _check_type (bool): if True, values for parameters in openapi_types
                                 will be type checked and a TypeError will be
                                 raised if the wrong type is input.
@@ -236,7 +228,7 @@ class MuxDestination(ModelNormal):
             options (MuxDestinationOptions): [optional]  # noqa: E501
         """
 
-        provider = kwargs.get('provider', "mux")
+        provider = kwargs.get('provider', 'mux')
         _check_type = kwargs.pop('_check_type', True)
         _spec_property_naming = kwargs.pop('_spec_property_naming', False)
         _path_to_item = kwargs.pop('_path_to_item', ())

@@ -56,18 +56,21 @@ class LumaAsset(ModelNormal):
     """
 
     allowed_values = {
+        ('type',): {
+            '&#39;luma&#39;': 'luma',
+        },
     }
 
     validations = {
+        ('src',): {
+            'min_length': 1,
+            'regex': {
+                'pattern': r'',  # noqa: E501
+            },
+        },
     }
 
-    @cached_property
-    def additional_properties_type():
-        """
-        This must be a method because a model may have properties that are
-        of type self, this must run after the class is loaded
-        """
-        return (bool, date, datetime, dict, float, int, list, str, none_type,)  # noqa: E501
+    additional_properties_type = None
 
     _nullable = False
 
@@ -112,7 +115,7 @@ class LumaAsset(ModelNormal):
             src (str): The luma matte source URL. The URL must be publicly accessible or include credentials.
 
         Keyword Args:
-            type (str): The type of asset - set to `luma` for luma mattes.. defaults to "luma"  # noqa: E501
+            type (str): The type of asset - set to `luma` for luma mattes.. defaults to 'luma', must be one of ['luma', ]  # noqa: E501
             _check_type (bool): if True, values for parameters in openapi_types
                                 will be type checked and a TypeError will be
                                 raised if the wrong type is input.
@@ -146,7 +149,7 @@ class LumaAsset(ModelNormal):
             trim (float): The start trim point of the luma matte clip, in seconds (defaults to 0). Videos will start from the in trim point. A luma matte video will play until the file ends or the Clip length is reached.. [optional]  # noqa: E501
         """
 
-        type = kwargs.get('type', "luma")
+        type = kwargs.get('type', 'luma')
         _check_type = kwargs.pop('_check_type', True)
         _spec_property_naming = kwargs.pop('_spec_property_naming', False)
         _path_to_item = kwargs.pop('_path_to_item', ())
@@ -201,7 +204,7 @@ class LumaAsset(ModelNormal):
             src (str): The luma matte source URL. The URL must be publicly accessible or include credentials.
 
         Keyword Args:
-            type (str): The type of asset - set to `luma` for luma mattes.. defaults to "luma"  # noqa: E501
+            type (str): The type of asset - set to `luma` for luma mattes.. defaults to 'luma', must be one of ['luma', ]  # noqa: E501
             _check_type (bool): if True, values for parameters in openapi_types
                                 will be type checked and a TypeError will be
                                 raised if the wrong type is input.
@@ -235,7 +238,7 @@ class LumaAsset(ModelNormal):
             trim (float): The start trim point of the luma matte clip, in seconds (defaults to 0). Videos will start from the in trim point. A luma matte video will play until the file ends or the Clip length is reached.. [optional]  # noqa: E501
         """
 
-        type = kwargs.get('type', "luma")
+        type = kwargs.get('type', 'luma')
         _check_type = kwargs.pop('_check_type', True)
         _spec_property_naming = kwargs.pop('_spec_property_naming', False)
         _path_to_item = kwargs.pop('_path_to_item', ())

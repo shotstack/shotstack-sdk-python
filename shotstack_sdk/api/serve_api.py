@@ -22,10 +22,12 @@ from shotstack_sdk.model_utils import (  # noqa: F401
     none_type,
     validate_and_convert_types
 )
-from shotstack_sdk.model.asset_render_response import AssetRenderResponse
-from shotstack_sdk.model.asset_response import AssetResponse
-from shotstack_sdk.model.transfer import Transfer
-from shotstack_sdk.model.transfer_response import TransferResponse
+from pydantic import Field, field_validator
+from typing_extensions import Annotated
+from shotstack_sdk.models.asset_render_response import AssetRenderResponse
+from shotstack_sdk.models.asset_response import AssetResponse
+from shotstack_sdk.models.transfer import Transfer
+from shotstack_sdk.models.transfer_response import TransferResponse
 
 
 class ServeApi(object):

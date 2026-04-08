@@ -31,22 +31,39 @@ from shotstack_sdk.exceptions import ApiAttributeError
 
 
 def lazy_import():
-    from shotstack_sdk.model.audio_asset import AudioAsset
-    from shotstack_sdk.model.crop import Crop
-    from shotstack_sdk.model.html_asset import HtmlAsset
-    from shotstack_sdk.model.image_asset import ImageAsset
-    from shotstack_sdk.model.luma_asset import LumaAsset
-    from shotstack_sdk.model.offset import Offset
-    from shotstack_sdk.model.title_asset import TitleAsset
-    from shotstack_sdk.model.video_asset import VideoAsset
-    globals()['AudioAsset'] = AudioAsset
-    globals()['Crop'] = Crop
-    globals()['HtmlAsset'] = HtmlAsset
-    globals()['ImageAsset'] = ImageAsset
-    globals()['LumaAsset'] = LumaAsset
-    globals()['Offset'] = Offset
-    globals()['TitleAsset'] = TitleAsset
-    globals()['VideoAsset'] = VideoAsset
+    AudioAsset
+    AudioAssetVolume
+    Border
+    CaptionAsset
+    CaptionMargin
+    ChromaKey
+    Crop
+    HtmlAsset
+    ImageAsset
+    ImageToVideoAsset
+    LumaAsset
+    Offset
+    RichCaptionActive
+    RichCaptionAnimation
+    RichCaptionAsset
+    RichCaptionAssetFont
+    RichCaptionAssetPadding
+    RichTextAlignment
+    RichTextAsset
+    RichTextShadow
+    ShapeAsset
+    ShapeAssetCircle
+    ShapeAssetFill
+    ShapeAssetLine
+    ShapeAssetRectangle
+    ShapeAssetStroke
+    SvgAsset
+    TextAlignment
+    TextAsset
+    TextToImageAsset
+    TextToSpeechAsset
+    TitleAsset
+    VideoAsset
 
 
 class Asset(ModelComposed):
@@ -74,51 +91,87 @@ class Asset(ModelComposed):
     """
 
     allowed_values = {
+        ('type',): {
+            '&#39;video&#39;': 'video',
+            '&#39;image&#39;': 'image',
+            '&#39;text&#39;': 'text',
+            '&#39;rich-text&#39;': 'rich-text',
+            '&#39;audio&#39;': 'audio',
+            '&#39;luma&#39;': 'luma',
+            '&#39;caption&#39;': 'caption',
+            '&#39;rich-caption&#39;': 'rich-caption',
+            '&#39;html&#39;': 'html',
+            '&#39;title&#39;': 'title',
+            '&#39;shape&#39;': 'shape',
+            '&#39;svg&#39;': 'svg',
+            '&#39;text-to-image&#39;': 'text-to-image',
+            '&#39;image-to-video&#39;': 'image-to-video',
+            '&#39;text-to-speech&#39;': 'text-to-speech',
+        },
+        ('shape',): {
+            '&#39;rectangle&#39;': 'rectangle',
+            '&#39;circle&#39;': 'circle',
+            '&#39;line&#39;': 'line',
+        },
         ('volume_effect',): {
-            'FADEIN': "fadeIn",
-            'FADEOUT': "fadeOut",
-            'FADEINFADEOUT': "fadeInFadeOut",
+            '&#39;none&#39;': 'none',
+            '&#39;fadeIn&#39;': 'fadeIn',
+            '&#39;fadeOut&#39;': 'fadeOut',
+            '&#39;fadeInFadeOut&#39;': 'fadeInFadeOut',
         },
         ('style',): {
-            'MINIMAL': "minimal",
-            'BLOCKBUSTER': "blockbuster",
-            'VOGUE': "vogue",
-            'SKETCHY': "sketchy",
-            'SKINNY': "skinny",
-            'CHUNK': "chunk",
-            'CHUNKLIGHT': "chunkLight",
-            'MARKER': "marker",
-            'FUTURE': "future",
-            'SUBTITLE': "subtitle",
-        },
-        ('size',): {
-            'XX-SMALL': "xx-small",
-            'X-SMALL': "x-small",
-            'SMALL': "small",
-            'MEDIUM': "medium",
-            'LARGE': "large",
-            'X-LARGE': "x-large",
-            'XX-LARGE': "xx-large",
-        },
-        ('position',): {
-            'TOP': "top",
-            'TOPRIGHT': "topRight",
-            'RIGHT': "right",
-            'BOTTOMRIGHT': "bottomRight",
-            'BOTTOM': "bottom",
-            'BOTTOMLEFT': "bottomLeft",
-            'LEFT': "left",
-            'TOPLEFT': "topLeft",
-            'CENTER': "center",
+            '&#39;minimal&#39;': 'minimal',
+            '&#39;blockbuster&#39;': 'blockbuster',
+            '&#39;vogue&#39;': 'vogue',
+            '&#39;sketchy&#39;': 'sketchy',
+            '&#39;skinny&#39;': 'skinny',
+            '&#39;chunk&#39;': 'chunk',
+            '&#39;chunkLight&#39;': 'chunkLight',
+            '&#39;marker&#39;': 'marker',
+            '&#39;future&#39;': 'future',
+            '&#39;subtitle&#39;': 'subtitle',
         },
         ('effect',): {
-            'FADEIN': "fadeIn",
-            'FADEOUT': "fadeOut",
-            'FADEINFADEOUT': "fadeInFadeOut",
+            '&#39;none&#39;': 'none',
+            '&#39;fadeIn&#39;': 'fadeIn',
+            '&#39;fadeOut&#39;': 'fadeOut',
+            '&#39;fadeInFadeOut&#39;': 'fadeInFadeOut',
+        },
+        ('position',): {
+            '&#39;top&#39;': 'top',
+            '&#39;topRight&#39;': 'topRight',
+            '&#39;right&#39;': 'right',
+            '&#39;bottomRight&#39;': 'bottomRight',
+            '&#39;bottom&#39;': 'bottom',
+            '&#39;bottomLeft&#39;': 'bottomLeft',
+            '&#39;left&#39;': 'left',
+            '&#39;topLeft&#39;': 'topLeft',
+            '&#39;center&#39;': 'center',
+        },
+        ('size',): {
+            '&#39;xx-small&#39;': 'xx-small',
+            '&#39;x-small&#39;': 'x-small',
+            '&#39;small&#39;': 'small',
+            '&#39;medium&#39;': 'medium',
+            '&#39;large&#39;': 'large',
+            '&#39;x-large&#39;': 'x-large',
+            '&#39;xx-large&#39;': 'xx-large',
+        },
+        ('aspect_ratio',): {
+            '&#39;1:1&#39;': '1:1',
+            '&#39;4:3&#39;': '4:3',
+            '&#39;16:9&#39;': '16:9',
+            '&#39;9:16&#39;': '9:16',
+            '&#39;3:4&#39;': '3:4',
+            '&#39;21:9&#39;': '21:9',
+            '&#39;9:21&#39;': '9:21',
         },
     }
 
     validations = {
+        ('src',): {
+            'min_length': 1,
+        },
         ('speed',): {
             'inclusive_maximum': 10,
             'inclusive_minimum': 0,
@@ -141,62 +194,132 @@ class Asset(ModelComposed):
         """
         lazy_import()
         return {
-            'trim': (float,),  # noqa: E501
-            'volume': (float,),  # noqa: E501
-            'volume_effect': (str,),  # noqa: E501
-            'speed': (float,),  # noqa: E501
-            'crop': (Crop,),  # noqa: E501
-            'style': (str,),  # noqa: E501
-            'color': (str,),  # noqa: E501
-            'size': (str,),  # noqa: E501
-            'background': (str,),  # noqa: E501
-            'position': (str,),  # noqa: E501
-            'offset': (Offset,),  # noqa: E501
-            'css': (str,),  # noqa: E501
-            'width': (int,),  # noqa: E501
-            'height': (int,),  # noqa: E501
-            'effect': (str,),  # noqa: E501
             'type': (str,),  # noqa: E501
             'src': (str,),  # noqa: E501
             'text': (str,),  # noqa: E501
             'html': (str,),  # noqa: E501
+            'shape': (str,),  # noqa: E501
+            'prompt': (str,),  # noqa: E501
+            'voice': (str,),  # noqa: E501
+            'transcode': (bool,),  # noqa: E501
+            'trim': (float,),  # noqa: E501
+            'volume': (AudioAssetVolume,),  # noqa: E501
+            'volume_effect': (str,),  # noqa: E501
+            'speed': (float,),  # noqa: E501
+            'crop': (Crop,),  # noqa: E501
+            'chroma_key': (ChromaKey,),  # noqa: E501
+            'width': (int,),  # noqa: E501
+            'height': (int,),  # noqa: E501
+            'font': (RichCaptionAssetFont,),  # noqa: E501
+            'background': (str,),  # noqa: E501
+            'alignment': (TextAlignment,),  # noqa: E501
+            'stroke': (ShapeAssetStroke,),  # noqa: E501
+            'animation': (RichCaptionAnimation,),  # noqa: E501
+            'ellipsis': (str,),  # noqa: E501
+            'style': (str,),  # noqa: E501
+            'shadow': (RichTextShadow,),  # noqa: E501
+            'border': (Border,),  # noqa: E501
+            'padding': (RichCaptionAssetPadding,),  # noqa: E501
+            'align': (RichTextAlignment,),  # noqa: E501
+            'effect': (str,),  # noqa: E501
+            'margin': (CaptionMargin,),  # noqa: E501
+            'active': (RichCaptionActive,),  # noqa: E501
+            'css': (str,),  # noqa: E501
+            'position': (str,),  # noqa: E501
+            'color': (str,),  # noqa: E501
+            'size': (str,),  # noqa: E501
+            'offset': (Offset,),  # noqa: E501
+            'fill': (ShapeAssetFill,),  # noqa: E501
+            'rectangle': (ShapeAssetRectangle,),  # noqa: E501
+            'circle': (ShapeAssetCircle,),  # noqa: E501
+            'line': (ShapeAssetLine,),  # noqa: E501
+            'aspect_ratio': (str,),  # noqa: E501
+            'language': (str,),  # noqa: E501
+            'newscaster': (bool,),  # noqa: E501
         }
 
     @cached_property
     def discriminator():
         lazy_import()
         val = {
+            'audio': AudioAsset,
+            'caption': CaptionAsset,
+            'html': HtmlAsset,
+            'image': ImageAsset,
+            'image-to-video': ImageToVideoAsset,
+            'luma': LumaAsset,
+            'rich-caption': RichCaptionAsset,
+            'rich-text': RichTextAsset,
+            'shape': ShapeAsset,
+            'svg': SvgAsset,
+            'text': TextAsset,
+            'text-to-image': TextToImageAsset,
+            'text-to-speech': TextToSpeechAsset,
+            'title': TitleAsset,
+            'video': VideoAsset,
             'AudioAsset': AudioAsset,
+            'CaptionAsset': CaptionAsset,
             'HtmlAsset': HtmlAsset,
             'ImageAsset': ImageAsset,
+            'ImageToVideoAsset': ImageToVideoAsset,
             'LumaAsset': LumaAsset,
+            'RichCaptionAsset': RichCaptionAsset,
+            'RichTextAsset': RichTextAsset,
+            'ShapeAsset': ShapeAsset,
+            'SvgAsset': SvgAsset,
+            'TextAsset': TextAsset,
+            'TextToImageAsset': TextToImageAsset,
+            'TextToSpeechAsset': TextToSpeechAsset,
             'TitleAsset': TitleAsset,
             'VideoAsset': VideoAsset,
         }
         if not val:
             return None
-        return {'asset': val}
+        return {'type': val}
 
     attribute_map = {
+        'type': 'type',  # noqa: E501
+        'src': 'src',  # noqa: E501
+        'text': 'text',  # noqa: E501
+        'html': 'html',  # noqa: E501
+        'shape': 'shape',  # noqa: E501
+        'prompt': 'prompt',  # noqa: E501
+        'voice': 'voice',  # noqa: E501
+        'transcode': 'transcode',  # noqa: E501
         'trim': 'trim',  # noqa: E501
         'volume': 'volume',  # noqa: E501
         'volume_effect': 'volumeEffect',  # noqa: E501
         'speed': 'speed',  # noqa: E501
         'crop': 'crop',  # noqa: E501
-        'style': 'style',  # noqa: E501
-        'color': 'color',  # noqa: E501
-        'size': 'size',  # noqa: E501
-        'background': 'background',  # noqa: E501
-        'position': 'position',  # noqa: E501
-        'offset': 'offset',  # noqa: E501
-        'css': 'css',  # noqa: E501
+        'chroma_key': 'chromaKey',  # noqa: E501
         'width': 'width',  # noqa: E501
         'height': 'height',  # noqa: E501
+        'font': 'font',  # noqa: E501
+        'background': 'background',  # noqa: E501
+        'alignment': 'alignment',  # noqa: E501
+        'stroke': 'stroke',  # noqa: E501
+        'animation': 'animation',  # noqa: E501
+        'ellipsis': 'ellipsis',  # noqa: E501
+        'style': 'style',  # noqa: E501
+        'shadow': 'shadow',  # noqa: E501
+        'border': 'border',  # noqa: E501
+        'padding': 'padding',  # noqa: E501
+        'align': 'align',  # noqa: E501
         'effect': 'effect',  # noqa: E501
-        'type': 'type',  # noqa: E501
-        'src': 'src',  # noqa: E501
-        'text': 'text',  # noqa: E501
-        'html': 'html',  # noqa: E501
+        'margin': 'margin',  # noqa: E501
+        'active': 'active',  # noqa: E501
+        'css': 'css',  # noqa: E501
+        'position': 'position',  # noqa: E501
+        'color': 'color',  # noqa: E501
+        'size': 'size',  # noqa: E501
+        'offset': 'offset',  # noqa: E501
+        'fill': 'fill',  # noqa: E501
+        'rectangle': 'rectangle',  # noqa: E501
+        'circle': 'circle',  # noqa: E501
+        'line': 'line',  # noqa: E501
+        'aspect_ratio': 'aspectRatio',  # noqa: E501
+        'language': 'language',  # noqa: E501
+        'newscaster': 'newscaster',  # noqa: E501
     }
 
     read_only_vars = {
@@ -208,6 +331,13 @@ class Asset(ModelComposed):
         """Asset - a model defined in OpenAPI
 
         Keyword Args:
+            type (str): The type of asset - set to `video` for videos.. defaults to 'video', must be one of ['video', 'image', 'text', 'rich-text', 'audio', 'luma', 'caption', 'rich-caption', 'html', 'title', 'shape', 'svg', 'text-to-image', 'image-to-video', 'text-to-speech', ]  # noqa: E501
+            src (str): The image source URL. The URL must be publicly accessible or include credentials.
+            text (str): The text to convert to speech.
+            html (str): The HTML text string. See list of [supported HTML tags](https://shotstack.io/docs/guide/architecting-an-application/html-support/#supported-html-tags).
+            shape (str): The shape to display.
+            prompt (str): The instructions for modifying the image into a video sequence.
+            voice (str): The voice to use for the text-to-speech conversion.
             _check_type (bool): if True, values for parameters in openapi_types
                                 will be type checked and a TypeError will be
                                 raised if the wrong type is input.
@@ -238,27 +368,44 @@ class Asset(ModelComposed):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
-            trim (float): The start trim point of the luma matte clip, in seconds (defaults to 0). Videos will start from the in trim point. A luma matte video will play until the file ends or the Clip length is reached.. [optional]  # noqa: E501
-            volume (float): Set the volume for the audio clip between 0 and 1 where 0 is muted and 1 is full volume (defaults to 1).. [optional]  # noqa: E501
-            volume_effect (str): The volume effect to apply to the video asset <ul>   <li>`fadeIn` - fade volume in only</li>   <li>`fadeOut` - fade volume out only</li>   <li>`fadeInFadeOut` - fade volume in and out</li> </ul>. [optional]  # noqa: E501
-            speed (float): Adjust the playback speed of the audio clip between 0 (paused) and 10 (10x normal speed), where 1 is normal speed (defaults to 1). Adjusting the speed will also adjust the duration of the clip and may require you to  adjust the Clip length. For example, if you set speed to 0.5, the clip will need to be 2x as long to play the entire audio (i.e. original length / 0.5). If you set speed to 2, the clip will need to be half as long to play the entire audio (i.e. original length / 2).. [optional]  # noqa: E501
+            transcode (bool): Set to `true` to force re-encoding of the video during preprocessing. This can help resolve compatibility issues, fix rotation problems, synchronize audio, or convert formats. The video will be processed to ensure optimal compatibility with the rendering engine.. [optional]  # noqa: E501
+            trim (float): The start trim point of the audio clip, in seconds (defaults to 0). Audio will start from the trim point. The audio will play until the file ends or the Clip length is reached.. [optional]  # noqa: E501
+            volume (AudioAssetVolume): [optional]  # noqa: E501
+            volume_effect (str): Preset volume effects to apply to the video asset <ul>   <li>`fadeIn` - fade volume in only</li>   <li>`fadeOut` - fade volume out only</li>   <li>`fadeInFadeOut` - fade volume in and out</li> </ul>. [optional]  # noqa: E501
+            speed (float): Adjust the playback speed of the audio clip between 0 (paused) and 10 (10x normal speed), where 1 is normal speed (defaults to 1). Adjusting the speed will also adjust the duration of the clip and may require you to adjust the Clip length.. [optional]  # noqa: E501
             crop (Crop): [optional]  # noqa: E501
+            chroma_key (ChromaKey): [optional]  # noqa: E501
+            width (int): The width of the image in pixels.. [optional]  # noqa: E501
+            height (int): The height of the image in pixels.. [optional]  # noqa: E501
+            font (RichCaptionAssetFont): [optional]  # noqa: E501
+            background (str): Apply a background color behind the text. Set the text color using hexadecimal color notation. Transparency is supported by setting the first two characters of the hex string (opposite to HTML),  i.e. #80ffffff will be white with 50% transparency. Omit to use transparent background.. [optional]  # noqa: E501
+            alignment (TextAlignment): [optional]  # noqa: E501
+            stroke (ShapeAssetStroke): [optional]  # noqa: E501
+            animation (RichCaptionAnimation): [optional]  # noqa: E501
+            ellipsis (str): The string to display when text overflows its bounding box. Set to an ellipsis character or custom string to indicate truncated text.. [optional]  # noqa: E501
             style (str): Uses a preset to apply font properties and styling to the title. <ul>   <li>`minimal`</li>   <li>`blockbuster`</li>   <li>`vogue`</li>   <li>`sketchy`</li>   <li>`skinny`</li>   <li>`chunk`</li>   <li>`chunkLight`</li>   <li>`marker`</li>   <li>`future`</li>   <li>`subtitle`</li> </ul>. [optional]  # noqa: E501
+            shadow (RichTextShadow): [optional]  # noqa: E501
+            border (Border): [optional]  # noqa: E501
+            padding (RichCaptionAssetPadding): [optional]  # noqa: E501
+            align (RichTextAlignment): [optional]  # noqa: E501
+            effect (str): The effect to apply to the audio asset <ul>   <li>`fadeIn` - fade volume in only</li>   <li>`fadeOut` - fade volume out only</li>   <li>`fadeInFadeOut` - fade volume in and out</li> </ul>. [optional]  # noqa: E501
+            margin (CaptionMargin): [optional]  # noqa: E501
+            active (RichCaptionActive): [optional]  # noqa: E501
+            css (str): The CSS text string to apply styling to the HTML. See list of  [support CSS properties](https://shotstack.io/docs/guide/architecting-an-application/html-support/#supported-css-properties).. [optional]  # noqa: E501
+            position (str): Place the title in one of nine predefined positions of the viewport. <ul>   <li>`top` - top (center)</li>   <li>`topRight` - top right</li>   <li>`right` - right (center)</li>   <li>`bottomRight` - bottom right</li>   <li>`bottom` - bottom (center)</li>   <li>`bottomLeft` - bottom left</li>   <li>`left` - left (center)</li>   <li>`topLeft` - top left</li>   <li>`center` - center</li> </ul>. [optional]  # noqa: E501
             color (str): Set the text color using hexadecimal color notation. Transparency is supported by setting the first two characters of the hex string (opposite to HTML),  i.e. #80ffffff will be white with  50% transparency.. [optional]  # noqa: E501
             size (str): Set the relative size of the text using predefined sizes from xx-small to xx-large. <ul>   <li>`xx-small`</li>   <li>`x-small`</li>   <li>`small`</li>   <li>`medium`</li>   <li>`large`</li>   <li>`x-large`</li>   <li>`xx-large`</li> </ul>. [optional]  # noqa: E501
-            background (str): Apply a background color behind the HTML bounding box using. Set the text color using hexadecimal  color notation. Transparency is supported by setting the first two characters of the hex string  (opposite to HTML), i.e. #80ffffff will be white with 50% transparency.. [optional]  # noqa: E501
-            position (str): Place the HTML in one of nine predefined positions within the HTML area. <ul>   <li>`top` - top (center)</li>   <li>`topRight` - top right</li>   <li>`right` - right (center)</li>   <li>`bottomRight` - bottom right</li>   <li>`bottom` - bottom (center)</li>   <li>`bottomLeft` - bottom left</li>   <li>`left` - left (center)</li>   <li>`topLeft` - top left</li>   <li>`center` - center</li> </ul>. [optional]  # noqa: E501
             offset (Offset): [optional]  # noqa: E501
-            css (str): The CSS text string to apply styling to the HTML. See list of  [support CSS properties](https://shotstack.io/docs/guide/architecting-an-application/html-support/#supported-css-properties).. [optional]  # noqa: E501
-            width (int): Set the width of the HTML asset bounding box in pixels. Text will wrap to fill the bounding box.. [optional]  # noqa: E501
-            height (int): Set the width of the HTML asset bounding box in pixels. Text and elements will be masked if they exceed the  height of the bounding box.. [optional]  # noqa: E501
-            effect (str): The effect to apply to the audio asset <ul>   <li>`fadeIn` - fade volume in only</li>   <li>`fadeOut` - fade volume out only</li>   <li>`fadeInFadeOut` - fade volume in and out</li> </ul>. [optional]  # noqa: E501
-            type (str): The type of asset - set to `luma` for luma mattes.. [optional] if omitted the server will use the default value of "luma"  # noqa: E501
-            src (str): The luma matte source URL. The URL must be publicly accessible or include credentials.. [optional]  # noqa: E501
-            text (str): The title text string - i.e. \"My Title\".. [optional]  # noqa: E501
-            html (str): The HTML text string. See list of [supported HTML tags](https://shotstack.io/docs/guide/architecting-an-application/html-support/#supported-html-tags).. [optional]  # noqa: E501
+            fill (ShapeAssetFill): [optional]  # noqa: E501
+            rectangle (ShapeAssetRectangle): [optional]  # noqa: E501
+            circle (ShapeAssetCircle): [optional]  # noqa: E501
+            line (ShapeAssetLine): [optional]  # noqa: E501
+            aspect_ratio (str): The aspect ratio (shape) of the video output.. [optional]  # noqa: E501
+            language (str): The language code for the text-to-speech conversion.. [optional]  # noqa: E501
+            newscaster (bool): Set the voice to newscaster mode.. [optional] if omitted the server will use the default value of False  # noqa: E501
         """
 
+        type = kwargs.get('type', 'video')
         _check_type = kwargs.pop('_check_type', True)
         _spec_property_naming = kwargs.pop('_spec_property_naming', False)
         _path_to_item = kwargs.pop('_path_to_item', ())
@@ -326,6 +473,13 @@ class Asset(ModelComposed):
         """Asset - a model defined in OpenAPI
 
         Keyword Args:
+            type (str): The type of asset - set to `video` for videos.. defaults to 'video', must be one of ['video', 'image', 'text', 'rich-text', 'audio', 'luma', 'caption', 'rich-caption', 'html', 'title', 'shape', 'svg', 'text-to-image', 'image-to-video', 'text-to-speech', ]  # noqa: E501
+            src (str): The image source URL. The URL must be publicly accessible or include credentials.
+            text (str): The text to convert to speech.
+            html (str): The HTML text string. See list of [supported HTML tags](https://shotstack.io/docs/guide/architecting-an-application/html-support/#supported-html-tags).
+            shape (str): The shape to display.
+            prompt (str): The instructions for modifying the image into a video sequence.
+            voice (str): The voice to use for the text-to-speech conversion.
             _check_type (bool): if True, values for parameters in openapi_types
                                 will be type checked and a TypeError will be
                                 raised if the wrong type is input.
@@ -356,27 +510,44 @@ class Asset(ModelComposed):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
-            trim (float): The start trim point of the luma matte clip, in seconds (defaults to 0). Videos will start from the in trim point. A luma matte video will play until the file ends or the Clip length is reached.. [optional]  # noqa: E501
-            volume (float): Set the volume for the audio clip between 0 and 1 where 0 is muted and 1 is full volume (defaults to 1).. [optional]  # noqa: E501
-            volume_effect (str): The volume effect to apply to the video asset <ul>   <li>`fadeIn` - fade volume in only</li>   <li>`fadeOut` - fade volume out only</li>   <li>`fadeInFadeOut` - fade volume in and out</li> </ul>. [optional]  # noqa: E501
-            speed (float): Adjust the playback speed of the audio clip between 0 (paused) and 10 (10x normal speed), where 1 is normal speed (defaults to 1). Adjusting the speed will also adjust the duration of the clip and may require you to  adjust the Clip length. For example, if you set speed to 0.5, the clip will need to be 2x as long to play the entire audio (i.e. original length / 0.5). If you set speed to 2, the clip will need to be half as long to play the entire audio (i.e. original length / 2).. [optional]  # noqa: E501
+            transcode (bool): Set to `true` to force re-encoding of the video during preprocessing. This can help resolve compatibility issues, fix rotation problems, synchronize audio, or convert formats. The video will be processed to ensure optimal compatibility with the rendering engine.. [optional]  # noqa: E501
+            trim (float): The start trim point of the audio clip, in seconds (defaults to 0). Audio will start from the trim point. The audio will play until the file ends or the Clip length is reached.. [optional]  # noqa: E501
+            volume (AudioAssetVolume): [optional]  # noqa: E501
+            volume_effect (str): Preset volume effects to apply to the video asset <ul>   <li>`fadeIn` - fade volume in only</li>   <li>`fadeOut` - fade volume out only</li>   <li>`fadeInFadeOut` - fade volume in and out</li> </ul>. [optional]  # noqa: E501
+            speed (float): Adjust the playback speed of the audio clip between 0 (paused) and 10 (10x normal speed), where 1 is normal speed (defaults to 1). Adjusting the speed will also adjust the duration of the clip and may require you to adjust the Clip length.. [optional]  # noqa: E501
             crop (Crop): [optional]  # noqa: E501
+            chroma_key (ChromaKey): [optional]  # noqa: E501
+            width (int): The width of the image in pixels.. [optional]  # noqa: E501
+            height (int): The height of the image in pixels.. [optional]  # noqa: E501
+            font (RichCaptionAssetFont): [optional]  # noqa: E501
+            background (str): Apply a background color behind the text. Set the text color using hexadecimal color notation. Transparency is supported by setting the first two characters of the hex string (opposite to HTML),  i.e. #80ffffff will be white with 50% transparency. Omit to use transparent background.. [optional]  # noqa: E501
+            alignment (TextAlignment): [optional]  # noqa: E501
+            stroke (ShapeAssetStroke): [optional]  # noqa: E501
+            animation (RichCaptionAnimation): [optional]  # noqa: E501
+            ellipsis (str): The string to display when text overflows its bounding box. Set to an ellipsis character or custom string to indicate truncated text.. [optional]  # noqa: E501
             style (str): Uses a preset to apply font properties and styling to the title. <ul>   <li>`minimal`</li>   <li>`blockbuster`</li>   <li>`vogue`</li>   <li>`sketchy`</li>   <li>`skinny`</li>   <li>`chunk`</li>   <li>`chunkLight`</li>   <li>`marker`</li>   <li>`future`</li>   <li>`subtitle`</li> </ul>. [optional]  # noqa: E501
+            shadow (RichTextShadow): [optional]  # noqa: E501
+            border (Border): [optional]  # noqa: E501
+            padding (RichCaptionAssetPadding): [optional]  # noqa: E501
+            align (RichTextAlignment): [optional]  # noqa: E501
+            effect (str): The effect to apply to the audio asset <ul>   <li>`fadeIn` - fade volume in only</li>   <li>`fadeOut` - fade volume out only</li>   <li>`fadeInFadeOut` - fade volume in and out</li> </ul>. [optional]  # noqa: E501
+            margin (CaptionMargin): [optional]  # noqa: E501
+            active (RichCaptionActive): [optional]  # noqa: E501
+            css (str): The CSS text string to apply styling to the HTML. See list of  [support CSS properties](https://shotstack.io/docs/guide/architecting-an-application/html-support/#supported-css-properties).. [optional]  # noqa: E501
+            position (str): Place the title in one of nine predefined positions of the viewport. <ul>   <li>`top` - top (center)</li>   <li>`topRight` - top right</li>   <li>`right` - right (center)</li>   <li>`bottomRight` - bottom right</li>   <li>`bottom` - bottom (center)</li>   <li>`bottomLeft` - bottom left</li>   <li>`left` - left (center)</li>   <li>`topLeft` - top left</li>   <li>`center` - center</li> </ul>. [optional]  # noqa: E501
             color (str): Set the text color using hexadecimal color notation. Transparency is supported by setting the first two characters of the hex string (opposite to HTML),  i.e. #80ffffff will be white with  50% transparency.. [optional]  # noqa: E501
             size (str): Set the relative size of the text using predefined sizes from xx-small to xx-large. <ul>   <li>`xx-small`</li>   <li>`x-small`</li>   <li>`small`</li>   <li>`medium`</li>   <li>`large`</li>   <li>`x-large`</li>   <li>`xx-large`</li> </ul>. [optional]  # noqa: E501
-            background (str): Apply a background color behind the HTML bounding box using. Set the text color using hexadecimal  color notation. Transparency is supported by setting the first two characters of the hex string  (opposite to HTML), i.e. #80ffffff will be white with 50% transparency.. [optional]  # noqa: E501
-            position (str): Place the HTML in one of nine predefined positions within the HTML area. <ul>   <li>`top` - top (center)</li>   <li>`topRight` - top right</li>   <li>`right` - right (center)</li>   <li>`bottomRight` - bottom right</li>   <li>`bottom` - bottom (center)</li>   <li>`bottomLeft` - bottom left</li>   <li>`left` - left (center)</li>   <li>`topLeft` - top left</li>   <li>`center` - center</li> </ul>. [optional]  # noqa: E501
             offset (Offset): [optional]  # noqa: E501
-            css (str): The CSS text string to apply styling to the HTML. See list of  [support CSS properties](https://shotstack.io/docs/guide/architecting-an-application/html-support/#supported-css-properties).. [optional]  # noqa: E501
-            width (int): Set the width of the HTML asset bounding box in pixels. Text will wrap to fill the bounding box.. [optional]  # noqa: E501
-            height (int): Set the width of the HTML asset bounding box in pixels. Text and elements will be masked if they exceed the  height of the bounding box.. [optional]  # noqa: E501
-            effect (str): The effect to apply to the audio asset <ul>   <li>`fadeIn` - fade volume in only</li>   <li>`fadeOut` - fade volume out only</li>   <li>`fadeInFadeOut` - fade volume in and out</li> </ul>. [optional]  # noqa: E501
-            type (str): The type of asset - set to `luma` for luma mattes.. [optional] if omitted the server will use the default value of "luma"  # noqa: E501
-            src (str): The luma matte source URL. The URL must be publicly accessible or include credentials.. [optional]  # noqa: E501
-            text (str): The title text string - i.e. \"My Title\".. [optional]  # noqa: E501
-            html (str): The HTML text string. See list of [supported HTML tags](https://shotstack.io/docs/guide/architecting-an-application/html-support/#supported-html-tags).. [optional]  # noqa: E501
+            fill (ShapeAssetFill): [optional]  # noqa: E501
+            rectangle (ShapeAssetRectangle): [optional]  # noqa: E501
+            circle (ShapeAssetCircle): [optional]  # noqa: E501
+            line (ShapeAssetLine): [optional]  # noqa: E501
+            aspect_ratio (str): The aspect ratio (shape) of the video output.. [optional]  # noqa: E501
+            language (str): The language code for the text-to-speech conversion.. [optional]  # noqa: E501
+            newscaster (bool): Set the voice to newscaster mode.. [optional] if omitted the server will use the default value of False  # noqa: E501
         """
 
+        type = kwargs.get('type', 'video')
         _check_type = kwargs.pop('_check_type', True)
         _spec_property_naming = kwargs.pop('_spec_property_naming', False)
         _path_to_item = kwargs.pop('_path_to_item', ())
@@ -443,9 +614,18 @@ class Asset(ModelComposed):
           ],
           'oneOf': [
               AudioAsset,
+              CaptionAsset,
               HtmlAsset,
               ImageAsset,
+              ImageToVideoAsset,
               LumaAsset,
+              RichCaptionAsset,
+              RichTextAsset,
+              ShapeAsset,
+              SvgAsset,
+              TextAsset,
+              TextToImageAsset,
+              TextToSpeechAsset,
               TitleAsset,
               VideoAsset,
           ],

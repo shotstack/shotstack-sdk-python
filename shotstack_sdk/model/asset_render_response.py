@@ -31,8 +31,7 @@ from shotstack_sdk.exceptions import ApiAttributeError
 
 
 def lazy_import():
-    from shotstack_sdk.model.asset_response_data import AssetResponseData
-    globals()['AssetResponseData'] = AssetResponseData
+    AssetResponseData
 
 
 class AssetRenderResponse(ModelNormal):
@@ -65,14 +64,7 @@ class AssetRenderResponse(ModelNormal):
     validations = {
     }
 
-    @cached_property
-    def additional_properties_type():
-        """
-        This must be a method because a model may have properties that are
-        of type self, this must run after the class is loaded
-        """
-        lazy_import()
-        return (bool, date, datetime, dict, float, int, list, str, none_type,)  # noqa: E501
+    additional_properties_type = None
 
     _nullable = False
 
@@ -88,7 +80,7 @@ class AssetRenderResponse(ModelNormal):
         """
         lazy_import()
         return {
-            'data': ([AssetResponseData],),  # noqa: E501
+            'data': (List[AssetResponseData],),  # noqa: E501
         }
 
     @cached_property
@@ -111,7 +103,7 @@ class AssetRenderResponse(ModelNormal):
         """AssetRenderResponse - a model defined in OpenAPI
 
         Args:
-            data ([AssetResponseData]): An array of asset resources grouped by render id.
+            data (List[AssetResponseData]): An array of asset resources grouped by render id.
 
         Keyword Args:
             _check_type (bool): if True, values for parameters in openapi_types
@@ -196,7 +188,7 @@ class AssetRenderResponse(ModelNormal):
         """AssetRenderResponse - a model defined in OpenAPI
 
         Args:
-            data ([AssetResponseData]): An array of asset resources grouped by render id.
+            data (List[AssetResponseData]): An array of asset resources grouped by render id.
 
         Keyword Args:
             _check_type (bool): if True, values for parameters in openapi_types
