@@ -31,8 +31,7 @@ from shotstack_sdk.exceptions import ApiAttributeError
 
 
 def lazy_import():
-    from shotstack_sdk.model.edit import Edit
-    globals()['Edit'] = Edit
+    Edit
 
 
 class RenderResponseData(ModelNormal):
@@ -61,26 +60,20 @@ class RenderResponseData(ModelNormal):
 
     allowed_values = {
         ('status',): {
-            'QUEUED': "queued",
-            'FETCHING': "fetching",
-            'RENDERING': "rendering",
-            'SAVING': "saving",
-            'DONE': "done",
-            'FAILED': "failed",
+            '&#39;queued&#39;': 'queued',
+            '&#39;fetching&#39;': 'fetching',
+            '&#39;preprocessing&#39;': 'preprocessing',
+            '&#39;rendering&#39;': 'rendering',
+            '&#39;saving&#39;': 'saving',
+            '&#39;done&#39;': 'done',
+            '&#39;failed&#39;': 'failed',
         },
     }
 
     validations = {
     }
 
-    @cached_property
-    def additional_properties_type():
-        """
-        This must be a method because a model may have properties that are
-        of type self, this must run after the class is loaded
-        """
-        lazy_import()
-        return (bool, date, datetime, dict, float, int, list, str, none_type,)  # noqa: E501
+    additional_properties_type = None
 
     _nullable = False
 
@@ -104,8 +97,8 @@ class RenderResponseData(ModelNormal):
             'duration': (float,),  # noqa: E501
             'render_time': (float,),  # noqa: E501
             'url': (str,),  # noqa: E501
-            'poster': (str, none_type,),  # noqa: E501
-            'thumbnail': (str, none_type,),  # noqa: E501
+            'poster': (str,),  # noqa: E501
+            'thumbnail': (str,),  # noqa: E501
             'data': (Edit,),  # noqa: E501
             'created': (str,),  # noqa: E501
             'updated': (str,),  # noqa: E501
@@ -145,7 +138,7 @@ class RenderResponseData(ModelNormal):
         Args:
             id (str): The id of the render task in UUID format.
             owner (str): The owner id of the render task.
-            status (str): The status of the render task. <ul>   <li>`queued` - render is queued waiting to be rendered</li>   <li>`fetching` - assets are being fetched</li>   <li>`rendering` - the asset is being rendered</li>   <li>`saving` - the final asset is being saved to storage</li>   <li>`done` - the asset is ready to be downloaded</li>   <li>`failed` - there was an error rendering the asset</li> </ul>
+            status (str): The status of the render task. <ul>   <li>`queued` - render is queued waiting to be rendered</li>   <li>`fetching` - assets are being fetched</li>   <li>`preprocessing` - video assets are being processed for compatibility</li>   <li>`rendering` - the asset is being rendered</li>   <li>`saving` - the final asset is being saved to storage</li>   <li>`done` - the asset is ready to be downloaded</li>   <li>`failed` - there was an error rendering the asset</li> </ul>
 
         Keyword Args:
             _check_type (bool): if True, values for parameters in openapi_types
@@ -183,8 +176,8 @@ class RenderResponseData(ModelNormal):
             duration (float): The output video or audio length in seconds.. [optional]  # noqa: E501
             render_time (float): The time taken to render the asset in milliseconds.. [optional]  # noqa: E501
             url (str): The URL of the final asset. This will only be available if status is done. This is a temporary URL and will be deleted after 24 hours. By default all assets are copied to the Shotstack hosting and CDN destination.. [optional]  # noqa: E501
-            poster (str, none_type): The URL of the poster image if requested. This will only be available if status is done.. [optional]  # noqa: E501
-            thumbnail (str, none_type): The URL of the thumbnail image if requested. This will only be available if status is done.. [optional]  # noqa: E501
+            poster (str): The URL of the poster image if requested. This will only be available if status is done.. [optional]  # noqa: E501
+            thumbnail (str): The URL of the thumbnail image if requested. This will only be available if status is done.. [optional]  # noqa: E501
             data (Edit): [optional]  # noqa: E501
             created (str): The time the render task was initially queued.. [optional]  # noqa: E501
             updated (str): The time the render status was last updated.. [optional]  # noqa: E501
@@ -244,7 +237,7 @@ class RenderResponseData(ModelNormal):
         Args:
             id (str): The id of the render task in UUID format.
             owner (str): The owner id of the render task.
-            status (str): The status of the render task. <ul>   <li>`queued` - render is queued waiting to be rendered</li>   <li>`fetching` - assets are being fetched</li>   <li>`rendering` - the asset is being rendered</li>   <li>`saving` - the final asset is being saved to storage</li>   <li>`done` - the asset is ready to be downloaded</li>   <li>`failed` - there was an error rendering the asset</li> </ul>
+            status (str): The status of the render task. <ul>   <li>`queued` - render is queued waiting to be rendered</li>   <li>`fetching` - assets are being fetched</li>   <li>`preprocessing` - video assets are being processed for compatibility</li>   <li>`rendering` - the asset is being rendered</li>   <li>`saving` - the final asset is being saved to storage</li>   <li>`done` - the asset is ready to be downloaded</li>   <li>`failed` - there was an error rendering the asset</li> </ul>
 
         Keyword Args:
             _check_type (bool): if True, values for parameters in openapi_types
@@ -282,8 +275,8 @@ class RenderResponseData(ModelNormal):
             duration (float): The output video or audio length in seconds.. [optional]  # noqa: E501
             render_time (float): The time taken to render the asset in milliseconds.. [optional]  # noqa: E501
             url (str): The URL of the final asset. This will only be available if status is done. This is a temporary URL and will be deleted after 24 hours. By default all assets are copied to the Shotstack hosting and CDN destination.. [optional]  # noqa: E501
-            poster (str, none_type): The URL of the poster image if requested. This will only be available if status is done.. [optional]  # noqa: E501
-            thumbnail (str, none_type): The URL of the thumbnail image if requested. This will only be available if status is done.. [optional]  # noqa: E501
+            poster (str): The URL of the poster image if requested. This will only be available if status is done.. [optional]  # noqa: E501
+            thumbnail (str): The URL of the thumbnail image if requested. This will only be available if status is done.. [optional]  # noqa: E501
             data (Edit): [optional]  # noqa: E501
             created (str): The time the render task was initially queued.. [optional]  # noqa: E501
             updated (str): The time the render status was last updated.. [optional]  # noqa: E501

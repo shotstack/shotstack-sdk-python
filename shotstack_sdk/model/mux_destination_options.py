@@ -57,8 +57,8 @@ class MuxDestinationOptions(ModelNormal):
 
     allowed_values = {
         ('playback_policy',): {
-            'PUBLIC': "public",
-            'SIGNED': "signed",
+            '&#39;public&#39;': 'public',
+            '&#39;signed&#39;': 'signed',
         },
     }
 
@@ -68,13 +68,7 @@ class MuxDestinationOptions(ModelNormal):
         },
     }
 
-    @cached_property
-    def additional_properties_type():
-        """
-        This must be a method because a model may have properties that are
-        of type self, this must run after the class is loaded
-        """
-        return (bool, date, datetime, dict, float, int, list, str, none_type,)  # noqa: E501
+    additional_properties_type = None
 
     _nullable = False
 
@@ -89,7 +83,7 @@ class MuxDestinationOptions(ModelNormal):
                 and the value is attribute type.
         """
         return {
-            'playback_policy': ([str],),  # noqa: E501
+            'playback_policy': (List[str],),  # noqa: E501
             'passthrough': (str,),  # noqa: E501
         }
 
@@ -144,7 +138,7 @@ class MuxDestinationOptions(ModelNormal):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
-            playback_policy ([str]): Sets the Mux `playback_policy` option. Value is an array of strings - use `public`, `signed`, or both.. [optional]  # noqa: E501
+            playback_policy (List[str]): Sets the Mux `playback_policy` option. Value is an array of strings - use `public`, `signed`, or both.. [optional]  # noqa: E501
             passthrough (str): Sets the Mux `passthrough` option. Max 255 characters.. [optional]  # noqa: E501
         """
 
@@ -227,7 +221,7 @@ class MuxDestinationOptions(ModelNormal):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
-            playback_policy ([str]): Sets the Mux `playback_policy` option. Value is an array of strings - use `public`, `signed`, or both.. [optional]  # noqa: E501
+            playback_policy (List[str]): Sets the Mux `playback_policy` option. Value is an array of strings - use `public`, `signed`, or both.. [optional]  # noqa: E501
             passthrough (str): Sets the Mux `passthrough` option. Max 255 characters.. [optional]  # noqa: E501
         """
 

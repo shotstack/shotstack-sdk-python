@@ -56,29 +56,26 @@ class HtmlAsset(ModelNormal):
     """
 
     allowed_values = {
+        ('type',): {
+            '&#39;html&#39;': 'html',
+        },
         ('position',): {
-            'TOP': "top",
-            'TOPRIGHT': "topRight",
-            'RIGHT': "right",
-            'BOTTOMRIGHT': "bottomRight",
-            'BOTTOM': "bottom",
-            'BOTTOMLEFT': "bottomLeft",
-            'LEFT': "left",
-            'TOPLEFT': "topLeft",
-            'CENTER': "center",
+            '&#39;top&#39;': 'top',
+            '&#39;topRight&#39;': 'topRight',
+            '&#39;right&#39;': 'right',
+            '&#39;bottomRight&#39;': 'bottomRight',
+            '&#39;bottom&#39;': 'bottom',
+            '&#39;bottomLeft&#39;': 'bottomLeft',
+            '&#39;left&#39;': 'left',
+            '&#39;topLeft&#39;': 'topLeft',
+            '&#39;center&#39;': 'center',
         },
     }
 
     validations = {
     }
 
-    @cached_property
-    def additional_properties_type():
-        """
-        This must be a method because a model may have properties that are
-        of type self, this must run after the class is loaded
-        """
-        return (bool, date, datetime, dict, float, int, list, str, none_type,)  # noqa: E501
+    additional_properties_type = None
 
     _nullable = False
 
@@ -131,7 +128,7 @@ class HtmlAsset(ModelNormal):
             html (str): The HTML text string. See list of [supported HTML tags](https://shotstack.io/docs/guide/architecting-an-application/html-support/#supported-html-tags).
 
         Keyword Args:
-            type (str): The type of asset - set to `html` for HTML.. defaults to "html"  # noqa: E501
+            type (str): The type of asset - set to `html` for HTML.. defaults to 'html', must be one of ['html', ]  # noqa: E501
             _check_type (bool): if True, values for parameters in openapi_types
                                 will be type checked and a TypeError will be
                                 raised if the wrong type is input.
@@ -169,7 +166,7 @@ class HtmlAsset(ModelNormal):
             position (str): Place the HTML in one of nine predefined positions within the HTML area. <ul>   <li>`top` - top (center)</li>   <li>`topRight` - top right</li>   <li>`right` - right (center)</li>   <li>`bottomRight` - bottom right</li>   <li>`bottom` - bottom (center)</li>   <li>`bottomLeft` - bottom left</li>   <li>`left` - left (center)</li>   <li>`topLeft` - top left</li>   <li>`center` - center</li> </ul>. [optional]  # noqa: E501
         """
 
-        type = kwargs.get('type', "html")
+        type = kwargs.get('type', 'html')
         _check_type = kwargs.pop('_check_type', True)
         _spec_property_naming = kwargs.pop('_spec_property_naming', False)
         _path_to_item = kwargs.pop('_path_to_item', ())
@@ -224,7 +221,7 @@ class HtmlAsset(ModelNormal):
             html (str): The HTML text string. See list of [supported HTML tags](https://shotstack.io/docs/guide/architecting-an-application/html-support/#supported-html-tags).
 
         Keyword Args:
-            type (str): The type of asset - set to `html` for HTML.. defaults to "html"  # noqa: E501
+            type (str): The type of asset - set to `html` for HTML.. defaults to 'html', must be one of ['html', ]  # noqa: E501
             _check_type (bool): if True, values for parameters in openapi_types
                                 will be type checked and a TypeError will be
                                 raised if the wrong type is input.
@@ -262,7 +259,7 @@ class HtmlAsset(ModelNormal):
             position (str): Place the HTML in one of nine predefined positions within the HTML area. <ul>   <li>`top` - top (center)</li>   <li>`topRight` - top right</li>   <li>`right` - right (center)</li>   <li>`bottomRight` - bottom right</li>   <li>`bottom` - bottom (center)</li>   <li>`bottomLeft` - bottom left</li>   <li>`left` - left (center)</li>   <li>`topLeft` - top left</li>   <li>`center` - center</li> </ul>. [optional]  # noqa: E501
         """
 
-        type = kwargs.get('type', "html")
+        type = kwargs.get('type', 'html')
         _check_type = kwargs.pop('_check_type', True)
         _spec_property_naming = kwargs.pop('_spec_property_naming', False)
         _path_to_item = kwargs.pop('_path_to_item', ())

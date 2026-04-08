@@ -57,28 +57,22 @@ class DolbyEnhancementOptions(ModelNormal):
 
     allowed_values = {
         ('preset',): {
-            'CONFERENCE': "conference",
-            'INTERVIEW': "interview",
-            'LECTURE': "lecture",
-            'MEETING': "meeting",
-            'MOBILE_PHONE': "mobile_phone",
-            'MUSIC': "music",
-            'PODCAST': "podcast",
-            'STUDIO': "studio",
-            'VOICE_OVER': "voice_over",
+            '&#39;conference&#39;': 'conference',
+            '&#39;interview&#39;': 'interview',
+            '&#39;lecture&#39;': 'lecture',
+            '&#39;meeting&#39;': 'meeting',
+            '&#39;mobile_phone&#39;': 'mobile_phone',
+            '&#39;music&#39;': 'music',
+            '&#39;podcast&#39;': 'podcast',
+            '&#39;studio&#39;': 'studio',
+            '&#39;voice_over&#39;': 'voice_over',
         },
     }
 
     validations = {
     }
 
-    @cached_property
-    def additional_properties_type():
-        """
-        This must be a method because a model may have properties that are
-        of type self, this must run after the class is loaded
-        """
-        return (bool, date, datetime, dict, float, int, list, str, none_type,)  # noqa: E501
+    additional_properties_type = None
 
     _nullable = False
 

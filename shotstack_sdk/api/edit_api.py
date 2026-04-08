@@ -22,15 +22,18 @@ from shotstack_sdk.model_utils import (  # noqa: F401
     none_type,
     validate_and_convert_types
 )
-from shotstack_sdk.model.edit import Edit
-from shotstack_sdk.model.probe_response import ProbeResponse
-from shotstack_sdk.model.queued_response import QueuedResponse
-from shotstack_sdk.model.render_response import RenderResponse
-from shotstack_sdk.model.template import Template
-from shotstack_sdk.model.template_data_response import TemplateDataResponse
-from shotstack_sdk.model.template_list_response import TemplateListResponse
-from shotstack_sdk.model.template_render import TemplateRender
-from shotstack_sdk.model.template_response import TemplateResponse
+from pydantic import Field, StrictBool, StrictStr, field_validator
+from typing import Optional
+from typing_extensions import Annotated
+from shotstack_sdk.models.edit import Edit
+from shotstack_sdk.models.probe_response import ProbeResponse
+from shotstack_sdk.models.queued_response import QueuedResponse
+from shotstack_sdk.models.render_response import RenderResponse
+from shotstack_sdk.models.template import Template
+from shotstack_sdk.models.template_data_response import TemplateDataResponse
+from shotstack_sdk.models.template_list_response import TemplateListResponse
+from shotstack_sdk.models.template_render import TemplateRender
+from shotstack_sdk.models.template_response import TemplateResponse
 
 
 class EditApi(object):
@@ -859,7 +862,7 @@ class EditApi(object):
     ):
         """Render Asset  # noqa: E501
 
-        Queue and render the contents of an [Edit](#tocs_edit) as a video, image or audio file.  **Base URL:** <a href=\"#\">https://api.shotstack.io/edit/{version}</a>   # noqa: E501
+        Queue and render the contents of an [Edit](#tocs_edit) as a video, image or audio file.  **Rendering Process:** 1. **Validation**: The edit JSON is validated 2. **Download**: All assets are downloaded and cached   3. **Preprocessing**: Video assets are automatically processed to fix compatibility issues 4. **Rendering**: The timeline is rendered using the processed assets 5. **Output**: The final media file is generated and stored  **Video Preprocessing:** Video assets undergo automatic preprocessing to ensure compatibility. You can force  preprocessing by setting `\"transcode\": true` on video assets. See [Preprocessing](#preprocessing)  for more details.  **Base URL:** <a href=\"#\">https://api.shotstack.io/edit/{version}</a>   # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 

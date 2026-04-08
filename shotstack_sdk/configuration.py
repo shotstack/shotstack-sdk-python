@@ -410,7 +410,7 @@ conf = shotstack_sdk.Configuration(
                "OS: {env}\n"\
                "Python Version: {pyversion}\n"\
                "Version of the API: v1\n"\
-               "SDK Package Version: 0.2.8".\
+               "SDK Package Version: 1.10.4".\
                format(env=sys.platform, pyversion=sys.version)
 
     def get_host_settings(self):
@@ -449,20 +449,6 @@ conf = shotstack_sdk.Configuration(
             },
             {
                 'url': "https://api.shotstack.io/ingest/{version}",
-                'description': "No description provided",
-                'variables': {
-                    'version': {
-                        'description': "Set the stage to **v1** for production usage. Set to **stage** to use the development sandbox.",
-                        'default_value': "v1",
-                        'enum_values': [
-                            "v1",
-                            "stage"
-                        ]
-                        }
-                    }
-            },
-            {
-                'url': "https://api.shotstack.io/create/{version}",
                 'description': "No description provided",
                 'variables': {
                     'version': {

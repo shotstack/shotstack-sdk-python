@@ -61,13 +61,7 @@ class ShotstackDestination(ModelNormal):
     validations = {
     }
 
-    @cached_property
-    def additional_properties_type():
-        """
-        This must be a method because a model may have properties that are
-        of type self, this must run after the class is loaded
-        """
-        return (bool, date, datetime, dict, float, int, list, str, none_type,)  # noqa: E501
+    additional_properties_type = None
 
     _nullable = False
 
@@ -109,7 +103,7 @@ class ShotstackDestination(ModelNormal):
         Args:
 
         Keyword Args:
-            provider (str): The destination to send assets to - set to `shotstack` for Shotstack hosting and CDN.. defaults to "shotstack"  # noqa: E501
+            provider (str): The destination to send assets to - set to `shotstack` for Shotstack hosting and CDN.. defaults to 'shotstack'  # noqa: E501
             _check_type (bool): if True, values for parameters in openapi_types
                                 will be type checked and a TypeError will be
                                 raised if the wrong type is input.
@@ -143,7 +137,7 @@ class ShotstackDestination(ModelNormal):
             exclude (bool): Set to `true` to [opt-out](https://shotstack.io/docs/guide/serving-assets/self-host/) from the Shotstack hosting and CDN service. All files must be downloaded within 24 hours of rendering.. [optional]  # noqa: E501
         """
 
-        provider = kwargs.get('provider', "shotstack")
+        provider = kwargs.get('provider', 'shotstack')
         _check_type = kwargs.pop('_check_type', True)
         _spec_property_naming = kwargs.pop('_spec_property_naming', False)
         _path_to_item = kwargs.pop('_path_to_item', ())
@@ -196,7 +190,7 @@ class ShotstackDestination(ModelNormal):
         Args:
 
         Keyword Args:
-            provider (str): The destination to send assets to - set to `shotstack` for Shotstack hosting and CDN.. defaults to "shotstack"  # noqa: E501
+            provider (str): The destination to send assets to - set to `shotstack` for Shotstack hosting and CDN.. defaults to 'shotstack'  # noqa: E501
             _check_type (bool): if True, values for parameters in openapi_types
                                 will be type checked and a TypeError will be
                                 raised if the wrong type is input.
@@ -230,7 +224,7 @@ class ShotstackDestination(ModelNormal):
             exclude (bool): Set to `true` to [opt-out](https://shotstack.io/docs/guide/serving-assets/self-host/) from the Shotstack hosting and CDN service. All files must be downloaded within 24 hours of rendering.. [optional]  # noqa: E501
         """
 
-        provider = kwargs.get('provider', "shotstack")
+        provider = kwargs.get('provider', 'shotstack')
         _check_type = kwargs.pop('_check_type', True)
         _spec_property_naming = kwargs.pop('_spec_property_naming', False)
         _path_to_item = kwargs.pop('_path_to_item', ())

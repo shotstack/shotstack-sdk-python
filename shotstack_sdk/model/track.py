@@ -31,8 +31,7 @@ from shotstack_sdk.exceptions import ApiAttributeError
 
 
 def lazy_import():
-    from shotstack_sdk.model.clip import Clip
-    globals()['Clip'] = Clip
+    Clip
 
 
 class Track(ModelNormal):
@@ -63,16 +62,12 @@ class Track(ModelNormal):
     }
 
     validations = {
+        ('clips',): {
+            'min_items': 1,
+        },
     }
 
-    @cached_property
-    def additional_properties_type():
-        """
-        This must be a method because a model may have properties that are
-        of type self, this must run after the class is loaded
-        """
-        lazy_import()
-        return (bool, date, datetime, dict, float, int, list, str, none_type,)  # noqa: E501
+    additional_properties_type = None
 
     _nullable = False
 
@@ -88,7 +83,7 @@ class Track(ModelNormal):
         """
         lazy_import()
         return {
-            'clips': ([Clip],),  # noqa: E501
+            'clips': (List[Clip],),  # noqa: E501
         }
 
     @cached_property
@@ -111,7 +106,7 @@ class Track(ModelNormal):
         """Track - a model defined in OpenAPI
 
         Args:
-            clips ([Clip]): An array of Clips comprising of TitleClip, ImageClip or VideoClip.
+            clips (List[Clip]): An array of Clips comprising of TitleClip, ImageClip or VideoClip.
 
         Keyword Args:
             _check_type (bool): if True, values for parameters in openapi_types
@@ -196,7 +191,7 @@ class Track(ModelNormal):
         """Track - a model defined in OpenAPI
 
         Args:
-            clips ([Clip]): An array of Clips comprising of TitleClip, ImageClip or VideoClip.
+            clips (List[Clip]): An array of Clips comprising of TitleClip, ImageClip or VideoClip.
 
         Keyword Args:
             _check_type (bool): if True, values for parameters in openapi_types

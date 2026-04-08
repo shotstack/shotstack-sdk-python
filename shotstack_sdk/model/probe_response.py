@@ -61,13 +61,7 @@ class ProbeResponse(ModelNormal):
     validations = {
     }
 
-    @cached_property
-    def additional_properties_type():
-        """
-        This must be a method because a model may have properties that are
-        of type self, this must run after the class is loaded
-        """
-        return (bool, date, datetime, dict, float, int, list, str, none_type,)  # noqa: E501
+    additional_properties_type = None
 
     _nullable = False
 
@@ -84,7 +78,7 @@ class ProbeResponse(ModelNormal):
         return {
             'success': (bool,),  # noqa: E501
             'message': (str,),  # noqa: E501
-            'response': ({str: (bool, date, datetime, dict, float, int, list, str, none_type)},),  # noqa: E501
+            'response': (object,),  # noqa: E501
         }
 
     @cached_property
@@ -111,7 +105,7 @@ class ProbeResponse(ModelNormal):
         Args:
             success (bool): `true` if media successfully read, else `false`.
             message (str): `Created`, `Bad Request` or an error message.
-            response ({str: (bool, date, datetime, dict, float, int, list, str, none_type)}): The response from FFprobe in JSON format.
+            response (object): The response from FFprobe in JSON format.
 
         Keyword Args:
             _check_type (bool): if True, values for parameters in openapi_types
@@ -200,7 +194,7 @@ class ProbeResponse(ModelNormal):
         Args:
             success (bool): `true` if media successfully read, else `false`.
             message (str): `Created`, `Bad Request` or an error message.
-            response ({str: (bool, date, datetime, dict, float, int, list, str, none_type)}): The response from FFprobe in JSON format.
+            response (object): The response from FFprobe in JSON format.
 
         Keyword Args:
             _check_type (bool): if True, values for parameters in openapi_types

@@ -31,12 +31,9 @@ from shotstack_sdk.exceptions import ApiAttributeError
 
 
 def lazy_import():
-    from shotstack_sdk.model.font import Font
-    from shotstack_sdk.model.soundtrack import Soundtrack
-    from shotstack_sdk.model.track import Track
-    globals()['Font'] = Font
-    globals()['Soundtrack'] = Soundtrack
-    globals()['Track'] = Track
+    Font
+    Soundtrack
+    Track
 
 
 class Timeline(ModelNormal):
@@ -67,16 +64,12 @@ class Timeline(ModelNormal):
     }
 
     validations = {
+        ('tracks',): {
+            'min_items': 1,
+        },
     }
 
-    @cached_property
-    def additional_properties_type():
-        """
-        This must be a method because a model may have properties that are
-        of type self, this must run after the class is loaded
-        """
-        lazy_import()
-        return (bool, date, datetime, dict, float, int, list, str, none_type,)  # noqa: E501
+    additional_properties_type = None
 
     _nullable = False
 
@@ -92,10 +85,10 @@ class Timeline(ModelNormal):
         """
         lazy_import()
         return {
-            'tracks': ([Track],),  # noqa: E501
+            'tracks': (List[Track],),  # noqa: E501
             'soundtrack': (Soundtrack,),  # noqa: E501
             'background': (str,),  # noqa: E501
-            'fonts': ([Font],),  # noqa: E501
+            'fonts': (List[Font],),  # noqa: E501
             'cache': (bool,),  # noqa: E501
         }
 
@@ -123,7 +116,7 @@ class Timeline(ModelNormal):
         """Timeline - a model defined in OpenAPI
 
         Args:
-            tracks ([Track]): A timeline consists of an array of tracks, each track containing clips. Tracks are layered on top of each other in the same order they are added to the array with the top most track layered over the top of those below it. Ensure that a track containing titles is the top most track so that it is displayed above videos and images.
+            tracks (List[Track]): A timeline consists of an array of tracks, each track containing clips. Tracks are layered on top of each other in the same order they are added to the array with the top most track layered over the top of those below it. Ensure that a track containing titles is the top most track so that it is displayed above videos and images.
 
         Keyword Args:
             _check_type (bool): if True, values for parameters in openapi_types
@@ -158,7 +151,7 @@ class Timeline(ModelNormal):
                                 _visited_composed_classes = (Animal,)
             soundtrack (Soundtrack): [optional]  # noqa: E501
             background (str): A hexadecimal value for the timeline background colour. Defaults to #000000 (black).. [optional]  # noqa: E501
-            fonts ([Font]): An array of custom fonts to be downloaded for use by the HTML assets.. [optional]  # noqa: E501
+            fonts (List[Font]): An array of custom fonts to be downloaded for use by the HTML assets.. [optional]  # noqa: E501
             cache (bool): Disable the caching of ingested source footage and assets. See  [caching](https://shotstack.io/docs/guide/architecting-an-application/caching/) for more details.. [optional]  # noqa: E501
         """
 
@@ -212,7 +205,7 @@ class Timeline(ModelNormal):
         """Timeline - a model defined in OpenAPI
 
         Args:
-            tracks ([Track]): A timeline consists of an array of tracks, each track containing clips. Tracks are layered on top of each other in the same order they are added to the array with the top most track layered over the top of those below it. Ensure that a track containing titles is the top most track so that it is displayed above videos and images.
+            tracks (List[Track]): A timeline consists of an array of tracks, each track containing clips. Tracks are layered on top of each other in the same order they are added to the array with the top most track layered over the top of those below it. Ensure that a track containing titles is the top most track so that it is displayed above videos and images.
 
         Keyword Args:
             _check_type (bool): if True, values for parameters in openapi_types
@@ -247,7 +240,7 @@ class Timeline(ModelNormal):
                                 _visited_composed_classes = (Animal,)
             soundtrack (Soundtrack): [optional]  # noqa: E501
             background (str): A hexadecimal value for the timeline background colour. Defaults to #000000 (black).. [optional]  # noqa: E501
-            fonts ([Font]): An array of custom fonts to be downloaded for use by the HTML assets.. [optional]  # noqa: E501
+            fonts (List[Font]): An array of custom fonts to be downloaded for use by the HTML assets.. [optional]  # noqa: E501
             cache (bool): Disable the caching of ingested source footage and assets. See  [caching](https://shotstack.io/docs/guide/architecting-an-application/caching/) for more details.. [optional]  # noqa: E501
         """
 

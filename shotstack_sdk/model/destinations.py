@@ -31,16 +31,16 @@ from shotstack_sdk.exceptions import ApiAttributeError
 
 
 def lazy_import():
-    from shotstack_sdk.model.google_cloud_storage_destination import GoogleCloudStorageDestination
-    from shotstack_sdk.model.google_cloud_storage_destination_options import GoogleCloudStorageDestinationOptions
-    from shotstack_sdk.model.mux_destination import MuxDestination
-    from shotstack_sdk.model.s3_destination import S3Destination
-    from shotstack_sdk.model.shotstack_destination import ShotstackDestination
-    globals()['GoogleCloudStorageDestination'] = GoogleCloudStorageDestination
-    globals()['GoogleCloudStorageDestinationOptions'] = GoogleCloudStorageDestinationOptions
-    globals()['MuxDestination'] = MuxDestination
-    globals()['S3Destination'] = S3Destination
-    globals()['ShotstackDestination'] = ShotstackDestination
+    DestinationsAnyOf
+    DestinationsAnyOf1
+    DestinationsAnyOf2
+    DestinationsAnyOf2Options
+    GoogleCloudStorageDestination
+    GoogleDriveDestination
+    MuxDestination
+    S3Destination
+    ShotstackDestination
+    VimeoDestination
 
 
 class Destinations(ModelComposed):
@@ -89,28 +89,33 @@ class Destinations(ModelComposed):
         """
         lazy_import()
         return {
-            'exclude': (bool,),  # noqa: E501
-            'options': (GoogleCloudStorageDestinationOptions,),  # noqa: E501
             'provider': (str,),  # noqa: E501
+            'options': (DestinationsAnyOf2Options,),  # noqa: E501
+            'exclude': (bool,),  # noqa: E501
         }
 
     @cached_property
     def discriminator():
         lazy_import()
         val = {
+            'Destinations_anyOf': DestinationsAnyOf,
+            'Destinations_anyOf_1': DestinationsAnyOf1,
+            'Destinations_anyOf_2': DestinationsAnyOf2,
             'GoogleCloudStorageDestination': GoogleCloudStorageDestination,
+            'GoogleDriveDestination': GoogleDriveDestination,
             'MuxDestination': MuxDestination,
             'S3Destination': S3Destination,
             'ShotstackDestination': ShotstackDestination,
+            'VimeoDestination': VimeoDestination,
         }
         if not val:
             return None
         return {'destinations': val}
 
     attribute_map = {
-        'exclude': 'exclude',  # noqa: E501
-        'options': 'options',  # noqa: E501
         'provider': 'provider',  # noqa: E501
+        'options': 'options',  # noqa: E501
+        'exclude': 'exclude',  # noqa: E501
     }
 
     read_only_vars = {
@@ -122,6 +127,8 @@ class Destinations(ModelComposed):
         """Destinations - a model defined in OpenAPI
 
         Keyword Args:
+            provider (str): The destination to send assets to - set to `azure-blob-storage` for Azure Blob Storage.. defaults to 'azure-blob-storage'  # noqa: E501
+            options (DestinationsAnyOf2Options):
             _check_type (bool): if True, values for parameters in openapi_types
                                 will be type checked and a TypeError will be
                                 raised if the wrong type is input.
@@ -153,10 +160,9 @@ class Destinations(ModelComposed):
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
             exclude (bool): Set to `true` to [opt-out](https://shotstack.io/docs/guide/serving-assets/self-host/) from the Shotstack hosting and CDN service. All files must be downloaded within 24 hours of rendering.. [optional]  # noqa: E501
-            options (GoogleCloudStorageDestinationOptions): [optional]  # noqa: E501
-            provider (str): The destination to send assets to - set to `google-cloud-storage` for Google Cloud Storage.. [optional] if omitted the server will use the default value of "google-cloud-storage"  # noqa: E501
         """
 
+        provider = kwargs.get('provider', 'azure-blob-storage')
         _check_type = kwargs.pop('_check_type', True)
         _spec_property_naming = kwargs.pop('_spec_property_naming', False)
         _path_to_item = kwargs.pop('_path_to_item', ())
@@ -224,6 +230,8 @@ class Destinations(ModelComposed):
         """Destinations - a model defined in OpenAPI
 
         Keyword Args:
+            provider (str): The destination to send assets to - set to `azure-blob-storage` for Azure Blob Storage.. defaults to 'azure-blob-storage'  # noqa: E501
+            options (DestinationsAnyOf2Options):
             _check_type (bool): if True, values for parameters in openapi_types
                                 will be type checked and a TypeError will be
                                 raised if the wrong type is input.
@@ -255,10 +263,9 @@ class Destinations(ModelComposed):
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
             exclude (bool): Set to `true` to [opt-out](https://shotstack.io/docs/guide/serving-assets/self-host/) from the Shotstack hosting and CDN service. All files must be downloaded within 24 hours of rendering.. [optional]  # noqa: E501
-            options (GoogleCloudStorageDestinationOptions): [optional]  # noqa: E501
-            provider (str): The destination to send assets to - set to `google-cloud-storage` for Google Cloud Storage.. [optional] if omitted the server will use the default value of "google-cloud-storage"  # noqa: E501
         """
 
+        provider = kwargs.get('provider', 'azure-blob-storage')
         _check_type = kwargs.pop('_check_type', True)
         _spec_property_naming = kwargs.pop('_spec_property_naming', False)
         _path_to_item = kwargs.pop('_path_to_item', ())
@@ -320,10 +327,15 @@ class Destinations(ModelComposed):
         lazy_import()
         return {
           'anyOf': [
+              DestinationsAnyOf,
+              DestinationsAnyOf1,
+              DestinationsAnyOf2,
               GoogleCloudStorageDestination,
+              GoogleDriveDestination,
               MuxDestination,
               S3Destination,
               ShotstackDestination,
+              VimeoDestination,
           ],
           'allOf': [
           ],

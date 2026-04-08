@@ -31,8 +31,7 @@ from shotstack_sdk.exceptions import ApiAttributeError
 
 
 def lazy_import():
-    from shotstack_sdk.model.outputs_response import OutputsResponse
-    globals()['OutputsResponse'] = OutputsResponse
+    OutputsResponse
 
 
 class SourceResponseAttributes(ModelNormal):
@@ -61,26 +60,19 @@ class SourceResponseAttributes(ModelNormal):
 
     allowed_values = {
         ('status',): {
-            'QUEUED': "queued",
-            'IMPORTING': "importing",
-            'READY': "ready",
-            'FAILED': "failed",
-            'DELETED': "deleted",
-            'OVERWRITTEN': "overwritten",
+            '&#39;queued&#39;': 'queued',
+            '&#39;importing&#39;': 'importing',
+            '&#39;ready&#39;': 'ready',
+            '&#39;failed&#39;': 'failed',
+            '&#39;deleted&#39;': 'deleted',
+            '&#39;overwritten&#39;': 'overwritten',
         },
     }
 
     validations = {
     }
 
-    @cached_property
-    def additional_properties_type():
-        """
-        This must be a method because a model may have properties that are
-        of type self, this must run after the class is loaded
-        """
-        lazy_import()
-        return (bool, date, datetime, dict, float, int, list, str, none_type,)  # noqa: E501
+    additional_properties_type = None
 
     _nullable = False
 
@@ -103,7 +95,7 @@ class SourceResponseAttributes(ModelNormal):
             'status': (str,),  # noqa: E501
             'outputs': (OutputsResponse,),  # noqa: E501
             'width': (int,),  # noqa: E501
-            'height': (str,),  # noqa: E501
+            'height': (int,),  # noqa: E501
             'duration': (float,),  # noqa: E501
             'fps': (float,),  # noqa: E501
             'created': (str,),  # noqa: E501
@@ -180,7 +172,7 @@ class SourceResponseAttributes(ModelNormal):
             status (str): The status of the source file ingestion task. <ul>   <li>`queued` - ingestion task is queued waiting to be fetched</li>   <li>`importing` - the source file is being downloaded</li>   <li>`ready` - the source file has been ingested and stored</li>   <li>`failed` - there was an error ingesting the source file</li>   <li>`deleted` - the source file has been deleted</li> </ul>. [optional]  # noqa: E501
             outputs (OutputsResponse): [optional]  # noqa: E501
             width (int): The width in pixels of the ingested source file, if a video or image.. [optional]  # noqa: E501
-            height (str): The height in pixels of the ingested source file, if a video or image.. [optional]  # noqa: E501
+            height (int): The height in pixels of the ingested source file, if a video or image.. [optional]  # noqa: E501
             duration (float): The duration in seconds of the ingested source file, if a video or audio file.. [optional]  # noqa: E501
             fps (float): The frame rate in frames per second of the source file, if a video file.. [optional]  # noqa: E501
             created (str): The time the ingestion task was initially queued.. [optional]  # noqa: E501
@@ -277,7 +269,7 @@ class SourceResponseAttributes(ModelNormal):
             status (str): The status of the source file ingestion task. <ul>   <li>`queued` - ingestion task is queued waiting to be fetched</li>   <li>`importing` - the source file is being downloaded</li>   <li>`ready` - the source file has been ingested and stored</li>   <li>`failed` - there was an error ingesting the source file</li>   <li>`deleted` - the source file has been deleted</li> </ul>. [optional]  # noqa: E501
             outputs (OutputsResponse): [optional]  # noqa: E501
             width (int): The width in pixels of the ingested source file, if a video or image.. [optional]  # noqa: E501
-            height (str): The height in pixels of the ingested source file, if a video or image.. [optional]  # noqa: E501
+            height (int): The height in pixels of the ingested source file, if a video or image.. [optional]  # noqa: E501
             duration (float): The duration in seconds of the ingested source file, if a video or audio file.. [optional]  # noqa: E501
             fps (float): The frame rate in frames per second of the source file, if a video file.. [optional]  # noqa: E501
             created (str): The time the ingestion task was initially queued.. [optional]  # noqa: E501

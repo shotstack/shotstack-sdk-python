@@ -31,8 +31,7 @@ from shotstack_sdk.exceptions import ApiAttributeError
 
 
 def lazy_import():
-    from shotstack_sdk.model.template_list_response_item import TemplateListResponseItem
-    globals()['TemplateListResponseItem'] = TemplateListResponseItem
+    TemplateListResponseItem
 
 
 class TemplateListResponseData(ModelNormal):
@@ -65,14 +64,7 @@ class TemplateListResponseData(ModelNormal):
     validations = {
     }
 
-    @cached_property
-    def additional_properties_type():
-        """
-        This must be a method because a model may have properties that are
-        of type self, this must run after the class is loaded
-        """
-        lazy_import()
-        return (bool, date, datetime, dict, float, int, list, str, none_type,)  # noqa: E501
+    additional_properties_type = None
 
     _nullable = False
 
@@ -89,7 +81,7 @@ class TemplateListResponseData(ModelNormal):
         lazy_import()
         return {
             'owner': (str,),  # noqa: E501
-            'templates': ([TemplateListResponseItem],),  # noqa: E501
+            'templates': (List[TemplateListResponseItem],),  # noqa: E501
         }
 
     @cached_property
@@ -114,7 +106,7 @@ class TemplateListResponseData(ModelNormal):
 
         Args:
             owner (str): The owner id of the templates.
-            templates ([TemplateListResponseItem]): The list of templates.
+            templates (List[TemplateListResponseItem]): The list of templates.
 
         Keyword Args:
             _check_type (bool): if True, values for parameters in openapi_types
@@ -201,7 +193,7 @@ class TemplateListResponseData(ModelNormal):
 
         Args:
             owner (str): The owner id of the templates.
-            templates ([TemplateListResponseItem]): The list of templates.
+            templates (List[TemplateListResponseItem]): The list of templates.
 
         Keyword Args:
             _check_type (bool): if True, values for parameters in openapi_types

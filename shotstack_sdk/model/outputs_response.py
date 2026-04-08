@@ -31,8 +31,7 @@ from shotstack_sdk.exceptions import ApiAttributeError
 
 
 def lazy_import():
-    from shotstack_sdk.model.rendition_response_attributes import RenditionResponseAttributes
-    globals()['RenditionResponseAttributes'] = RenditionResponseAttributes
+    RenditionResponseAttributes
 
 
 class OutputsResponse(ModelNormal):
@@ -65,14 +64,7 @@ class OutputsResponse(ModelNormal):
     validations = {
     }
 
-    @cached_property
-    def additional_properties_type():
-        """
-        This must be a method because a model may have properties that are
-        of type self, this must run after the class is loaded
-        """
-        lazy_import()
-        return (bool, date, datetime, dict, float, int, list, str, none_type,)  # noqa: E501
+    additional_properties_type = None
 
     _nullable = False
 
@@ -88,7 +80,7 @@ class OutputsResponse(ModelNormal):
         """
         lazy_import()
         return {
-            'renditions': ([RenditionResponseAttributes],),  # noqa: E501
+            'renditions': (List[RenditionResponseAttributes],),  # noqa: E501
         }
 
     @cached_property
@@ -141,7 +133,7 @@ class OutputsResponse(ModelNormal):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
-            renditions ([RenditionResponseAttributes]): The list of renditions generated from the source file.. [optional]  # noqa: E501
+            renditions (List[RenditionResponseAttributes]): The list of renditions generated from the source file.. [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
@@ -223,7 +215,7 @@ class OutputsResponse(ModelNormal):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
-            renditions ([RenditionResponseAttributes]): The list of renditions generated from the source file.. [optional]  # noqa: E501
+            renditions (List[RenditionResponseAttributes]): The list of renditions generated from the source file.. [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)

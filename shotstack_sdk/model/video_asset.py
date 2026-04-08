@@ -31,8 +31,9 @@ from shotstack_sdk.exceptions import ApiAttributeError
 
 
 def lazy_import():
-    from shotstack_sdk.model.crop import Crop
-    globals()['Crop'] = Crop
+    ChromaKey
+    Crop
+    VideoAssetVolume
 
 
 class VideoAsset(ModelNormal):
@@ -60,28 +61,31 @@ class VideoAsset(ModelNormal):
     """
 
     allowed_values = {
+        ('type',): {
+            '&#39;video&#39;': 'video',
+        },
         ('volume_effect',): {
-            'FADEIN': "fadeIn",
-            'FADEOUT': "fadeOut",
-            'FADEINFADEOUT': "fadeInFadeOut",
+            '&#39;none&#39;': 'none',
+            '&#39;fadeIn&#39;': 'fadeIn',
+            '&#39;fadeOut&#39;': 'fadeOut',
+            '&#39;fadeInFadeOut&#39;': 'fadeInFadeOut',
         },
     }
 
     validations = {
+        ('src',): {
+            'min_length': 1,
+            'regex': {
+                'pattern': r'',  # noqa: E501
+            },
+        },
         ('speed',): {
             'inclusive_maximum': 10,
             'inclusive_minimum': 0,
         },
     }
 
-    @cached_property
-    def additional_properties_type():
-        """
-        This must be a method because a model may have properties that are
-        of type self, this must run after the class is loaded
-        """
-        lazy_import()
-        return (bool, date, datetime, dict, float, int, list, str, none_type,)  # noqa: E501
+    additional_properties_type = None
 
     _nullable = False
 
@@ -99,11 +103,13 @@ class VideoAsset(ModelNormal):
         return {
             'type': (str,),  # noqa: E501
             'src': (str,),  # noqa: E501
+            'transcode': (bool,),  # noqa: E501
             'trim': (float,),  # noqa: E501
-            'volume': (float,),  # noqa: E501
+            'volume': (VideoAssetVolume,),  # noqa: E501
             'volume_effect': (str,),  # noqa: E501
             'speed': (float,),  # noqa: E501
             'crop': (Crop,),  # noqa: E501
+            'chroma_key': (ChromaKey,),  # noqa: E501
         }
 
     @cached_property
@@ -114,11 +120,13 @@ class VideoAsset(ModelNormal):
     attribute_map = {
         'type': 'type',  # noqa: E501
         'src': 'src',  # noqa: E501
+        'transcode': 'transcode',  # noqa: E501
         'trim': 'trim',  # noqa: E501
         'volume': 'volume',  # noqa: E501
         'volume_effect': 'volumeEffect',  # noqa: E501
         'speed': 'speed',  # noqa: E501
         'crop': 'crop',  # noqa: E501
+        'chroma_key': 'chromaKey',  # noqa: E501
     }
 
     read_only_vars = {
@@ -135,7 +143,7 @@ class VideoAsset(ModelNormal):
             src (str): The video source URL. The URL must be publicly accessible or include credentials.
 
         Keyword Args:
-            type (str): The type of asset - set to `video` for videos.. defaults to "video"  # noqa: E501
+            type (str): The type of asset - set to `video` for videos.. defaults to 'video', must be one of ['video', ]  # noqa: E501
             _check_type (bool): if True, values for parameters in openapi_types
                                 will be type checked and a TypeError will be
                                 raised if the wrong type is input.
@@ -166,14 +174,16 @@ class VideoAsset(ModelNormal):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
+            transcode (bool): Set to `true` to force re-encoding of the video during preprocessing. This can help resolve compatibility issues, fix rotation problems, synchronize audio, or convert formats. The video will be processed to ensure optimal compatibility with the rendering engine.. [optional]  # noqa: E501
             trim (float): The start trim point of the video clip, in seconds (defaults to 0). Videos will start from the in trim point. The video will play until the file ends or the Clip length is reached.. [optional]  # noqa: E501
-            volume (float): Set the volume for the video clip between 0 and 1 where 0 is muted and 1 is full volume (defaults to 1).. [optional]  # noqa: E501
-            volume_effect (str): The volume effect to apply to the video asset <ul>   <li>`fadeIn` - fade volume in only</li>   <li>`fadeOut` - fade volume out only</li>   <li>`fadeInFadeOut` - fade volume in and out</li> </ul>. [optional]  # noqa: E501
+            volume (VideoAssetVolume): [optional]  # noqa: E501
+            volume_effect (str): Preset volume effects to apply to the video asset <ul>   <li>`fadeIn` - fade volume in only</li>   <li>`fadeOut` - fade volume out only</li>   <li>`fadeInFadeOut` - fade volume in and out</li> </ul>. [optional]  # noqa: E501
             speed (float): Adjust the playback speed of the video clip between 0 (paused) and 10 (10x normal speed) where 1 is normal speed (defaults to 1). Adjusting the speed will also adjust the duration of the clip and may require you to  adjust the Clip length. For example, if you set speed to 0.5, the clip will need to be 2x as long to play the entire video (i.e. original length / 0.5). If you set speed to 2, the clip will need to be half as long to play the entire video (i.e. original length / 2).. [optional]  # noqa: E501
             crop (Crop): [optional]  # noqa: E501
+            chroma_key (ChromaKey): [optional]  # noqa: E501
         """
 
-        type = kwargs.get('type', "video")
+        type = kwargs.get('type', 'video')
         _check_type = kwargs.pop('_check_type', True)
         _spec_property_naming = kwargs.pop('_spec_property_naming', False)
         _path_to_item = kwargs.pop('_path_to_item', ())
@@ -228,7 +238,7 @@ class VideoAsset(ModelNormal):
             src (str): The video source URL. The URL must be publicly accessible or include credentials.
 
         Keyword Args:
-            type (str): The type of asset - set to `video` for videos.. defaults to "video"  # noqa: E501
+            type (str): The type of asset - set to `video` for videos.. defaults to 'video', must be one of ['video', ]  # noqa: E501
             _check_type (bool): if True, values for parameters in openapi_types
                                 will be type checked and a TypeError will be
                                 raised if the wrong type is input.
@@ -259,14 +269,16 @@ class VideoAsset(ModelNormal):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
+            transcode (bool): Set to `true` to force re-encoding of the video during preprocessing. This can help resolve compatibility issues, fix rotation problems, synchronize audio, or convert formats. The video will be processed to ensure optimal compatibility with the rendering engine.. [optional]  # noqa: E501
             trim (float): The start trim point of the video clip, in seconds (defaults to 0). Videos will start from the in trim point. The video will play until the file ends or the Clip length is reached.. [optional]  # noqa: E501
-            volume (float): Set the volume for the video clip between 0 and 1 where 0 is muted and 1 is full volume (defaults to 1).. [optional]  # noqa: E501
-            volume_effect (str): The volume effect to apply to the video asset <ul>   <li>`fadeIn` - fade volume in only</li>   <li>`fadeOut` - fade volume out only</li>   <li>`fadeInFadeOut` - fade volume in and out</li> </ul>. [optional]  # noqa: E501
+            volume (VideoAssetVolume): [optional]  # noqa: E501
+            volume_effect (str): Preset volume effects to apply to the video asset <ul>   <li>`fadeIn` - fade volume in only</li>   <li>`fadeOut` - fade volume out only</li>   <li>`fadeInFadeOut` - fade volume in and out</li> </ul>. [optional]  # noqa: E501
             speed (float): Adjust the playback speed of the video clip between 0 (paused) and 10 (10x normal speed) where 1 is normal speed (defaults to 1). Adjusting the speed will also adjust the duration of the clip and may require you to  adjust the Clip length. For example, if you set speed to 0.5, the clip will need to be 2x as long to play the entire video (i.e. original length / 0.5). If you set speed to 2, the clip will need to be half as long to play the entire video (i.e. original length / 2).. [optional]  # noqa: E501
             crop (Crop): [optional]  # noqa: E501
+            chroma_key (ChromaKey): [optional]  # noqa: E501
         """
 
-        type = kwargs.get('type', "video")
+        type = kwargs.get('type', 'video')
         _check_type = kwargs.pop('_check_type', True)
         _spec_property_naming = kwargs.pop('_spec_property_naming', False)
         _path_to_item = kwargs.pop('_path_to_item', ())

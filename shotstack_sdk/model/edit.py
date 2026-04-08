@@ -31,12 +31,9 @@ from shotstack_sdk.exceptions import ApiAttributeError
 
 
 def lazy_import():
-    from shotstack_sdk.model.merge_field import MergeField
-    from shotstack_sdk.model.output import Output
-    from shotstack_sdk.model.timeline import Timeline
-    globals()['MergeField'] = MergeField
-    globals()['Output'] = Output
-    globals()['Timeline'] = Timeline
+    MergeField
+    Output
+    Timeline
 
 
 class Edit(ModelNormal):
@@ -65,22 +62,20 @@ class Edit(ModelNormal):
 
     allowed_values = {
         ('disk',): {
-            'LOCAL': "local",
-            'MOUNT': "mount",
+            '&#39;local&#39;': 'local',
+            '&#39;mount&#39;': 'mount',
+        },
+        ('instance',): {
+            '&#39;s1&#39;': 's1',
+            '&#39;s2&#39;': 's2',
+            '&#39;a1&#39;': 'a1',
         },
     }
 
     validations = {
     }
 
-    @cached_property
-    def additional_properties_type():
-        """
-        This must be a method because a model may have properties that are
-        of type self, this must run after the class is loaded
-        """
-        lazy_import()
-        return (bool, date, datetime, dict, float, int, list, str, none_type,)  # noqa: E501
+    additional_properties_type = None
 
     _nullable = False
 
@@ -98,9 +93,10 @@ class Edit(ModelNormal):
         return {
             'timeline': (Timeline,),  # noqa: E501
             'output': (Output,),  # noqa: E501
-            'merge': ([MergeField],),  # noqa: E501
+            'merge': (List[MergeField],),  # noqa: E501
             'callback': (str,),  # noqa: E501
             'disk': (str,),  # noqa: E501
+            'instance': (str,),  # noqa: E501
         }
 
     @cached_property
@@ -114,6 +110,7 @@ class Edit(ModelNormal):
         'merge': 'merge',  # noqa: E501
         'callback': 'callback',  # noqa: E501
         'disk': 'disk',  # noqa: E501
+        'instance': 'instance',  # noqa: E501
     }
 
     read_only_vars = {
@@ -161,9 +158,10 @@ class Edit(ModelNormal):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
-            merge ([MergeField]): An array of key/value pairs that provides an easy way to create templates with placeholders. The placeholders can be used to find and replace keys with values. For example you can search for the placeholder `{{NAME}}` and replace it with the value `Jane`. . [optional]  # noqa: E501
+            merge (List[MergeField]): An array of key/value pairs that provides an easy way to create templates with placeholders. The placeholders can be used to find and replace keys with values. For example you can search for the placeholder `{{NAME}}` and replace it with the value `Jane`. . [optional]  # noqa: E501
             callback (str): An optional webhook callback URL used to receive status notifications when a render completes or fails. Notifications are also sent when a rendered video is sent to an output  [destination](https://shotstack.io/docs/guide/serving-assets/destinations/). See [webhooks](https://shotstack.io/docs/guide/architecting-an-application/webhooks/) for more details.. [optional]  # noqa: E501
             disk (str): **Notice: This option is now deprecated and will be removed. Disk types are handled automatically. Setting a disk type has no effect.**  The disk type to use for storing footage and assets for each render. See [disk types](https://shotstack.io/docs/guide/architecting-an-application/disk-types/) for more details. <ul>   <li>`local` - optimized for high speed rendering with up to 512MB storage</li>   <li>`mount` - optimized for larger file sizes and longer videos with 5GB for source footage and 512MB for output render</li> </ul> . [optional]  # noqa: E501
+            instance (str): The render instance type to use for processing the edit. <ul>   <li>`s1` - standard instance (default)</li>   <li>`s2` - standard instance with more resources</li>   <li>`a1` - accelerated instance for faster rendering</li> </ul>. [optional] if omitted the server will use the default value of 's1'  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
@@ -251,9 +249,10 @@ class Edit(ModelNormal):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
-            merge ([MergeField]): An array of key/value pairs that provides an easy way to create templates with placeholders. The placeholders can be used to find and replace keys with values. For example you can search for the placeholder `{{NAME}}` and replace it with the value `Jane`. . [optional]  # noqa: E501
+            merge (List[MergeField]): An array of key/value pairs that provides an easy way to create templates with placeholders. The placeholders can be used to find and replace keys with values. For example you can search for the placeholder `{{NAME}}` and replace it with the value `Jane`. . [optional]  # noqa: E501
             callback (str): An optional webhook callback URL used to receive status notifications when a render completes or fails. Notifications are also sent when a rendered video is sent to an output  [destination](https://shotstack.io/docs/guide/serving-assets/destinations/). See [webhooks](https://shotstack.io/docs/guide/architecting-an-application/webhooks/) for more details.. [optional]  # noqa: E501
             disk (str): **Notice: This option is now deprecated and will be removed. Disk types are handled automatically. Setting a disk type has no effect.**  The disk type to use for storing footage and assets for each render. See [disk types](https://shotstack.io/docs/guide/architecting-an-application/disk-types/) for more details. <ul>   <li>`local` - optimized for high speed rendering with up to 512MB storage</li>   <li>`mount` - optimized for larger file sizes and longer videos with 5GB for source footage and 512MB for output render</li> </ul> . [optional]  # noqa: E501
+            instance (str): The render instance type to use for processing the edit. <ul>   <li>`s1` - standard instance (default)</li>   <li>`s2` - standard instance with more resources</li>   <li>`a1` - accelerated instance for faster rendering</li> </ul>. [optional] if omitted the server will use the default value of 's1'  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
