@@ -91,6 +91,7 @@ class RichTextBackground(ModelNormal):
             'color': (str,),  # noqa: E501
             'opacity': (float,),  # noqa: E501
             'border_radius': (float,),  # noqa: E501
+            'wrap': (bool,),  # noqa: E501
         }
 
     @cached_property
@@ -102,6 +103,7 @@ class RichTextBackground(ModelNormal):
         'color': 'color',  # noqa: E501
         'opacity': 'opacity',  # noqa: E501
         'border_radius': 'borderRadius',  # noqa: E501
+        'wrap': 'wrap',  # noqa: E501
     }
 
     read_only_vars = {
@@ -148,6 +150,7 @@ class RichTextBackground(ModelNormal):
             color (str): The background color using hexadecimal color notation.. [optional]  # noqa: E501
             opacity (float): The opacity of the background where 1 is opaque and 0 is transparent.. [optional] if omitted the server will use the default value of 1  # noqa: E501
             border_radius (float): The border radius of the background box in pixels. Must be 0 or greater.. [optional] if omitted the server will use the default value of 0  # noqa: E501
+            wrap (bool): When true, the background pill shrinks to fit the rendered text bounding box plus the asset's padding (and stroke width, if present), producing a pill or badge effect. When false (default), the background fills the full asset content area. Available on rich-text and rich-caption assets only; not supported on legacy `type: text`. . [optional] if omitted the server will use the default value of False  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
@@ -232,6 +235,7 @@ class RichTextBackground(ModelNormal):
             color (str): The background color using hexadecimal color notation.. [optional]  # noqa: E501
             opacity (float): The opacity of the background where 1 is opaque and 0 is transparent.. [optional] if omitted the server will use the default value of 1  # noqa: E501
             border_radius (float): The border radius of the background box in pixels. Must be 0 or greater.. [optional] if omitted the server will use the default value of 0  # noqa: E501
+            wrap (bool): When true, the background pill shrinks to fit the rendered text bounding box plus the asset's padding (and stroke width, if present), producing a pill or badge effect. When false (default), the background fills the full asset content area. Available on rich-text and rich-caption assets only; not supported on legacy `type: text`. . [optional] if omitted the server will use the default value of False  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
