@@ -11,7 +11,7 @@
 """
 
 
-__version__ = "1.10.4"
+__version__ = "1.10.10"
 
 # import ApiClient
 from shotstack_sdk.api_client import ApiClient
