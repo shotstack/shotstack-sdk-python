@@ -151,6 +151,7 @@ class Clip(ModelNormal):
             'asset': (Asset,),  # noqa: E501
             'start': (ClipStart,),  # noqa: E501
             'length': (ClipLength,),  # noqa: E501
+            'id': (str,),  # noqa: E501
             'fit': (str,),  # noqa: E501
             'scale': (ClipScale,),  # noqa: E501
             'width': (float,),  # noqa: E501
@@ -174,6 +175,7 @@ class Clip(ModelNormal):
         'asset': 'asset',  # noqa: E501
         'start': 'start',  # noqa: E501
         'length': 'length',  # noqa: E501
+        'id': 'id',  # noqa: E501
         'fit': 'fit',  # noqa: E501
         'scale': 'scale',  # noqa: E501
         'width': 'width',  # noqa: E501
@@ -234,6 +236,7 @@ class Clip(ModelNormal):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
+            id (str): Optional client-generated identifier. Used by client SDKs (e.g. the Shotstack Studio SDK) to reference a clip across edits without relying on its position in the timeline. The render API does not use this field and it does not appear in render output.. [optional]  # noqa: E501
             fit (str): Set how the asset should be scaled to fit the viewport using one of the following options:    <ul>     <li>`crop` <b>(default)</b> - scale the asset to fill the viewport while maintaining the aspect ratio. The asset will be cropped if it exceeds the bounds of the viewport.</li>     <li>`cover` - stretch the asset to fill the viewport without maintaining the aspect ratio.</li>     <li>`contain` - fit the entire asset within the viewport while maintaining the original aspect ratio.</li>     <li>`none` - preserves the original asset dimensions and does not apply any scaling.</li>   </ul>. [optional]  # noqa: E501
             scale (ClipScale): [optional]  # noqa: E501
             width (float): Set the width of the clip bounding box in pixels. This constrains the width of the clip, overriding the default behavior where clips fill the viewport width.. [optional]  # noqa: E501
@@ -335,6 +338,7 @@ class Clip(ModelNormal):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
+            id (str): Optional client-generated identifier. Used by client SDKs (e.g. the Shotstack Studio SDK) to reference a clip across edits without relying on its position in the timeline. The render API does not use this field and it does not appear in render output.. [optional]  # noqa: E501
             fit (str): Set how the asset should be scaled to fit the viewport using one of the following options:    <ul>     <li>`crop` <b>(default)</b> - scale the asset to fill the viewport while maintaining the aspect ratio. The asset will be cropped if it exceeds the bounds of the viewport.</li>     <li>`cover` - stretch the asset to fill the viewport without maintaining the aspect ratio.</li>     <li>`contain` - fit the entire asset within the viewport while maintaining the original aspect ratio.</li>     <li>`none` - preserves the original asset dimensions and does not apply any scaling.</li>   </ul>. [optional]  # noqa: E501
             scale (ClipScale): [optional]  # noqa: E501
             width (float): Set the width of the clip bounding box in pixels. This constrains the width of the clip, overriding the default behavior where clips fill the viewport width.. [optional]  # noqa: E501
