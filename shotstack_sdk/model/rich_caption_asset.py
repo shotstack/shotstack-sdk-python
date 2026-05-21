@@ -140,7 +140,7 @@ class RichCaptionAsset(ModelNormal):
         """RichCaptionAsset - a model defined in OpenAPI
 
         Args:
-            src (str): The URL to an SRT or VTT subtitles file, or an alias reference to auto-generate captions from an audio or video clip. For file URLs, the URL must be publicly accessible or include credentials. For auto-captioning, use the format `alias://clip-name` where clip-name is the alias of an audio, video, or text-to-speech clip.
+            src (str): Source for the caption words. Accepts three formats: (1) the URL to a subtitle file (`.srt`, `.vtt`, `.ttml`, or `.dfxp`) which is parsed directly; (2) the URL to an audio or video media file (`.mp4`, `.mov`, `.webm`, `.mp3`, `.wav`, `.m4a`, `.flac`, `.aac`, `.ogg`, and related formats) which is auto-transcribed; (3) an alias reference in the form `alias://clip-name` where `clip-name` is the alias of another audio, video, or text-to-speech clip in the same timeline — the referenced clip's source is auto-transcribed. For file URLs, the URL must be publicly accessible or include credentials. Content is classified at runtime and unsupported content types (HTML, PDF, images, archives) are rejected with a structured error.
 
         Keyword Args:
             type (str): The type of asset - set to `rich-caption` for rich captions.. defaults to 'rich-caption', must be one of ['rich-caption', ]  # noqa: E501
@@ -238,7 +238,7 @@ class RichCaptionAsset(ModelNormal):
         """RichCaptionAsset - a model defined in OpenAPI
 
         Args:
-            src (str): The URL to an SRT or VTT subtitles file, or an alias reference to auto-generate captions from an audio or video clip. For file URLs, the URL must be publicly accessible or include credentials. For auto-captioning, use the format `alias://clip-name` where clip-name is the alias of an audio, video, or text-to-speech clip.
+            src (str): Source for the caption words. Accepts three formats: (1) the URL to a subtitle file (`.srt`, `.vtt`, `.ttml`, or `.dfxp`) which is parsed directly; (2) the URL to an audio or video media file (`.mp4`, `.mov`, `.webm`, `.mp3`, `.wav`, `.m4a`, `.flac`, `.aac`, `.ogg`, and related formats) which is auto-transcribed; (3) an alias reference in the form `alias://clip-name` where `clip-name` is the alias of another audio, video, or text-to-speech clip in the same timeline — the referenced clip's source is auto-transcribed. For file URLs, the URL must be publicly accessible or include credentials. Content is classified at runtime and unsupported content types (HTML, PDF, images, archives) are rejected with a structured error.
 
         Keyword Args:
             type (str): The type of asset - set to `rich-caption` for rich captions.. defaults to 'rich-caption', must be one of ['rich-caption', ]  # noqa: E501
