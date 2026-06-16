@@ -77,6 +77,9 @@ class AudioAsset(ModelNormal):
                 'pattern': r'',  # noqa: E501
             },
         },
+        ('prompt',): {
+            'max_length': 4000,
+        },
         ('speed',): {
             'inclusive_maximum': 10,
             'inclusive_minimum': 0,
@@ -101,6 +104,11 @@ class AudioAsset(ModelNormal):
         return {
             'type': (str,),  # noqa: E501
             'src': (str,),  # noqa: E501
+            'prompt': (str,),  # noqa: E501
+            'voice': (str,),  # noqa: E501
+            'language': (str,),  # noqa: E501
+            'newscaster': (bool,),  # noqa: E501
+            'model': (str,),  # noqa: E501
             'trim': (float,),  # noqa: E501
             'volume': (AudioAssetVolume,),  # noqa: E501
             'speed': (float,),  # noqa: E501
@@ -115,6 +123,11 @@ class AudioAsset(ModelNormal):
     attribute_map = {
         'type': 'type',  # noqa: E501
         'src': 'src',  # noqa: E501
+        'prompt': 'prompt',  # noqa: E501
+        'voice': 'voice',  # noqa: E501
+        'language': 'language',  # noqa: E501
+        'newscaster': 'newscaster',  # noqa: E501
+        'model': 'model',  # noqa: E501
         'trim': 'trim',  # noqa: E501
         'volume': 'volume',  # noqa: E501
         'speed': 'speed',  # noqa: E501
@@ -128,11 +141,10 @@ class AudioAsset(ModelNormal):
 
     @classmethod
     @convert_js_args_to_python_args
-    def _from_openapi_data(cls, src, *args, **kwargs):  # noqa: E501
+    def _from_openapi_data(cls, *args, **kwargs):  # noqa: E501
         """AudioAsset - a model defined in OpenAPI
 
         Args:
-            src (str): The audio source URL. The URL must be publicly accessible or include credentials.
 
         Keyword Args:
             type (str): The type of asset - set to `audio` for audio assets.. defaults to 'audio', must be one of ['audio', ]  # noqa: E501
@@ -166,9 +178,15 @@ class AudioAsset(ModelNormal):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
+            src (str): The audio source URL. The URL must be publicly accessible or include credentials. Provide either `src` or `prompt`, not both.. [optional]  # noqa: E501
+            prompt (str): A text prompt. When `voice` is set, the prompt is the spoken text (text-to-speech). Without `voice`, the prompt describes generated music or sound effects. The generated `src` is filled in automatically.. [optional]  # noqa: E501
+            voice (str): Voice identifier for text-to-speech generation (e.g. `Matthew`, `Joanna`). Only meaningful when `prompt` is set.. [optional]  # noqa: E501
+            language (str): Optional BCP-47 language code (e.g. `en-US`) for text-to-speech. Only meaningful when `prompt` and `voice` are set.. [optional]  # noqa: E501
+            newscaster (bool): Set to `true` to use the voice's newscaster mode when supported. Only meaningful when `prompt` and `voice` are set.. [optional] if omitted the server will use the default value of False  # noqa: E501
+            model (str): The generation model to use when `prompt` is set (e.g. `polly-neural`). Defaults to the platform's preferred generator if omitted.. [optional]  # noqa: E501
             trim (float): The start trim point of the audio clip, in seconds (defaults to 0). Audio will start from the in trim point. The audio will play until the file ends or the Clip length is reached.. [optional]  # noqa: E501
             volume (AudioAssetVolume): [optional]  # noqa: E501
-            speed (float): Adjust the playback speed of the audio clip between 0 (paused) and 10 (10x normal speed), where 1 is normal speed (defaults to 1). Adjusting the speed will also adjust the duration of the clip and may require you to  adjust the Clip length. For example, if you set speed to 0.5, the clip will need to be 2x as long to play the entire audio (i.e. original length / 0.5). If you set speed to 2, the clip will need to be half as long to play the entire audio (i.e. original length / 2).. [optional]  # noqa: E501
+            speed (float): Adjust the playback speed of the audio clip between 0 (paused) and 10 (10x normal speed), where 1 is normal speed (defaults to 1). Adjusting the speed will also adjust the duration of the clip and may require you to adjust the Clip length. For example, if you set speed to 0.5, the clip will need to be 2x as long to play the entire audio (i.e. original length / 0.5). If you set speed to 2, the clip will need to be half as long to play the entire audio (i.e. original length / 2).. [optional]  # noqa: E501
             effect (str): The effect to apply to the audio asset <ul>   <li>`fadeIn` - fade volume in only</li>   <li>`fadeOut` - fade volume out only</li>   <li>`fadeInFadeOut` - fade volume in and out</li> </ul>. [optional]  # noqa: E501
         """
 
@@ -199,7 +217,6 @@ class AudioAsset(ModelNormal):
         self._visited_composed_classes = _visited_composed_classes + (self.__class__,)
 
         self.type = type
-        self.src = src
         for var_name, var_value in kwargs.items():
             if var_name not in self.attribute_map and \
                         self._configuration is not None and \
@@ -220,11 +237,10 @@ class AudioAsset(ModelNormal):
     ])
 
     @convert_js_args_to_python_args
-    def __init__(self, src, *args, **kwargs):  # noqa: E501
+    def __init__(self, *args, **kwargs):  # noqa: E501
         """AudioAsset - a model defined in OpenAPI
 
         Args:
-            src (str): The audio source URL. The URL must be publicly accessible or include credentials.
 
         Keyword Args:
             type (str): The type of asset - set to `audio` for audio assets.. defaults to 'audio', must be one of ['audio', ]  # noqa: E501
@@ -258,9 +274,15 @@ class AudioAsset(ModelNormal):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
+            src (str): The audio source URL. The URL must be publicly accessible or include credentials. Provide either `src` or `prompt`, not both.. [optional]  # noqa: E501
+            prompt (str): A text prompt. When `voice` is set, the prompt is the spoken text (text-to-speech). Without `voice`, the prompt describes generated music or sound effects. The generated `src` is filled in automatically.. [optional]  # noqa: E501
+            voice (str): Voice identifier for text-to-speech generation (e.g. `Matthew`, `Joanna`). Only meaningful when `prompt` is set.. [optional]  # noqa: E501
+            language (str): Optional BCP-47 language code (e.g. `en-US`) for text-to-speech. Only meaningful when `prompt` and `voice` are set.. [optional]  # noqa: E501
+            newscaster (bool): Set to `true` to use the voice's newscaster mode when supported. Only meaningful when `prompt` and `voice` are set.. [optional] if omitted the server will use the default value of False  # noqa: E501
+            model (str): The generation model to use when `prompt` is set (e.g. `polly-neural`). Defaults to the platform's preferred generator if omitted.. [optional]  # noqa: E501
             trim (float): The start trim point of the audio clip, in seconds (defaults to 0). Audio will start from the in trim point. The audio will play until the file ends or the Clip length is reached.. [optional]  # noqa: E501
             volume (AudioAssetVolume): [optional]  # noqa: E501
-            speed (float): Adjust the playback speed of the audio clip between 0 (paused) and 10 (10x normal speed), where 1 is normal speed (defaults to 1). Adjusting the speed will also adjust the duration of the clip and may require you to  adjust the Clip length. For example, if you set speed to 0.5, the clip will need to be 2x as long to play the entire audio (i.e. original length / 0.5). If you set speed to 2, the clip will need to be half as long to play the entire audio (i.e. original length / 2).. [optional]  # noqa: E501
+            speed (float): Adjust the playback speed of the audio clip between 0 (paused) and 10 (10x normal speed), where 1 is normal speed (defaults to 1). Adjusting the speed will also adjust the duration of the clip and may require you to adjust the Clip length. For example, if you set speed to 0.5, the clip will need to be 2x as long to play the entire audio (i.e. original length / 0.5). If you set speed to 2, the clip will need to be half as long to play the entire audio (i.e. original length / 2).. [optional]  # noqa: E501
             effect (str): The effect to apply to the audio asset <ul>   <li>`fadeIn` - fade volume in only</li>   <li>`fadeOut` - fade volume out only</li>   <li>`fadeInFadeOut` - fade volume in and out</li> </ul>. [optional]  # noqa: E501
         """
 
@@ -289,7 +311,6 @@ class AudioAsset(ModelNormal):
         self._visited_composed_classes = _visited_composed_classes + (self.__class__,)
 
         self.type = type
-        self.src = src
         for var_name, var_value in kwargs.items():
             if var_name not in self.attribute_map and \
                         self._configuration is not None and \

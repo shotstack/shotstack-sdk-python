@@ -71,6 +71,9 @@ class ImageAsset(ModelNormal):
                 'pattern': r'',  # noqa: E501
             },
         },
+        ('prompt',): {
+            'max_length': 4000,
+        },
     }
 
     additional_properties_type = None
@@ -91,6 +94,8 @@ class ImageAsset(ModelNormal):
         return {
             'type': (str,),  # noqa: E501
             'src': (str,),  # noqa: E501
+            'prompt': (str,),  # noqa: E501
+            'model': (str,),  # noqa: E501
             'crop': (Crop,),  # noqa: E501
         }
 
@@ -102,6 +107,8 @@ class ImageAsset(ModelNormal):
     attribute_map = {
         'type': 'type',  # noqa: E501
         'src': 'src',  # noqa: E501
+        'prompt': 'prompt',  # noqa: E501
+        'model': 'model',  # noqa: E501
         'crop': 'crop',  # noqa: E501
     }
 
@@ -112,11 +119,10 @@ class ImageAsset(ModelNormal):
 
     @classmethod
     @convert_js_args_to_python_args
-    def _from_openapi_data(cls, src, *args, **kwargs):  # noqa: E501
+    def _from_openapi_data(cls, *args, **kwargs):  # noqa: E501
         """ImageAsset - a model defined in OpenAPI
 
         Args:
-            src (str): The image source URL. The URL must be publicly accessible or include credentials.
 
         Keyword Args:
             type (str): The type of asset - set to `image` for images.. defaults to 'image', must be one of ['image', ]  # noqa: E501
@@ -150,6 +156,9 @@ class ImageAsset(ModelNormal):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
+            src (str): The image source URL. The URL must be publicly accessible or include credentials. Provide either `src` or `prompt`, not both.. [optional]  # noqa: E501
+            prompt (str): A text prompt to generate the image from. When set without `src`, the engine generates an image and fills `src` automatically. Use `model` to choose the generator.. [optional]  # noqa: E501
+            model (str): The generation model to use when `prompt` is set (e.g. `flux-schnell`). Defaults to the platform's preferred generator if omitted.. [optional]  # noqa: E501
             crop (Crop): [optional]  # noqa: E501
         """
 
@@ -180,7 +189,6 @@ class ImageAsset(ModelNormal):
         self._visited_composed_classes = _visited_composed_classes + (self.__class__,)
 
         self.type = type
-        self.src = src
         for var_name, var_value in kwargs.items():
             if var_name not in self.attribute_map and \
                         self._configuration is not None and \
@@ -201,11 +209,10 @@ class ImageAsset(ModelNormal):
     ])
 
     @convert_js_args_to_python_args
-    def __init__(self, src, *args, **kwargs):  # noqa: E501
+    def __init__(self, *args, **kwargs):  # noqa: E501
         """ImageAsset - a model defined in OpenAPI
 
         Args:
-            src (str): The image source URL. The URL must be publicly accessible or include credentials.
 
         Keyword Args:
             type (str): The type of asset - set to `image` for images.. defaults to 'image', must be one of ['image', ]  # noqa: E501
@@ -239,6 +246,9 @@ class ImageAsset(ModelNormal):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
+            src (str): The image source URL. The URL must be publicly accessible or include credentials. Provide either `src` or `prompt`, not both.. [optional]  # noqa: E501
+            prompt (str): A text prompt to generate the image from. When set without `src`, the engine generates an image and fills `src` automatically. Use `model` to choose the generator.. [optional]  # noqa: E501
+            model (str): The generation model to use when `prompt` is set (e.g. `flux-schnell`). Defaults to the platform's preferred generator if omitted.. [optional]  # noqa: E501
             crop (Crop): [optional]  # noqa: E501
         """
 
@@ -267,7 +277,6 @@ class ImageAsset(ModelNormal):
         self._visited_composed_classes = _visited_composed_classes + (self.__class__,)
 
         self.type = type
-        self.src = src
         for var_name, var_value in kwargs.items():
             if var_name not in self.attribute_map and \
                         self._configuration is not None and \
