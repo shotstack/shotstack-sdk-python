@@ -96,6 +96,7 @@ class TextBackground(ModelNormal):
             'opacity': (float,),  # noqa: E501
             'padding': (float,),  # noqa: E501
             'border_radius': (float,),  # noqa: E501
+            'wrap': (bool,),  # noqa: E501
         }
 
     @cached_property
@@ -108,6 +109,7 @@ class TextBackground(ModelNormal):
         'opacity': 'opacity',  # noqa: E501
         'padding': 'padding',  # noqa: E501
         'border_radius': 'borderRadius',  # noqa: E501
+        'wrap': 'wrap',  # noqa: E501
     }
 
     read_only_vars = {
@@ -155,6 +157,7 @@ class TextBackground(ModelNormal):
             opacity (float): The opacity of the background where 1 is opaque and 0 is transparent.. [optional]  # noqa: E501
             padding (float): Padding inside the background box in pixels.. [optional]  # noqa: E501
             border_radius (float): The border radius of the background box in pixels for rounded corners.. [optional]  # noqa: E501
+            wrap (bool): Not supported on legacy `text` assets. Accepted here only so validators can emit a clear migration error pointing users to `rich-text` or `rich-caption`, which support background wrapping natively.. [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
@@ -240,6 +243,7 @@ class TextBackground(ModelNormal):
             opacity (float): The opacity of the background where 1 is opaque and 0 is transparent.. [optional]  # noqa: E501
             padding (float): Padding inside the background box in pixels.. [optional]  # noqa: E501
             border_radius (float): The border radius of the background box in pixels for rounded corners.. [optional]  # noqa: E501
+            wrap (bool): Not supported on legacy `text` assets. Accepted here only so validators can emit a clear migration error pointing users to `rich-text` or `rich-caption`, which support background wrapping natively.. [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
