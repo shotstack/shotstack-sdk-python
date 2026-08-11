@@ -101,11 +101,10 @@ class GoogleDriveDestination(ModelNormal):
 
     @classmethod
     @convert_js_args_to_python_args
-    def _from_openapi_data(cls, options, *args, **kwargs):  # noqa: E501
+    def _from_openapi_data(cls, *args, **kwargs):  # noqa: E501
         """GoogleDriveDestination - a model defined in OpenAPI
 
         Args:
-            options (GoogleDriveDestinationOptions):
 
         Keyword Args:
             provider (str): The destination to send assets to - set to `google-drive` for Google Drive.. defaults to 'google-drive'  # noqa: E501
@@ -139,6 +138,7 @@ class GoogleDriveDestination(ModelNormal):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
+            options (GoogleDriveDestinationOptions): [optional]  # noqa: E501
         """
 
         provider = kwargs.get('provider', 'google-drive')
@@ -168,7 +168,6 @@ class GoogleDriveDestination(ModelNormal):
         self._visited_composed_classes = _visited_composed_classes + (self.__class__,)
 
         self.provider = provider
-        self.options = options
         for var_name, var_value in kwargs.items():
             if var_name not in self.attribute_map and \
                         self._configuration is not None and \
@@ -189,11 +188,10 @@ class GoogleDriveDestination(ModelNormal):
     ])
 
     @convert_js_args_to_python_args
-    def __init__(self, options, *args, **kwargs):  # noqa: E501
+    def __init__(self, *args, **kwargs):  # noqa: E501
         """GoogleDriveDestination - a model defined in OpenAPI
 
         Args:
-            options (GoogleDriveDestinationOptions):
 
         Keyword Args:
             provider (str): The destination to send assets to - set to `google-drive` for Google Drive.. defaults to 'google-drive'  # noqa: E501
@@ -227,6 +225,7 @@ class GoogleDriveDestination(ModelNormal):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
+            options (GoogleDriveDestinationOptions): [optional]  # noqa: E501
         """
 
         provider = kwargs.get('provider', 'google-drive')
@@ -254,7 +253,6 @@ class GoogleDriveDestination(ModelNormal):
         self._visited_composed_classes = _visited_composed_classes + (self.__class__,)
 
         self.provider = provider
-        self.options = options
         for var_name, var_value in kwargs.items():
             if var_name not in self.attribute_map and \
                         self._configuration is not None and \
