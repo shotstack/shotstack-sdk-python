@@ -38,6 +38,7 @@ def lazy_import():
     CaptionMargin
     ChromaKey
     Crop
+    Html5Asset
     HtmlAsset
     ImageAsset
     ImageToVideoAsset
@@ -101,6 +102,7 @@ class Asset(ModelComposed):
             '&#39;caption&#39;': 'caption',
             '&#39;rich-caption&#39;': 'rich-caption',
             '&#39;html&#39;': 'html',
+            '&#39;html5&#39;': 'html5',
             '&#39;title&#39;': 'title',
             '&#39;shape&#39;': 'shape',
             '&#39;svg&#39;': 'svg',
@@ -172,9 +174,18 @@ class Asset(ModelComposed):
         ('src',): {
             'min_length': 1,
         },
+        ('html',): {
+            'max_length': 1000000,
+        },
         ('speed',): {
             'inclusive_maximum': 10,
             'inclusive_minimum': 0,
+        },
+        ('css',): {
+            'max_length': 500000,
+        },
+        ('js',): {
+            'max_length': 500000,
         },
     }
 
@@ -196,11 +207,13 @@ class Asset(ModelComposed):
         return {
             'type': (str,),  # noqa: E501
             'src': (str,),  # noqa: E501
+            'prompt': (str,),  # noqa: E501
             'text': (str,),  # noqa: E501
             'html': (str,),  # noqa: E501
             'shape': (str,),  # noqa: E501
-            'prompt': (str,),  # noqa: E501
             'voice': (str,),  # noqa: E501
+            'model': (str,),  # noqa: E501
+            'options': (Dict[str, object],),  # noqa: E501
             'transcode': (bool,),  # noqa: E501
             'trim': (float,),  # noqa: E501
             'volume': (AudioAssetVolume,),  # noqa: E501
@@ -226,6 +239,7 @@ class Asset(ModelComposed):
             'active': (RichCaptionActive,),  # noqa: E501
             'css': (str,),  # noqa: E501
             'position': (str,),  # noqa: E501
+            'js': (str,),  # noqa: E501
             'color': (str,),  # noqa: E501
             'size': (str,),  # noqa: E501
             'offset': (Offset,),  # noqa: E501
@@ -245,6 +259,7 @@ class Asset(ModelComposed):
             'audio': AudioAsset,
             'caption': CaptionAsset,
             'html': HtmlAsset,
+            'html5': Html5Asset,
             'image': ImageAsset,
             'image-to-video': ImageToVideoAsset,
             'luma': LumaAsset,
@@ -259,6 +274,7 @@ class Asset(ModelComposed):
             'video': VideoAsset,
             'AudioAsset': AudioAsset,
             'CaptionAsset': CaptionAsset,
+            'Html5Asset': Html5Asset,
             'HtmlAsset': HtmlAsset,
             'ImageAsset': ImageAsset,
             'ImageToVideoAsset': ImageToVideoAsset,
@@ -280,11 +296,13 @@ class Asset(ModelComposed):
     attribute_map = {
         'type': 'type',  # noqa: E501
         'src': 'src',  # noqa: E501
+        'prompt': 'prompt',  # noqa: E501
         'text': 'text',  # noqa: E501
         'html': 'html',  # noqa: E501
         'shape': 'shape',  # noqa: E501
-        'prompt': 'prompt',  # noqa: E501
         'voice': 'voice',  # noqa: E501
+        'model': 'model',  # noqa: E501
+        'options': 'options',  # noqa: E501
         'transcode': 'transcode',  # noqa: E501
         'trim': 'trim',  # noqa: E501
         'volume': 'volume',  # noqa: E501
@@ -310,6 +328,7 @@ class Asset(ModelComposed):
         'active': 'active',  # noqa: E501
         'css': 'css',  # noqa: E501
         'position': 'position',  # noqa: E501
+        'js': 'js',  # noqa: E501
         'color': 'color',  # noqa: E501
         'size': 'size',  # noqa: E501
         'offset': 'offset',  # noqa: E501
@@ -331,12 +350,12 @@ class Asset(ModelComposed):
         """Asset - a model defined in OpenAPI
 
         Keyword Args:
-            type (str): The type of asset - set to `video` for videos.. defaults to 'video', must be one of ['video', 'image', 'text', 'rich-text', 'audio', 'luma', 'caption', 'rich-caption', 'html', 'title', 'shape', 'svg', 'text-to-image', 'image-to-video', 'text-to-speech', ]  # noqa: E501
+            type (str): The type of asset - set to `video` for videos.. defaults to 'video', must be one of ['video', 'image', 'text', 'rich-text', 'audio', 'luma', 'caption', 'rich-caption', 'html', 'html5', 'title', 'shape', 'svg', 'text-to-image', 'image-to-video', 'text-to-speech', ]  # noqa: E501
             src (str): The image source URL. The URL must be publicly accessible or include credentials.
-            text (str): The text to convert to speech.
-            html (str): The HTML text string. See list of [supported HTML tags](https://shotstack.io/docs/guide/architecting-an-application/html-support/#supported-html-tags).
-            shape (str): The shape to display.
             prompt (str): The instructions for modifying the image into a video sequence.
+            text (str): The text to convert to speech.
+            html (str): The HTML markup for the asset. Max 1,000,000 characters.
+            shape (str): The shape to display.
             voice (str): The voice to use for the text-to-speech conversion.
             _check_type (bool): if True, values for parameters in openapi_types
                                 will be type checked and a TypeError will be
@@ -368,6 +387,8 @@ class Asset(ModelComposed):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
+            model (str): The generation model to use when `prompt` is set (e.g. `polly-neural`, `elevenlabs-tts`, `elevenlabs-music`). Defaults to `elevenlabs-tts` (with a default voice) if omitted. Each model's available options are defined by the model registry.. [optional]  # noqa: E501
+            options (Dict[str, object]): Model-specific generation settings. Valid keys and values depend on the chosen `model` and are defined by the model registry. Omitted options use the model's defaults. Unknown or invalid options are rejected.. [optional]  # noqa: E501
             transcode (bool): Set to `true` to force re-encoding of the video during preprocessing. This can help resolve compatibility issues, fix rotation problems, synchronize audio, or convert formats. The video will be processed to ensure optimal compatibility with the rendering engine.. [optional]  # noqa: E501
             trim (float): The start trim point of the audio clip, in seconds (defaults to 0). Audio will start from the trim point. The audio will play until the file ends or the Clip length is reached.. [optional]  # noqa: E501
             volume (AudioAssetVolume): [optional]  # noqa: E501
@@ -391,8 +412,9 @@ class Asset(ModelComposed):
             effect (str): The effect to apply to the audio asset <ul>   <li>`fadeIn` - fade volume in only</li>   <li>`fadeOut` - fade volume out only</li>   <li>`fadeInFadeOut` - fade volume in and out</li> </ul>. [optional]  # noqa: E501
             margin (CaptionMargin): [optional]  # noqa: E501
             active (RichCaptionActive): [optional]  # noqa: E501
-            css (str): The CSS text string to apply styling to the HTML. See list of  [support CSS properties](https://shotstack.io/docs/guide/architecting-an-application/html-support/#supported-css-properties).. [optional]  # noqa: E501
+            css (str): The CSS string applied to the HTML. Max 500,000 characters.. [optional]  # noqa: E501
             position (str): Place the title in one of nine predefined positions of the viewport. <ul>   <li>`top` - top (center)</li>   <li>`topRight` - top right</li>   <li>`right` - right (center)</li>   <li>`bottomRight` - bottom right</li>   <li>`bottom` - bottom (center)</li>   <li>`bottomLeft` - bottom left</li>   <li>`left` - left (center)</li>   <li>`topLeft` - top left</li>   <li>`center` - center</li> </ul>. [optional]  # noqa: E501
+            js (str): Optional JavaScript. Use for chart libraries, animations, or DOM manipulation. `gsap`, `d3`, `anime` and `lottie` are always available. CSS animations, transitions, and `Element.animate()` are also captured automatically. Max 500,000 characters. . [optional]  # noqa: E501
             color (str): Set the text color using hexadecimal color notation. Transparency is supported by setting the first two characters of the hex string (opposite to HTML),  i.e. #80ffffff will be white with  50% transparency.. [optional]  # noqa: E501
             size (str): Set the relative size of the text using predefined sizes from xx-small to xx-large. <ul>   <li>`xx-small`</li>   <li>`x-small`</li>   <li>`small`</li>   <li>`medium`</li>   <li>`large`</li>   <li>`x-large`</li>   <li>`xx-large`</li> </ul>. [optional]  # noqa: E501
             offset (Offset): [optional]  # noqa: E501
@@ -473,12 +495,12 @@ class Asset(ModelComposed):
         """Asset - a model defined in OpenAPI
 
         Keyword Args:
-            type (str): The type of asset - set to `video` for videos.. defaults to 'video', must be one of ['video', 'image', 'text', 'rich-text', 'audio', 'luma', 'caption', 'rich-caption', 'html', 'title', 'shape', 'svg', 'text-to-image', 'image-to-video', 'text-to-speech', ]  # noqa: E501
+            type (str): The type of asset - set to `video` for videos.. defaults to 'video', must be one of ['video', 'image', 'text', 'rich-text', 'audio', 'luma', 'caption', 'rich-caption', 'html', 'html5', 'title', 'shape', 'svg', 'text-to-image', 'image-to-video', 'text-to-speech', ]  # noqa: E501
             src (str): The image source URL. The URL must be publicly accessible or include credentials.
-            text (str): The text to convert to speech.
-            html (str): The HTML text string. See list of [supported HTML tags](https://shotstack.io/docs/guide/architecting-an-application/html-support/#supported-html-tags).
-            shape (str): The shape to display.
             prompt (str): The instructions for modifying the image into a video sequence.
+            text (str): The text to convert to speech.
+            html (str): The HTML markup for the asset. Max 1,000,000 characters.
+            shape (str): The shape to display.
             voice (str): The voice to use for the text-to-speech conversion.
             _check_type (bool): if True, values for parameters in openapi_types
                                 will be type checked and a TypeError will be
@@ -510,6 +532,8 @@ class Asset(ModelComposed):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
+            model (str): The generation model to use when `prompt` is set (e.g. `polly-neural`, `elevenlabs-tts`, `elevenlabs-music`). Defaults to `elevenlabs-tts` (with a default voice) if omitted. Each model's available options are defined by the model registry.. [optional]  # noqa: E501
+            options (Dict[str, object]): Model-specific generation settings. Valid keys and values depend on the chosen `model` and are defined by the model registry. Omitted options use the model's defaults. Unknown or invalid options are rejected.. [optional]  # noqa: E501
             transcode (bool): Set to `true` to force re-encoding of the video during preprocessing. This can help resolve compatibility issues, fix rotation problems, synchronize audio, or convert formats. The video will be processed to ensure optimal compatibility with the rendering engine.. [optional]  # noqa: E501
             trim (float): The start trim point of the audio clip, in seconds (defaults to 0). Audio will start from the trim point. The audio will play until the file ends or the Clip length is reached.. [optional]  # noqa: E501
             volume (AudioAssetVolume): [optional]  # noqa: E501
@@ -533,8 +557,9 @@ class Asset(ModelComposed):
             effect (str): The effect to apply to the audio asset <ul>   <li>`fadeIn` - fade volume in only</li>   <li>`fadeOut` - fade volume out only</li>   <li>`fadeInFadeOut` - fade volume in and out</li> </ul>. [optional]  # noqa: E501
             margin (CaptionMargin): [optional]  # noqa: E501
             active (RichCaptionActive): [optional]  # noqa: E501
-            css (str): The CSS text string to apply styling to the HTML. See list of  [support CSS properties](https://shotstack.io/docs/guide/architecting-an-application/html-support/#supported-css-properties).. [optional]  # noqa: E501
+            css (str): The CSS string applied to the HTML. Max 500,000 characters.. [optional]  # noqa: E501
             position (str): Place the title in one of nine predefined positions of the viewport. <ul>   <li>`top` - top (center)</li>   <li>`topRight` - top right</li>   <li>`right` - right (center)</li>   <li>`bottomRight` - bottom right</li>   <li>`bottom` - bottom (center)</li>   <li>`bottomLeft` - bottom left</li>   <li>`left` - left (center)</li>   <li>`topLeft` - top left</li>   <li>`center` - center</li> </ul>. [optional]  # noqa: E501
+            js (str): Optional JavaScript. Use for chart libraries, animations, or DOM manipulation. `gsap`, `d3`, `anime` and `lottie` are always available. CSS animations, transitions, and `Element.animate()` are also captured automatically. Max 500,000 characters. . [optional]  # noqa: E501
             color (str): Set the text color using hexadecimal color notation. Transparency is supported by setting the first two characters of the hex string (opposite to HTML),  i.e. #80ffffff will be white with  50% transparency.. [optional]  # noqa: E501
             size (str): Set the relative size of the text using predefined sizes from xx-small to xx-large. <ul>   <li>`xx-small`</li>   <li>`x-small`</li>   <li>`small`</li>   <li>`medium`</li>   <li>`large`</li>   <li>`x-large`</li>   <li>`xx-large`</li> </ul>. [optional]  # noqa: E501
             offset (Offset): [optional]  # noqa: E501
@@ -615,6 +640,7 @@ class Asset(ModelComposed):
           'oneOf': [
               AudioAsset,
               CaptionAsset,
+              Html5Asset,
               HtmlAsset,
               ImageAsset,
               ImageToVideoAsset,
