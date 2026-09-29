@@ -33,6 +33,7 @@ from shotstack_sdk.exceptions import ApiAttributeError
 def lazy_import():
     ChromaKey
     Crop
+    VideoAssetSpeed
     VideoAssetVolume
 
 
@@ -79,9 +80,8 @@ class VideoAsset(ModelNormal):
                 'pattern': r'',  # noqa: E501
             },
         },
-        ('speed',): {
-            'inclusive_maximum': 10,
-            'inclusive_minimum': 0,
+        ('prompt',): {
+            'max_length': 4000,
         },
     }
 
@@ -103,11 +103,14 @@ class VideoAsset(ModelNormal):
         return {
             'type': (str,),  # noqa: E501
             'src': (str,),  # noqa: E501
+            'prompt': (str,),  # noqa: E501
+            'model': (str,),  # noqa: E501
+            'options': (Dict[str, object],),  # noqa: E501
             'transcode': (bool,),  # noqa: E501
             'trim': (float,),  # noqa: E501
             'volume': (VideoAssetVolume,),  # noqa: E501
             'volume_effect': (str,),  # noqa: E501
-            'speed': (float,),  # noqa: E501
+            'speed': (VideoAssetSpeed,),  # noqa: E501
             'crop': (Crop,),  # noqa: E501
             'chroma_key': (ChromaKey,),  # noqa: E501
         }
@@ -120,6 +123,9 @@ class VideoAsset(ModelNormal):
     attribute_map = {
         'type': 'type',  # noqa: E501
         'src': 'src',  # noqa: E501
+        'prompt': 'prompt',  # noqa: E501
+        'model': 'model',  # noqa: E501
+        'options': 'options',  # noqa: E501
         'transcode': 'transcode',  # noqa: E501
         'trim': 'trim',  # noqa: E501
         'volume': 'volume',  # noqa: E501
@@ -136,11 +142,10 @@ class VideoAsset(ModelNormal):
 
     @classmethod
     @convert_js_args_to_python_args
-    def _from_openapi_data(cls, src, *args, **kwargs):  # noqa: E501
+    def _from_openapi_data(cls, *args, **kwargs):  # noqa: E501
         """VideoAsset - a model defined in OpenAPI
 
         Args:
-            src (str): The video source URL. The URL must be publicly accessible or include credentials.
 
         Keyword Args:
             type (str): The type of asset - set to `video` for videos.. defaults to 'video', must be one of ['video', ]  # noqa: E501
@@ -174,11 +179,15 @@ class VideoAsset(ModelNormal):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
+            src (str): The video source URL. The URL must be publicly accessible or include credentials. When `prompt` is also set, `src` serves as a preview placeholder and the video is regenerated from the prompt at render time.. [optional]  # noqa: E501
+            prompt (str): A text prompt to generate the video from. The engine generates a video at render time and fills `src` automatically; an existing `src` is treated as a preview placeholder and replaced. Use `model` to choose the generator and `options` to configure it. A starting image goes in `options.inputSrc`, on the models that accept one.. [optional]  # noqa: E501
+            model (str): The generation model to use when `prompt` is set (e.g. `seedance-2.0-text-to-video`). Defaults to `seedance-2.0-text-to-video` if omitted. `GET /models` lists what is available and the options each accepts.. [optional]  # noqa: E501
+            options (Dict[str, object]): Model-specific generation settings. Valid keys and values depend on the chosen `model` and are defined by the model registry. Omitted options use the model's defaults. Unknown or invalid options are rejected.. [optional]  # noqa: E501
             transcode (bool): Set to `true` to force re-encoding of the video during preprocessing. This can help resolve compatibility issues, fix rotation problems, synchronize audio, or convert formats. The video will be processed to ensure optimal compatibility with the rendering engine.. [optional]  # noqa: E501
             trim (float): The start trim point of the video clip, in seconds (defaults to 0). Videos will start from the in trim point. The video will play until the file ends or the Clip length is reached.. [optional]  # noqa: E501
             volume (VideoAssetVolume): [optional]  # noqa: E501
             volume_effect (str): Preset volume effects to apply to the video asset <ul>   <li>`fadeIn` - fade volume in only</li>   <li>`fadeOut` - fade volume out only</li>   <li>`fadeInFadeOut` - fade volume in and out</li> </ul>. [optional]  # noqa: E501
-            speed (float): Adjust the playback speed of the video clip between 0 (paused) and 10 (10x normal speed) where 1 is normal speed (defaults to 1). Adjusting the speed will also adjust the duration of the clip and may require you to  adjust the Clip length. For example, if you set speed to 0.5, the clip will need to be 2x as long to play the entire video (i.e. original length / 0.5). If you set speed to 2, the clip will need to be half as long to play the entire video (i.e. original length / 2).. [optional]  # noqa: E501
+            speed (VideoAssetSpeed): [optional]  # noqa: E501
             crop (Crop): [optional]  # noqa: E501
             chroma_key (ChromaKey): [optional]  # noqa: E501
         """
@@ -210,7 +219,6 @@ class VideoAsset(ModelNormal):
         self._visited_composed_classes = _visited_composed_classes + (self.__class__,)
 
         self.type = type
-        self.src = src
         for var_name, var_value in kwargs.items():
             if var_name not in self.attribute_map and \
                         self._configuration is not None and \
@@ -231,11 +239,10 @@ class VideoAsset(ModelNormal):
     ])
 
     @convert_js_args_to_python_args
-    def __init__(self, src, *args, **kwargs):  # noqa: E501
+    def __init__(self, *args, **kwargs):  # noqa: E501
         """VideoAsset - a model defined in OpenAPI
 
         Args:
-            src (str): The video source URL. The URL must be publicly accessible or include credentials.
 
         Keyword Args:
             type (str): The type of asset - set to `video` for videos.. defaults to 'video', must be one of ['video', ]  # noqa: E501
@@ -269,11 +276,15 @@ class VideoAsset(ModelNormal):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
+            src (str): The video source URL. The URL must be publicly accessible or include credentials. When `prompt` is also set, `src` serves as a preview placeholder and the video is regenerated from the prompt at render time.. [optional]  # noqa: E501
+            prompt (str): A text prompt to generate the video from. The engine generates a video at render time and fills `src` automatically; an existing `src` is treated as a preview placeholder and replaced. Use `model` to choose the generator and `options` to configure it. A starting image goes in `options.inputSrc`, on the models that accept one.. [optional]  # noqa: E501
+            model (str): The generation model to use when `prompt` is set (e.g. `seedance-2.0-text-to-video`). Defaults to `seedance-2.0-text-to-video` if omitted. `GET /models` lists what is available and the options each accepts.. [optional]  # noqa: E501
+            options (Dict[str, object]): Model-specific generation settings. Valid keys and values depend on the chosen `model` and are defined by the model registry. Omitted options use the model's defaults. Unknown or invalid options are rejected.. [optional]  # noqa: E501
             transcode (bool): Set to `true` to force re-encoding of the video during preprocessing. This can help resolve compatibility issues, fix rotation problems, synchronize audio, or convert formats. The video will be processed to ensure optimal compatibility with the rendering engine.. [optional]  # noqa: E501
             trim (float): The start trim point of the video clip, in seconds (defaults to 0). Videos will start from the in trim point. The video will play until the file ends or the Clip length is reached.. [optional]  # noqa: E501
             volume (VideoAssetVolume): [optional]  # noqa: E501
             volume_effect (str): Preset volume effects to apply to the video asset <ul>   <li>`fadeIn` - fade volume in only</li>   <li>`fadeOut` - fade volume out only</li>   <li>`fadeInFadeOut` - fade volume in and out</li> </ul>. [optional]  # noqa: E501
-            speed (float): Adjust the playback speed of the video clip between 0 (paused) and 10 (10x normal speed) where 1 is normal speed (defaults to 1). Adjusting the speed will also adjust the duration of the clip and may require you to  adjust the Clip length. For example, if you set speed to 0.5, the clip will need to be 2x as long to play the entire video (i.e. original length / 0.5). If you set speed to 2, the clip will need to be half as long to play the entire video (i.e. original length / 2).. [optional]  # noqa: E501
+            speed (VideoAssetSpeed): [optional]  # noqa: E501
             crop (Crop): [optional]  # noqa: E501
             chroma_key (ChromaKey): [optional]  # noqa: E501
         """
@@ -303,7 +314,6 @@ class VideoAsset(ModelNormal):
         self._visited_composed_classes = _visited_composed_classes + (self.__class__,)
 
         self.type = type
-        self.src = src
         for var_name, var_value in kwargs.items():
             if var_name not in self.attribute_map and \
                         self._configuration is not None and \
