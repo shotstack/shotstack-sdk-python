@@ -64,6 +64,7 @@ class RenderResponseData(ModelNormal):
             '&#39;fetching&#39;': 'fetching',
             '&#39;preprocessing&#39;': 'preprocessing',
             '&#39;rendering&#39;': 'rendering',
+            '&#39;generating&#39;': 'generating',
             '&#39;saving&#39;': 'saving',
             '&#39;done&#39;': 'done',
             '&#39;failed&#39;': 'failed',
@@ -138,7 +139,7 @@ class RenderResponseData(ModelNormal):
         Args:
             id (str): The id of the render task in UUID format.
             owner (str): The owner id of the render task.
-            status (str): The status of the render task. <ul>   <li>`queued` - render is queued waiting to be rendered</li>   <li>`fetching` - assets are being fetched</li>   <li>`preprocessing` - video assets are being processed for compatibility</li>   <li>`rendering` - the asset is being rendered</li>   <li>`saving` - the final asset is being saved to storage</li>   <li>`done` - the asset is ready to be downloaded</li>   <li>`failed` - there was an error rendering the asset</li> </ul>
+            status (str): The status of the render task. <ul>   <li>`queued` - render is queued waiting to be rendered</li>   <li>`fetching` - assets are being fetched</li>   <li>`preprocessing` - video assets are being processed for compatibility</li>   <li>`rendering` - the asset is being rendered</li>   <li>`generating` - AI/media generation is in progress</li>   <li>`saving` - the final asset is being saved to storage</li>   <li>`done` - the asset is ready to be downloaded</li>   <li>`failed` - there was an error rendering the asset</li> </ul>
 
         Keyword Args:
             _check_type (bool): if True, values for parameters in openapi_types
@@ -237,7 +238,7 @@ class RenderResponseData(ModelNormal):
         Args:
             id (str): The id of the render task in UUID format.
             owner (str): The owner id of the render task.
-            status (str): The status of the render task. <ul>   <li>`queued` - render is queued waiting to be rendered</li>   <li>`fetching` - assets are being fetched</li>   <li>`preprocessing` - video assets are being processed for compatibility</li>   <li>`rendering` - the asset is being rendered</li>   <li>`saving` - the final asset is being saved to storage</li>   <li>`done` - the asset is ready to be downloaded</li>   <li>`failed` - there was an error rendering the asset</li> </ul>
+            status (str): The status of the render task. <ul>   <li>`queued` - render is queued waiting to be rendered</li>   <li>`fetching` - assets are being fetched</li>   <li>`preprocessing` - video assets are being processed for compatibility</li>   <li>`rendering` - the asset is being rendered</li>   <li>`generating` - AI/media generation is in progress</li>   <li>`saving` - the final asset is being saved to storage</li>   <li>`done` - the asset is ready to be downloaded</li>   <li>`failed` - there was an error rendering the asset</li> </ul>
 
         Keyword Args:
             _check_type (bool): if True, values for parameters in openapi_types
