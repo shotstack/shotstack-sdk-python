@@ -26,6 +26,10 @@ from pydantic import Field, StrictBool, StrictStr, field_validator
 from typing import Optional
 from typing_extensions import Annotated
 from shotstack_sdk.models.edit import Edit
+from shotstack_sdk.models.generation_model import GenerationModel
+from shotstack_sdk.models.generation_model_list_response import GenerationModelListResponse
+from shotstack_sdk.models.generation_response import GenerationResponse
+from shotstack_sdk.models.post_generate_request import PostGenerateRequest
 from shotstack_sdk.models.probe_response import ProbeResponse
 from shotstack_sdk.models.queued_response import QueuedResponse
 from shotstack_sdk.models.render_response import RenderResponse
@@ -99,6 +103,162 @@ class EditApi(object):
             },
             headers_map={
                 'accept': [],
+                'content_type': [],
+            },
+            api_client=api_client
+        )
+        self.get_generate_endpoint = _Endpoint(
+            settings={
+                'response_type': (GenerationResponse,),
+                'auth': [
+                    'DeveloperKey'
+                ],
+                'endpoint_path': '/generate/{id}',
+                'operation_id': 'get_generate',
+                'http_method': 'GET',
+                'servers': None,
+            },
+            params_map={
+                'all': [
+                    'id',
+                ],
+                'required': [
+                    'id',
+                ],
+                'nullable': [
+                ],
+                'enum': [
+                ],
+                'validation': [
+                ]
+            },
+            root_map={
+                'validations': {
+                },
+                'allowed_values': {
+                },
+                'openapi_types': {
+                    'id':
+                        (str,),
+                },
+                'attribute_map': {
+                    'id': 'id',
+                },
+                'location_map': {
+                    'id': 'path',
+                },
+                'collection_format_map': {
+                }
+            },
+            headers_map={
+                'accept': [
+                    'application/json'
+                ],
+                'content_type': [],
+            },
+            api_client=api_client
+        )
+        self.get_model_endpoint = _Endpoint(
+            settings={
+                'response_type': (GenerationModel,),
+                'auth': [
+                    'DeveloperKey'
+                ],
+                'endpoint_path': '/models/{id}',
+                'operation_id': 'get_model',
+                'http_method': 'GET',
+                'servers': None,
+            },
+            params_map={
+                'all': [
+                    'id',
+                ],
+                'required': [
+                    'id',
+                ],
+                'nullable': [
+                ],
+                'enum': [
+                ],
+                'validation': [
+                ]
+            },
+            root_map={
+                'validations': {
+                },
+                'allowed_values': {
+                },
+                'openapi_types': {
+                    'id':
+                        (str,),
+                },
+                'attribute_map': {
+                    'id': 'id',
+                },
+                'location_map': {
+                    'id': 'path',
+                },
+                'collection_format_map': {
+                }
+            },
+            headers_map={
+                'accept': [
+                    'application/json'
+                ],
+                'content_type': [],
+            },
+            api_client=api_client
+        )
+        self.get_models_endpoint = _Endpoint(
+            settings={
+                'response_type': (GenerationModelListResponse,),
+                'auth': [
+                    'DeveloperKey'
+                ],
+                'endpoint_path': '/models',
+                'operation_id': 'get_models',
+                'http_method': 'GET',
+                'servers': None,
+            },
+            params_map={
+                'all': [
+                    'expand',
+                ],
+                'required': [],
+                'nullable': [
+                ],
+                'enum': [
+                    'expand',
+                ],
+                'validation': [
+                ]
+            },
+            root_map={
+                'validations': {
+                },
+                'allowed_values': {
+                    ('expand',): {
+
+                        "&#39;options&#39;": 'options'
+                    },
+                },
+                'openapi_types': {
+                    'expand':
+                        (str,),
+                },
+                'attribute_map': {
+                    'expand': 'expand',
+                },
+                'location_map': {
+                    'expand': 'query',
+                },
+                'collection_format_map': {
+                }
+            },
+            headers_map={
+                'accept': [
+                    'application/json'
+                ],
                 'content_type': [],
             },
             api_client=api_client
@@ -270,6 +430,61 @@ class EditApi(object):
                     'application/json'
                 ],
                 'content_type': [],
+            },
+            api_client=api_client
+        )
+        self.post_generate_endpoint = _Endpoint(
+            settings={
+                'response_type': (GenerationResponse,),
+                'auth': [
+                    'DeveloperKey'
+                ],
+                'endpoint_path': '/generate',
+                'operation_id': 'post_generate',
+                'http_method': 'POST',
+                'servers': None,
+            },
+            params_map={
+                'all': [
+                    'idempotency_key',
+                    'post_generate_request',
+                ],
+                'required': [],
+                'nullable': [
+                ],
+                'enum': [
+                ],
+                'validation': [
+                ]
+            },
+            root_map={
+                'validations': {
+                },
+                'allowed_values': {
+                },
+                'openapi_types': {
+                    'idempotency_key':
+                        (str,),
+                    'post_generate_request':
+                        (PostGenerateRequest,),
+                },
+                'attribute_map': {
+                    'idempotency_key': 'Idempotency-Key',
+                },
+                'location_map': {
+                    'idempotency_key': 'header',
+                    'post_generate_request': 'body',
+                },
+                'collection_format_map': {
+                }
+            },
+            headers_map={
+                'accept': [
+                    'application/json'
+                ],
+                'content_type': [
+                    'application/json'
+                ]
             },
             api_client=api_client
         )
@@ -624,6 +839,236 @@ class EditApi(object):
             id
         return self.delete_template_endpoint.call_with_http_info(**kwargs)
 
+    def get_generate(
+        self,
+        id,
+        **kwargs
+    ):
+        """Get Generation Status  # noqa: E501
+
+        Get the status of an on-demand asset generation job created with the generate endpoint. Jobs are owner-scoped.  **Base URL:** <a href=\"#\">https://api.shotstack.io/edit/{version}</a>   # noqa: E501
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.get_generate(id, async_req=True)
+        >>> result = thread.get()
+
+        Args:
+            id (str): The generation job id returned by the generate endpoint.
+
+        Keyword Args:
+            _return_http_data_only (bool): response data without head status
+                code and headers. Default is True.
+            _preload_content (bool): if False, the urllib3.HTTPResponse object
+                will be returned without reading/decoding response data.
+                Default is True.
+            _request_timeout (int/float/tuple): timeout setting for this request. If
+                one number provided, it will be total request timeout. It can also
+                be a pair (tuple) of (connection, read) timeouts.
+                Default is None.
+            _check_input_type (bool): specifies if type checking
+                should be done one the data sent to the server.
+                Default is True.
+            _check_return_type (bool): specifies if type checking
+                should be done one the data received from the server.
+                Default is True.
+            _spec_property_naming (bool): True if the variable names in the input data
+                are serialized names, as specified in the OpenAPI document.
+                False if the variable names in the input data
+                are pythonic names, e.g. snake case (default)
+            _content_type (str/None): force body content-type.
+                Default is None and content-type will be predicted by allowed
+                content-types and body.
+            _host_index (int/None): specifies the index of the server
+                that we want to use.
+                Default is read from the configuration.
+            async_req (bool): execute request asynchronously
+
+        Returns:
+            GenerationResponse
+                If the method is called asynchronously, returns the request
+                thread.
+        """
+        kwargs['async_req'] = kwargs.get(
+            'async_req', False
+        )
+        kwargs['_return_http_data_only'] = kwargs.get(
+            '_return_http_data_only', True
+        )
+        kwargs['_preload_content'] = kwargs.get(
+            '_preload_content', True
+        )
+        kwargs['_request_timeout'] = kwargs.get(
+            '_request_timeout', None
+        )
+        kwargs['_check_input_type'] = kwargs.get(
+            '_check_input_type', True
+        )
+        kwargs['_check_return_type'] = kwargs.get(
+            '_check_return_type', True
+        )
+        kwargs['_spec_property_naming'] = kwargs.get(
+            '_spec_property_naming', False
+        )
+        kwargs['_content_type'] = kwargs.get(
+            '_content_type')
+        kwargs['_host_index'] = kwargs.get('_host_index')
+        kwargs['id'] = \
+            id
+        return self.get_generate_endpoint.call_with_http_info(**kwargs)
+
+    def get_model(
+        self,
+        id,
+        **kwargs
+    ):
+        """Get Generation Model  # noqa: E501
+
+        Get one generation model, including the JSON Schema for the options it accepts and what it costs in credits.  **Base URL:** <a href=\"#\">https://api.shotstack.io/edit/{version}</a>   # noqa: E501
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.get_model(id, async_req=True)
+        >>> result = thread.get()
+
+        Args:
+            id (str): The model identifier, as returned by the list endpoint.
+
+        Keyword Args:
+            _return_http_data_only (bool): response data without head status
+                code and headers. Default is True.
+            _preload_content (bool): if False, the urllib3.HTTPResponse object
+                will be returned without reading/decoding response data.
+                Default is True.
+            _request_timeout (int/float/tuple): timeout setting for this request. If
+                one number provided, it will be total request timeout. It can also
+                be a pair (tuple) of (connection, read) timeouts.
+                Default is None.
+            _check_input_type (bool): specifies if type checking
+                should be done one the data sent to the server.
+                Default is True.
+            _check_return_type (bool): specifies if type checking
+                should be done one the data received from the server.
+                Default is True.
+            _spec_property_naming (bool): True if the variable names in the input data
+                are serialized names, as specified in the OpenAPI document.
+                False if the variable names in the input data
+                are pythonic names, e.g. snake case (default)
+            _content_type (str/None): force body content-type.
+                Default is None and content-type will be predicted by allowed
+                content-types and body.
+            _host_index (int/None): specifies the index of the server
+                that we want to use.
+                Default is read from the configuration.
+            async_req (bool): execute request asynchronously
+
+        Returns:
+            GenerationModel
+                If the method is called asynchronously, returns the request
+                thread.
+        """
+        kwargs['async_req'] = kwargs.get(
+            'async_req', False
+        )
+        kwargs['_return_http_data_only'] = kwargs.get(
+            '_return_http_data_only', True
+        )
+        kwargs['_preload_content'] = kwargs.get(
+            '_preload_content', True
+        )
+        kwargs['_request_timeout'] = kwargs.get(
+            '_request_timeout', None
+        )
+        kwargs['_check_input_type'] = kwargs.get(
+            '_check_input_type', True
+        )
+        kwargs['_check_return_type'] = kwargs.get(
+            '_check_return_type', True
+        )
+        kwargs['_spec_property_naming'] = kwargs.get(
+            '_spec_property_naming', False
+        )
+        kwargs['_content_type'] = kwargs.get(
+            '_content_type')
+        kwargs['_host_index'] = kwargs.get('_host_index')
+        kwargs['id'] = \
+            id
+        return self.get_model_endpoint.call_with_http_info(**kwargs)
+
+    def get_models(
+        self,
+        **kwargs
+    ):
+        """List Generation Models  # noqa: E501
+
+        List the generation models available for `prompt`-bearing image, video and audio assets, with the options each accepts and what it costs in credits.  Use this to populate a model picker and render its option fields, rather than hard coding a model list. A newly launched model appears here without any change on your side. Each entry carries the asset type it generates, so filter the list client side when a picker only needs one kind.  Option schemas are omitted by default. Request them with `expand=options`.  Each model's `available` reflects the plan of the account behind the calling API key, so offer only the models it marks available.  **Base URL:** <a href=\"#\">https://api.shotstack.io/edit/{version}</a>   # noqa: E501
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.get_models(async_req=True)
+        >>> result = thread.get()
+
+
+        Keyword Args:
+            expand (str): Set to `options` to include each model's option schema in the list. Omitted by default to keep the response small.. [optional]
+            _return_http_data_only (bool): response data without head status
+                code and headers. Default is True.
+            _preload_content (bool): if False, the urllib3.HTTPResponse object
+                will be returned without reading/decoding response data.
+                Default is True.
+            _request_timeout (int/float/tuple): timeout setting for this request. If
+                one number provided, it will be total request timeout. It can also
+                be a pair (tuple) of (connection, read) timeouts.
+                Default is None.
+            _check_input_type (bool): specifies if type checking
+                should be done one the data sent to the server.
+                Default is True.
+            _check_return_type (bool): specifies if type checking
+                should be done one the data received from the server.
+                Default is True.
+            _spec_property_naming (bool): True if the variable names in the input data
+                are serialized names, as specified in the OpenAPI document.
+                False if the variable names in the input data
+                are pythonic names, e.g. snake case (default)
+            _content_type (str/None): force body content-type.
+                Default is None and content-type will be predicted by allowed
+                content-types and body.
+            _host_index (int/None): specifies the index of the server
+                that we want to use.
+                Default is read from the configuration.
+            async_req (bool): execute request asynchronously
+
+        Returns:
+            GenerationModelListResponse
+                If the method is called asynchronously, returns the request
+                thread.
+        """
+        kwargs['async_req'] = kwargs.get(
+            'async_req', False
+        )
+        kwargs['_return_http_data_only'] = kwargs.get(
+            '_return_http_data_only', True
+        )
+        kwargs['_preload_content'] = kwargs.get(
+            '_preload_content', True
+        )
+        kwargs['_request_timeout'] = kwargs.get(
+            '_request_timeout', None
+        )
+        kwargs['_check_input_type'] = kwargs.get(
+            '_check_input_type', True
+        )
+        kwargs['_check_return_type'] = kwargs.get(
+            '_check_return_type', True
+        )
+        kwargs['_spec_property_naming'] = kwargs.get(
+            '_spec_property_naming', False
+        )
+        kwargs['_content_type'] = kwargs.get(
+            '_content_type')
+        kwargs['_host_index'] = kwargs.get('_host_index')
+        return self.get_models_endpoint.call_with_http_info(**kwargs)
+
     def get_render(
         self,
         id,
@@ -854,6 +1299,81 @@ class EditApi(object):
             '_content_type')
         kwargs['_host_index'] = kwargs.get('_host_index')
         return self.get_templates_endpoint.call_with_http_info(**kwargs)
+
+    def post_generate(
+        self,
+        **kwargs
+    ):
+        """Generate Asset  # noqa: E501
+
+        Generate a single image, video or audio asset from a text prompt without rendering a full edit. Submit a prompt-bearing asset; the response is immediate when an identical asset has been generated before (results are cached by prompt, model and options), otherwise the job is queued and can be polled via the status endpoint.  Generation is billed in credits per asset. Identical repeat requests resolve from the cache at no charge.  **Base URL:** <a href=\"#\">https://api.shotstack.io/edit/{version}</a>   # noqa: E501
+        This method makes a synchronous HTTP request by default. To make an
+        asynchronous HTTP request, please pass async_req=True
+
+        >>> thread = api.post_generate(async_req=True)
+        >>> result = thread.get()
+
+
+        Keyword Args:
+            idempotency_key (str): A key that makes this request its own generation. Retrying with the same key returns the job it first created instead of generating and billing again, and a new key generates afresh even when the asset matches an earlier one. Without a key, identical assets share one cached result. For 24 hours a key reused for a different asset is rejected; after that it returns its first result.. [optional]
+            post_generate_request (PostGenerateRequest): A prompt-bearing image, video or audio asset to generate.. [optional]
+            _return_http_data_only (bool): response data without head status
+                code and headers. Default is True.
+            _preload_content (bool): if False, the urllib3.HTTPResponse object
+                will be returned without reading/decoding response data.
+                Default is True.
+            _request_timeout (int/float/tuple): timeout setting for this request. If
+                one number provided, it will be total request timeout. It can also
+                be a pair (tuple) of (connection, read) timeouts.
+                Default is None.
+            _check_input_type (bool): specifies if type checking
+                should be done one the data sent to the server.
+                Default is True.
+            _check_return_type (bool): specifies if type checking
+                should be done one the data received from the server.
+                Default is True.
+            _spec_property_naming (bool): True if the variable names in the input data
+                are serialized names, as specified in the OpenAPI document.
+                False if the variable names in the input data
+                are pythonic names, e.g. snake case (default)
+            _content_type (str/None): force body content-type.
+                Default is None and content-type will be predicted by allowed
+                content-types and body.
+            _host_index (int/None): specifies the index of the server
+                that we want to use.
+                Default is read from the configuration.
+            async_req (bool): execute request asynchronously
+
+        Returns:
+            GenerationResponse
+                If the method is called asynchronously, returns the request
+                thread.
+        """
+        kwargs['async_req'] = kwargs.get(
+            'async_req', False
+        )
+        kwargs['_return_http_data_only'] = kwargs.get(
+            '_return_http_data_only', True
+        )
+        kwargs['_preload_content'] = kwargs.get(
+            '_preload_content', True
+        )
+        kwargs['_request_timeout'] = kwargs.get(
+            '_request_timeout', None
+        )
+        kwargs['_check_input_type'] = kwargs.get(
+            '_check_input_type', True
+        )
+        kwargs['_check_return_type'] = kwargs.get(
+            '_check_return_type', True
+        )
+        kwargs['_spec_property_naming'] = kwargs.get(
+            '_spec_property_naming', False
+        )
+        kwargs['_content_type'] = kwargs.get(
+            '_content_type')
+        kwargs['_host_index'] = kwargs.get('_host_index')
+        return self.post_generate_endpoint.call_with_http_info(**kwargs)
 
     def post_render(
         self,
