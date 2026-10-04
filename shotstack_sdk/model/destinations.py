@@ -90,8 +90,8 @@ class Destinations(ModelComposed):
         lazy_import()
         return {
             'provider': (str,),  # noqa: E501
-            'options': (DestinationsAnyOf2Options,),  # noqa: E501
             'exclude': (bool,),  # noqa: E501
+            'options': (DestinationsAnyOf2Options,),  # noqa: E501
         }
 
     @cached_property
@@ -114,8 +114,8 @@ class Destinations(ModelComposed):
 
     attribute_map = {
         'provider': 'provider',  # noqa: E501
-        'options': 'options',  # noqa: E501
         'exclude': 'exclude',  # noqa: E501
+        'options': 'options',  # noqa: E501
     }
 
     read_only_vars = {
@@ -128,7 +128,6 @@ class Destinations(ModelComposed):
 
         Keyword Args:
             provider (str): The destination to send assets to - set to `azure-blob-storage` for Azure Blob Storage.. defaults to 'azure-blob-storage'  # noqa: E501
-            options (DestinationsAnyOf2Options):
             _check_type (bool): if True, values for parameters in openapi_types
                                 will be type checked and a TypeError will be
                                 raised if the wrong type is input.
@@ -160,6 +159,7 @@ class Destinations(ModelComposed):
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
             exclude (bool): Set to `true` to [opt-out](https://shotstack.io/docs/guide/serving-assets/self-host/) from the Shotstack hosting and CDN service. All files must be downloaded within 24 hours of rendering.. [optional]  # noqa: E501
+            options (DestinationsAnyOf2Options): [optional]  # noqa: E501
         """
 
         provider = kwargs.get('provider', 'azure-blob-storage')
@@ -231,7 +231,6 @@ class Destinations(ModelComposed):
 
         Keyword Args:
             provider (str): The destination to send assets to - set to `azure-blob-storage` for Azure Blob Storage.. defaults to 'azure-blob-storage'  # noqa: E501
-            options (DestinationsAnyOf2Options):
             _check_type (bool): if True, values for parameters in openapi_types
                                 will be type checked and a TypeError will be
                                 raised if the wrong type is input.
@@ -263,6 +262,7 @@ class Destinations(ModelComposed):
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
             exclude (bool): Set to `true` to [opt-out](https://shotstack.io/docs/guide/serving-assets/self-host/) from the Shotstack hosting and CDN service. All files must be downloaded within 24 hours of rendering.. [optional]  # noqa: E501
+            options (DestinationsAnyOf2Options): [optional]  # noqa: E501
         """
 
         provider = kwargs.get('provider', 'azure-blob-storage')
