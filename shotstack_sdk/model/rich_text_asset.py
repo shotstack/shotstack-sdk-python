@@ -33,9 +33,9 @@ from shotstack_sdk.exceptions import ApiAttributeError
 def lazy_import():
     RichTextAlignment
     RichTextAnimation
-    RichTextAssetBorder
     RichTextAssetPadding
     RichTextBackground
+    RichTextBorder
     RichTextFont
     RichTextShadow
     RichTextStroke
@@ -101,7 +101,7 @@ class RichTextAsset(ModelNormal):
             'stroke': (RichTextStroke,),  # noqa: E501
             'shadow': (RichTextShadow,),  # noqa: E501
             'background': (RichTextBackground,),  # noqa: E501
-            'border': (RichTextAssetBorder,),  # noqa: E501
+            'border': (RichTextBorder,),  # noqa: E501
             'padding': (RichTextAssetPadding,),  # noqa: E501
             'align': (RichTextAlignment,),  # noqa: E501
             'animation': (RichTextAnimation,),  # noqa: E501
@@ -176,7 +176,7 @@ class RichTextAsset(ModelNormal):
             stroke (RichTextStroke): [optional]  # noqa: E501
             shadow (RichTextShadow): [optional]  # noqa: E501
             background (RichTextBackground): [optional]  # noqa: E501
-            border (RichTextAssetBorder): [optional]  # noqa: E501
+            border (RichTextBorder): [optional]  # noqa: E501
             padding (RichTextAssetPadding): [optional]  # noqa: E501
             align (RichTextAlignment): [optional]  # noqa: E501
             animation (RichTextAnimation): [optional]  # noqa: E501
@@ -273,7 +273,7 @@ class RichTextAsset(ModelNormal):
             stroke (RichTextStroke): [optional]  # noqa: E501
             shadow (RichTextShadow): [optional]  # noqa: E501
             background (RichTextBackground): [optional]  # noqa: E501
-            border (RichTextAssetBorder): [optional]  # noqa: E501
+            border (RichTextBorder): [optional]  # noqa: E501
             padding (RichTextAssetPadding): [optional]  # noqa: E501
             align (RichTextAlignment): [optional]  # noqa: E501
             animation (RichTextAnimation): [optional]  # noqa: E501
