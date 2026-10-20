@@ -160,7 +160,7 @@ class AssetResponseAttributes(ModelNormal):
                                 _visited_composed_classes = (Animal,)
             region (str): The region the asset is hosted, currently only `au` (Australia).. [optional]  # noqa: E501
             render_id (str): The original render id that created the asset in UUID format. Multiple assets can share the same render id.. [optional]  # noqa: E501
-            provider_id (str): The third party id of an asset transferred to an external provider, i.e. Mux, YouTube or S3. If the provider is Shotstack, the providerID is the same as the asset id.. [optional]  # noqa: E501
+            provider_id (str): The third party id of an asset transferred to an external provider, such as Vimeo or S3. If the provider is Shotstack, the providerID is the same as the asset id.. [optional]  # noqa: E501
             filename (str): The asset file name.. [optional]  # noqa: E501
             url (str): The asset file name.. [optional]  # noqa: E501
             created (str): The time the asset was created.. [optional]  # noqa: E501
@@ -256,7 +256,7 @@ class AssetResponseAttributes(ModelNormal):
                                 _visited_composed_classes = (Animal,)
             region (str): The region the asset is hosted, currently only `au` (Australia).. [optional]  # noqa: E501
             render_id (str): The original render id that created the asset in UUID format. Multiple assets can share the same render id.. [optional]  # noqa: E501
-            provider_id (str): The third party id of an asset transferred to an external provider, i.e. Mux, YouTube or S3. If the provider is Shotstack, the providerID is the same as the asset id.. [optional]  # noqa: E501
+            provider_id (str): The third party id of an asset transferred to an external provider, such as Vimeo or S3. If the provider is Shotstack, the providerID is the same as the asset id.. [optional]  # noqa: E501
             filename (str): The asset file name.. [optional]  # noqa: E501
             url (str): The asset file name.. [optional]  # noqa: E501
             created (str): The time the asset was created.. [optional]  # noqa: E501
