@@ -127,7 +127,7 @@ class RichTextAnimation(ModelNormal):
         """RichTextAnimation - a model defined in OpenAPI
 
         Args:
-            preset (str): The animation preset to apply. Available presets: <ul>   <li>`fadeIn` - fadeIn in animation</li>   <li>`slideIn` - slide in from a direction</li>   <li>`typewriter` - typewriter effect</li>   <li>`ascend` - ascend from a direction</li>   <li>`shift` - shift in from a direction</li>   <li>`movingLetters` - letters move in from a direction</li> </ul>
+            preset (str): The animation preset to apply. Every preset starts with the clip. Available presets: <ul>   <li>`fadeIn` - fade in</li>   <li>`slideIn` - fade in while sliding in `direction`</li>   <li>`typewriter` - type the text out behind a cursor</li>   <li>`ascend` - each word rises (`up`) or drops (`down`) into place</li>   <li>`shift` - fade in while shifting a short distance in `direction`</li>   <li>`movingLetters` - fade in, then ripple the letters along `direction` for the rest of the clip. Ignores `duration` and `style`.</li> </ul>
 
         Keyword Args:
             _check_type (bool): if True, values for parameters in openapi_types
@@ -160,9 +160,9 @@ class RichTextAnimation(ModelNormal):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
-            duration (float): Override animation duration in seconds. Must be between 0.1 and 30 seconds.. [optional]  # noqa: E501
-            style (str): Animation style - animate by character or by word. Only applicable for typewriter and shift animations.. [optional]  # noqa: E501
-            direction (str): Direction for directional animations. Required for slideIn, ascend, shift, and movingLetters presets. <ul>   <li>`ascend` - supports: up, down</li>   <li>`shift` - supports: left, right, up, down</li>   <li>`slideIn` - supports: left, right, up, down</li>   <li>`movingLetters` - supports: left, right, up, down</li> </ul>. [optional]  # noqa: E501
+            duration (float): Override animation duration in seconds. Must be between 0.1 and 30 seconds. When omitted, the text animates at about 30 characters per second, taking at least 0.3 seconds and at most 90% of the clip.. [optional]  # noqa: E501
+            style (str): Animate by character or by word. Applies to `fadeIn`, `slideIn`, `typewriter` and `shift`, where `shift` defaults to `character`. `ascend` always animates by word.. [optional]  # noqa: E501
+            direction (str): The direction the text travels. Defaults to `left` for `slideIn` and `shift`, and to `up` for `ascend` and `movingLetters`. <ul>   <li>`ascend` - supports: up, down</li>   <li>`shift` - supports: left, right, up, down</li>   <li>`slideIn` - supports: left, right, up, down</li>   <li>`movingLetters` - supports: left, right, up, down</li> </ul>. [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
@@ -215,7 +215,7 @@ class RichTextAnimation(ModelNormal):
         """RichTextAnimation - a model defined in OpenAPI
 
         Args:
-            preset (str): The animation preset to apply. Available presets: <ul>   <li>`fadeIn` - fadeIn in animation</li>   <li>`slideIn` - slide in from a direction</li>   <li>`typewriter` - typewriter effect</li>   <li>`ascend` - ascend from a direction</li>   <li>`shift` - shift in from a direction</li>   <li>`movingLetters` - letters move in from a direction</li> </ul>
+            preset (str): The animation preset to apply. Every preset starts with the clip. Available presets: <ul>   <li>`fadeIn` - fade in</li>   <li>`slideIn` - fade in while sliding in `direction`</li>   <li>`typewriter` - type the text out behind a cursor</li>   <li>`ascend` - each word rises (`up`) or drops (`down`) into place</li>   <li>`shift` - fade in while shifting a short distance in `direction`</li>   <li>`movingLetters` - fade in, then ripple the letters along `direction` for the rest of the clip. Ignores `duration` and `style`.</li> </ul>
 
         Keyword Args:
             _check_type (bool): if True, values for parameters in openapi_types
@@ -248,9 +248,9 @@ class RichTextAnimation(ModelNormal):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
-            duration (float): Override animation duration in seconds. Must be between 0.1 and 30 seconds.. [optional]  # noqa: E501
-            style (str): Animation style - animate by character or by word. Only applicable for typewriter and shift animations.. [optional]  # noqa: E501
-            direction (str): Direction for directional animations. Required for slideIn, ascend, shift, and movingLetters presets. <ul>   <li>`ascend` - supports: up, down</li>   <li>`shift` - supports: left, right, up, down</li>   <li>`slideIn` - supports: left, right, up, down</li>   <li>`movingLetters` - supports: left, right, up, down</li> </ul>. [optional]  # noqa: E501
+            duration (float): Override animation duration in seconds. Must be between 0.1 and 30 seconds. When omitted, the text animates at about 30 characters per second, taking at least 0.3 seconds and at most 90% of the clip.. [optional]  # noqa: E501
+            style (str): Animate by character or by word. Applies to `fadeIn`, `slideIn`, `typewriter` and `shift`, where `shift` defaults to `character`. `ascend` always animates by word.. [optional]  # noqa: E501
+            direction (str): The direction the text travels. Defaults to `left` for `slideIn` and `shift`, and to `up` for `ascend` and `movingLetters`. <ul>   <li>`ascend` - supports: up, down</li>   <li>`shift` - supports: left, right, up, down</li>   <li>`slideIn` - supports: left, right, up, down</li>   <li>`movingLetters` - supports: left, right, up, down</li> </ul>. [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
