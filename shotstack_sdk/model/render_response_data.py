@@ -64,6 +64,7 @@ class RenderResponseData(ModelNormal):
             '&#39;fetching&#39;': 'fetching',
             '&#39;preprocessing&#39;': 'preprocessing',
             '&#39;rendering&#39;': 'rendering',
+            '&#39;generating&#39;': 'generating',
             '&#39;saving&#39;': 'saving',
             '&#39;done&#39;': 'done',
             '&#39;failed&#39;': 'failed',
@@ -138,7 +139,7 @@ class RenderResponseData(ModelNormal):
         Args:
             id (str): The id of the render task in UUID format.
             owner (str): The owner id of the render task.
-            status (str): The status of the render task. <ul>   <li>`queued` - render is queued waiting to be rendered</li>   <li>`fetching` - assets are being fetched</li>   <li>`preprocessing` - video assets are being processed for compatibility</li>   <li>`rendering` - the asset is being rendered</li>   <li>`saving` - the final asset is being saved to storage</li>   <li>`done` - the asset is ready to be downloaded</li>   <li>`failed` - there was an error rendering the asset</li> </ul>
+            status (str): The status of the render task. <ul>   <li>`queued` - render is queued waiting to be rendered</li>   <li>`fetching` - assets are being fetched</li>   <li>`preprocessing` - video assets are being processed for compatibility</li>   <li>`rendering` - the asset is being rendered</li>   <li>`generating` - AI/media generation is in progress</li>   <li>`saving` - the final asset is being saved to storage</li>   <li>`done` - the asset is ready to be downloaded</li>   <li>`failed` - there was an error rendering the asset</li> </ul>
 
         Keyword Args:
             _check_type (bool): if True, values for parameters in openapi_types
@@ -175,7 +176,7 @@ class RenderResponseData(ModelNormal):
             error (str): An error message, only displayed if an error occurred.. [optional]  # noqa: E501
             duration (float): The output video or audio length in seconds.. [optional]  # noqa: E501
             render_time (float): The time taken to render the asset in milliseconds.. [optional]  # noqa: E501
-            url (str): The URL of the final asset. This will only be available if status is done. This is a temporary URL and will be deleted after 24 hours. By default all assets are copied to the Shotstack hosting and CDN destination.. [optional]  # noqa: E501
+            url (str): A temporary download link to the final asset. This will only be available if status is done. By default all assets are also copied to the [Shotstack hosting and CDN](https://shotstack.io/docs/guide/serving-assets/hosting/) destination, where they stay until you delete them. Serve the asset to your users from its CDN URL, `https://cdn.shotstack.io/au/{version}/{owner}/{id}.{format}`, not from this link, which expires after 24 hours.. [optional]  # noqa: E501
             poster (str): The URL of the poster image if requested. This will only be available if status is done.. [optional]  # noqa: E501
             thumbnail (str): The URL of the thumbnail image if requested. This will only be available if status is done.. [optional]  # noqa: E501
             data (Edit): [optional]  # noqa: E501
@@ -237,7 +238,7 @@ class RenderResponseData(ModelNormal):
         Args:
             id (str): The id of the render task in UUID format.
             owner (str): The owner id of the render task.
-            status (str): The status of the render task. <ul>   <li>`queued` - render is queued waiting to be rendered</li>   <li>`fetching` - assets are being fetched</li>   <li>`preprocessing` - video assets are being processed for compatibility</li>   <li>`rendering` - the asset is being rendered</li>   <li>`saving` - the final asset is being saved to storage</li>   <li>`done` - the asset is ready to be downloaded</li>   <li>`failed` - there was an error rendering the asset</li> </ul>
+            status (str): The status of the render task. <ul>   <li>`queued` - render is queued waiting to be rendered</li>   <li>`fetching` - assets are being fetched</li>   <li>`preprocessing` - video assets are being processed for compatibility</li>   <li>`rendering` - the asset is being rendered</li>   <li>`generating` - AI/media generation is in progress</li>   <li>`saving` - the final asset is being saved to storage</li>   <li>`done` - the asset is ready to be downloaded</li>   <li>`failed` - there was an error rendering the asset</li> </ul>
 
         Keyword Args:
             _check_type (bool): if True, values for parameters in openapi_types
@@ -274,7 +275,7 @@ class RenderResponseData(ModelNormal):
             error (str): An error message, only displayed if an error occurred.. [optional]  # noqa: E501
             duration (float): The output video or audio length in seconds.. [optional]  # noqa: E501
             render_time (float): The time taken to render the asset in milliseconds.. [optional]  # noqa: E501
-            url (str): The URL of the final asset. This will only be available if status is done. This is a temporary URL and will be deleted after 24 hours. By default all assets are copied to the Shotstack hosting and CDN destination.. [optional]  # noqa: E501
+            url (str): A temporary download link to the final asset. This will only be available if status is done. By default all assets are also copied to the [Shotstack hosting and CDN](https://shotstack.io/docs/guide/serving-assets/hosting/) destination, where they stay until you delete them. Serve the asset to your users from its CDN URL, `https://cdn.shotstack.io/au/{version}/{owner}/{id}.{format}`, not from this link, which expires after 24 hours.. [optional]  # noqa: E501
             poster (str): The URL of the poster image if requested. This will only be available if status is done.. [optional]  # noqa: E501
             thumbnail (str): The URL of the thumbnail image if requested. This will only be available if status is done.. [optional]  # noqa: E501
             data (Edit): [optional]  # noqa: E501

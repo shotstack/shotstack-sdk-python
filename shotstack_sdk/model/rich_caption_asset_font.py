@@ -56,6 +56,10 @@ class RichCaptionAssetFont(ModelNormal):
     """
 
     allowed_values = {
+        ('style',): {
+            '&#39;normal&#39;': 'normal',
+            '&#39;italic&#39;': 'italic',
+        },
     }
 
     validations = {
@@ -97,6 +101,7 @@ class RichCaptionAssetFont(ModelNormal):
             'family': (str,),  # noqa: E501
             'size': (int,),  # noqa: E501
             'weight': (object,),  # noqa: E501
+            'style': (str,),  # noqa: E501
             'color': (str,),  # noqa: E501
             'opacity': (float,),  # noqa: E501
             'background': (str,),  # noqa: E501
@@ -111,6 +116,7 @@ class RichCaptionAssetFont(ModelNormal):
         'family': 'family',  # noqa: E501
         'size': 'size',  # noqa: E501
         'weight': 'weight',  # noqa: E501
+        'style': 'style',  # noqa: E501
         'color': 'color',  # noqa: E501
         'opacity': 'opacity',  # noqa: E501
         'background': 'background',  # noqa: E501
@@ -160,6 +166,7 @@ class RichCaptionAssetFont(ModelNormal):
             family (str): The font family name. This must be the Family name embedded in the font, i.e. \"Roboto\".. [optional] if omitted the server will use the default value of 'Roboto'  # noqa: E501
             size (int): The size of the font in pixels (px). Must be between 1 and 500.. [optional] if omitted the server will use the default value of 24  # noqa: E501
             weight (object): The weight of the font. Can be a number (100-900) or a string ('normal', 'bold', etc.). 100 is lightest, 900 is heaviest (boldest).. [optional]  # noqa: E501
+            style (str): The font style.. [optional] if omitted the server will use the default value of 'normal'  # noqa: E501
             color (str): The text color using hexadecimal color notation.. [optional] if omitted the server will use the default value of '#ffffff'  # noqa: E501
             opacity (float): The opacity of the text where 1 is opaque and 0 is transparent.. [optional] if omitted the server will use the default value of 1  # noqa: E501
             background (str): The background color behind the text using hexadecimal color notation.. [optional]  # noqa: E501
@@ -247,6 +254,7 @@ class RichCaptionAssetFont(ModelNormal):
             family (str): The font family name. This must be the Family name embedded in the font, i.e. \"Roboto\".. [optional] if omitted the server will use the default value of 'Roboto'  # noqa: E501
             size (int): The size of the font in pixels (px). Must be between 1 and 500.. [optional] if omitted the server will use the default value of 24  # noqa: E501
             weight (object): The weight of the font. Can be a number (100-900) or a string ('normal', 'bold', etc.). 100 is lightest, 900 is heaviest (boldest).. [optional]  # noqa: E501
+            style (str): The font style.. [optional] if omitted the server will use the default value of 'normal'  # noqa: E501
             color (str): The text color using hexadecimal color notation.. [optional] if omitted the server will use the default value of '#ffffff'  # noqa: E501
             opacity (float): The opacity of the text where 1 is opaque and 0 is transparent.. [optional] if omitted the server will use the default value of 1  # noqa: E501
             background (str): The background color behind the text using hexadecimal color notation.. [optional]  # noqa: E501
