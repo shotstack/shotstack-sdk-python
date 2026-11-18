@@ -36,6 +36,7 @@ def lazy_import():
     ClipOpacity
     ClipScale
     ClipStart
+    Filter
     Offset
     Transformation
     Transition
@@ -151,6 +152,7 @@ class Clip(ModelNormal):
             'asset': (Asset,),  # noqa: E501
             'start': (ClipStart,),  # noqa: E501
             'length': (ClipLength,),  # noqa: E501
+            'id': (str,),  # noqa: E501
             'fit': (str,),  # noqa: E501
             'scale': (ClipScale,),  # noqa: E501
             'width': (float,),  # noqa: E501
@@ -160,6 +162,7 @@ class Clip(ModelNormal):
             'transition': (Transition,),  # noqa: E501
             'effect': (str,),  # noqa: E501
             'filter': (str,),  # noqa: E501
+            'filters': (List[Filter],),  # noqa: E501
             'opacity': (ClipOpacity,),  # noqa: E501
             'transform': (Transformation,),  # noqa: E501
             'alias': (str,),  # noqa: E501
@@ -174,6 +177,7 @@ class Clip(ModelNormal):
         'asset': 'asset',  # noqa: E501
         'start': 'start',  # noqa: E501
         'length': 'length',  # noqa: E501
+        'id': 'id',  # noqa: E501
         'fit': 'fit',  # noqa: E501
         'scale': 'scale',  # noqa: E501
         'width': 'width',  # noqa: E501
@@ -183,6 +187,7 @@ class Clip(ModelNormal):
         'transition': 'transition',  # noqa: E501
         'effect': 'effect',  # noqa: E501
         'filter': 'filter',  # noqa: E501
+        'filters': 'filters',  # noqa: E501
         'opacity': 'opacity',  # noqa: E501
         'transform': 'transform',  # noqa: E501
         'alias': 'alias',  # noqa: E501
@@ -234,6 +239,7 @@ class Clip(ModelNormal):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
+            id (str): Optional client-generated identifier. Used by client SDKs (e.g. the Shotstack Studio SDK) to reference a clip across edits without relying on its position in the timeline. The render API does not use this field and it does not appear in render output.. [optional]  # noqa: E501
             fit (str): Set how the asset should be scaled to fit the viewport using one of the following options:    <ul>     <li>`crop` <b>(default)</b> - scale the asset to fill the viewport while maintaining the aspect ratio. The asset will be cropped if it exceeds the bounds of the viewport.</li>     <li>`cover` - stretch the asset to fill the viewport without maintaining the aspect ratio.</li>     <li>`contain` - fit the entire asset within the viewport while maintaining the original aspect ratio.</li>     <li>`none` - preserves the original asset dimensions and does not apply any scaling.</li>   </ul>. [optional]  # noqa: E501
             scale (ClipScale): [optional]  # noqa: E501
             width (float): Set the width of the clip bounding box in pixels. This constrains the width of the clip, overriding the default behavior where clips fill the viewport width.. [optional]  # noqa: E501
@@ -243,6 +249,7 @@ class Clip(ModelNormal):
             transition (Transition): [optional]  # noqa: E501
             effect (str): A motion effect to apply to the Clip. <ul>   <li>`zoomIn` - slow zoom in</li>   <li>`zoomOut` - slow zoom out</li>   <li>`slideLeft` - slow slide (pan) left</li>   <li>`slideRight` - slow slide (pan) right</li>   <li>`slideUp` - slow slide (pan) up</li>   <li>`slideDown` - slow slide (pan) down</li> </ul> The motion effect speed can also be controlled by appending `Fast` or `Slow` to the effect, e.g. `zoomInFast` or `slideRightSlow`.. [optional]  # noqa: E501
             filter (str): A filter effect to apply to the Clip. <ul>   <li>`none` - no filter applied</li>   <li>`blur` - blur the scene</li>   <li>`boost` - boost contrast and saturation</li>   <li>`contrast` - increase contrast</li>   <li>`darken` - darken the scene</li>   <li>`greyscale` - remove colour</li>   <li>`lighten` - lighten the scene</li>   <li>`muted` - reduce saturation and contrast</li>   <li>`negative` - negative colors</li> </ul>. [optional]  # noqa: E501
+            filters (List[Filter]): A list of filters to apply to the Clip, in the order they appear. Each filter has a `type` and its own properties. The same type can be used more than once and numeric properties can be animated with [Tween](./#tocs_tween) objects. If `filter` is also set, the filters in this list are applied before it.. [optional]  # noqa: E501
             opacity (ClipOpacity): [optional]  # noqa: E501
             transform (Transformation): [optional]  # noqa: E501
             alias (str): A unique identifier for this clip that can be used to reference it from other clips using the `alias://` protocol in asset sources. This is useful for features like auto-captioning where a caption asset needs to reference the audio from another clip.. [optional]  # noqa: E501
@@ -335,6 +342,7 @@ class Clip(ModelNormal):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
+            id (str): Optional client-generated identifier. Used by client SDKs (e.g. the Shotstack Studio SDK) to reference a clip across edits without relying on its position in the timeline. The render API does not use this field and it does not appear in render output.. [optional]  # noqa: E501
             fit (str): Set how the asset should be scaled to fit the viewport using one of the following options:    <ul>     <li>`crop` <b>(default)</b> - scale the asset to fill the viewport while maintaining the aspect ratio. The asset will be cropped if it exceeds the bounds of the viewport.</li>     <li>`cover` - stretch the asset to fill the viewport without maintaining the aspect ratio.</li>     <li>`contain` - fit the entire asset within the viewport while maintaining the original aspect ratio.</li>     <li>`none` - preserves the original asset dimensions and does not apply any scaling.</li>   </ul>. [optional]  # noqa: E501
             scale (ClipScale): [optional]  # noqa: E501
             width (float): Set the width of the clip bounding box in pixels. This constrains the width of the clip, overriding the default behavior where clips fill the viewport width.. [optional]  # noqa: E501
@@ -344,6 +352,7 @@ class Clip(ModelNormal):
             transition (Transition): [optional]  # noqa: E501
             effect (str): A motion effect to apply to the Clip. <ul>   <li>`zoomIn` - slow zoom in</li>   <li>`zoomOut` - slow zoom out</li>   <li>`slideLeft` - slow slide (pan) left</li>   <li>`slideRight` - slow slide (pan) right</li>   <li>`slideUp` - slow slide (pan) up</li>   <li>`slideDown` - slow slide (pan) down</li> </ul> The motion effect speed can also be controlled by appending `Fast` or `Slow` to the effect, e.g. `zoomInFast` or `slideRightSlow`.. [optional]  # noqa: E501
             filter (str): A filter effect to apply to the Clip. <ul>   <li>`none` - no filter applied</li>   <li>`blur` - blur the scene</li>   <li>`boost` - boost contrast and saturation</li>   <li>`contrast` - increase contrast</li>   <li>`darken` - darken the scene</li>   <li>`greyscale` - remove colour</li>   <li>`lighten` - lighten the scene</li>   <li>`muted` - reduce saturation and contrast</li>   <li>`negative` - negative colors</li> </ul>. [optional]  # noqa: E501
+            filters (List[Filter]): A list of filters to apply to the Clip, in the order they appear. Each filter has a `type` and its own properties. The same type can be used more than once and numeric properties can be animated with [Tween](./#tocs_tween) objects. If `filter` is also set, the filters in this list are applied before it.. [optional]  # noqa: E501
             opacity (ClipOpacity): [optional]  # noqa: E501
             transform (Transformation): [optional]  # noqa: E501
             alias (str): A unique identifier for this clip that can be used to reference it from other clips using the `alias://` protocol in asset sources. This is useful for features like auto-captioning where a caption asset needs to reference the audio from another clip.. [optional]  # noqa: E501
