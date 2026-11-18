@@ -429,7 +429,7 @@ class ServeApi(object):
     ):
         """Get Asset by Render ID  # noqa: E501
 
-        A render may generate more than one file, such as a video, thumbnail and poster image. When the assets are created the only known id is the render id returned by the original [render request](#render-video), status  request or webhook. This endpoint lets you look up one or more assets by the render id.  **Base URL:** <a href=\"#\">https://api.shotstack.io/serve/{version}</a>   # noqa: E501
+        A render may generate more than one file, such as a video, thumbnail and poster image. When the assets are created the only known id is the render id returned by the original [render request](#render-asset), status  request or webhook. This endpoint lets you look up one or more assets by the render id.  **Base URL:** <a href=\"#\">https://api.shotstack.io/serve/{version}</a>   # noqa: E501
         This method makes a synchronous HTTP request by default. To make an
         asynchronous HTTP request, please pass async_req=True
 
