@@ -31,7 +31,7 @@ from shotstack_sdk.exceptions import ApiAttributeError
 
 
 def lazy_import():
-    RichTextAssetPaddingOneOf
+    RichTextPadding
 
 
 class RichTextAssetPadding(ModelComposed):
@@ -323,7 +323,7 @@ class RichTextAssetPadding(ModelComposed):
           'allOf': [
           ],
           'oneOf': [
-              RichTextAssetPaddingOneOf,
+              RichTextPadding,
               float,
           ],
         }
