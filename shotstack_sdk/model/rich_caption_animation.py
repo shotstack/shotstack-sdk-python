@@ -119,7 +119,7 @@ class RichCaptionAnimation(ModelNormal):
         Args:
 
         Keyword Args:
-            style (str): The animation style to apply to words: <ul>   <li>`karaoke` - Word-by-word color fill as spoken (shows all words, highlights active)</li>   <li>`highlight` - Word changes to active color when spoken (shows all words)</li>   <li>`pop` - Each word scales up when active</li>   <li>`fade` - Gradual opacity transition per word</li>   <li>`slide` - Words slide in from a direction</li>   <li>`bounce` - Spring animation on word appearance</li>   <li>`typewriter` - Words appear one by one and stay visible</li>   <li>`none` - No animation, all words visible immediately</li> </ul>. defaults to 'highlight', must be one of ['karaoke', 'highlight', 'pop', 'fade', 'slide', 'bounce', 'typewriter', 'none', ]  # noqa: E501
+            style (str): The animation style to apply to words: <ul>   <li>`karaoke` - Word-by-word color fill as spoken (shows all words, highlights active)</li>   <li>`highlight` - Word changes to active color when spoken (shows all words)</li>   <li>`pop` - Each word scales up when active</li>   <li>`fade` - Gradual opacity transition per word</li>   <li>`slide` - Words slide in, travelling in `direction`</li>   <li>`bounce` - Spring animation on word appearance</li>   <li>`typewriter` - Words appear one by one and stay visible</li>   <li>`none` - No animation, all words visible immediately</li> </ul>. defaults to 'highlight', must be one of ['karaoke', 'highlight', 'pop', 'fade', 'slide', 'bounce', 'typewriter', 'none', ]  # noqa: E501
             _check_type (bool): if True, values for parameters in openapi_types
                                 will be type checked and a TypeError will be
                                 raised if the wrong type is input.
@@ -150,7 +150,7 @@ class RichCaptionAnimation(ModelNormal):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
-            direction (str): Direction for directional animations (slide). Only applicable when style is `slide`.. [optional] if omitted the server will use the default value of 'up'  # noqa: E501
+            direction (str): The direction words travel when style is `slide`.. [optional] if omitted the server will use the default value of 'up'  # noqa: E501
         """
 
         style = kwargs.get('style', 'highlight')
@@ -206,7 +206,7 @@ class RichCaptionAnimation(ModelNormal):
         Args:
 
         Keyword Args:
-            style (str): The animation style to apply to words: <ul>   <li>`karaoke` - Word-by-word color fill as spoken (shows all words, highlights active)</li>   <li>`highlight` - Word changes to active color when spoken (shows all words)</li>   <li>`pop` - Each word scales up when active</li>   <li>`fade` - Gradual opacity transition per word</li>   <li>`slide` - Words slide in from a direction</li>   <li>`bounce` - Spring animation on word appearance</li>   <li>`typewriter` - Words appear one by one and stay visible</li>   <li>`none` - No animation, all words visible immediately</li> </ul>. defaults to 'highlight', must be one of ['karaoke', 'highlight', 'pop', 'fade', 'slide', 'bounce', 'typewriter', 'none', ]  # noqa: E501
+            style (str): The animation style to apply to words: <ul>   <li>`karaoke` - Word-by-word color fill as spoken (shows all words, highlights active)</li>   <li>`highlight` - Word changes to active color when spoken (shows all words)</li>   <li>`pop` - Each word scales up when active</li>   <li>`fade` - Gradual opacity transition per word</li>   <li>`slide` - Words slide in, travelling in `direction`</li>   <li>`bounce` - Spring animation on word appearance</li>   <li>`typewriter` - Words appear one by one and stay visible</li>   <li>`none` - No animation, all words visible immediately</li> </ul>. defaults to 'highlight', must be one of ['karaoke', 'highlight', 'pop', 'fade', 'slide', 'bounce', 'typewriter', 'none', ]  # noqa: E501
             _check_type (bool): if True, values for parameters in openapi_types
                                 will be type checked and a TypeError will be
                                 raised if the wrong type is input.
@@ -237,7 +237,7 @@ class RichCaptionAnimation(ModelNormal):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
-            direction (str): Direction for directional animations (slide). Only applicable when style is `slide`.. [optional] if omitted the server will use the default value of 'up'  # noqa: E501
+            direction (str): The direction words travel when style is `slide`.. [optional] if omitted the server will use the default value of 'up'  # noqa: E501
         """
 
         style = kwargs.get('style', 'highlight')
